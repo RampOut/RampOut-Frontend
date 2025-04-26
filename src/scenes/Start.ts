@@ -1,8 +1,9 @@
 import Phaser from "phaser";
-import LevelDemo from "./LevelDemo";
+import LevelSelect from "./LevelSelect";
+import VHSShaderPipeline from "../VHSShaderPipeline";
 
 // Importar imágenes y sprites
-import background from "../assets/game/bg.png";
+import background from "../assets/game/ui/menu/checkersBG2.png";
 import header from "../assets/game/ui/menu/Header.png";
 import logo from "../assets/game/ui/menu/RAMPOUT_logo.png";
 import footer from "../assets/game/ui/menu/footer.png";
@@ -10,11 +11,16 @@ import btn_play from "../assets/game/ui/menu/btn_play/btn_play.png";
 import btn_play_h from "../assets/game/ui/menu/btn_play/btn_play_hover.png";
 import btn_play_a from "../assets/game/ui/menu/btn_play/btn_play_active.png";
 import btn_exit from "../assets/game/ui/menu/btn_exit/btn_exit.png";
-import carro from "../assets/game/carro.png";
+import btn_exit_h from "../assets/game/ui/menu/btn_exit/btn_exit_h.png";
+import btn_exit_a from "../assets/game/ui/menu/btn_exit/btn_exit_a.png";
+import btn_config from "../assets/game/ui/menu/btn_config/btn_config.png";
+import btn_config_h from "../assets/game/ui/menu/btn_config/btn_config_h.png";
+import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
+import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
 
 export default class Start extends Phaser.Scene {
     constructor() {
-        super('Start');
+        super("Start");
     }
 
     preload() {
@@ -26,49 +32,97 @@ export default class Start extends Phaser.Scene {
         this.load.image('btn_play_hover', btn_play_h);
         this.load.image('btn_play_active', btn_play_a);
         this.load.image('btn_exit', btn_exit);
+        this.load.image('btn_exit_hover', btn_exit_h);
+        this.load.image('btn_exit_active', btn_exit_a);
+        this.load.image('btn_config', btn_config);
+        this.load.image('btn_config_hover', btn_config_h);
+        this.load.image('btn_config_active', btn_config_a);
+        this.load.font("Handjet-Regular", fontHJ, "truetype");
+        
     }
 
     create() {
-        this.background = this.add.tileSprite(640, 360, 1280, 720, 'background');
+        if (!VHSShaderPipeline){
+            this.renderer.pipelines.add('VHSShader', new VHSShaderPipeline(this.game));
+        }
 
-        this.add.image(640, 5, 'header');
-        this.add.image(640, 120, 'logo').setScale(0.6);
-        const btn_play = this.add.image(1280/2, 280, 'btn_play').setScale(0.75);
-        const btn_config = this.add.image(1280/2, 380, 'btn_play').setScale(0.75);
-        const btn_exit = this.add.image(1280/2, 480, 'btn_exit').setScale(0.75);
-        const footer = this.add.image(1280/2, 640, 'footer').setScale(1,0.9);
-        
-        btn_play.setInteractive();
-        btn_config.setInteractive();
-        btn_exit.setInteractive();
+        this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0).setDepth(-4);
 
-        btn_play.on('pointerover', function(){
-            btn_play.setTexture("btn_play_hover");
-            btn_play.setScale(0.85)
-        }, this)
+        // Asegurar que el fondo no se mueva con la cámara
+        this.bg.setScrollFactor(0);
 
-        btn_play.on('pointerout', function(){
-            btn_play.setTexture("btn_play");
-            btn_play.setScale(0.75)
-        }, this)
+        this.bg.setPipeline('VHSShader');
 
-        btn_play.on('pointerdown', function(){
-            btn_play.setTexture("btn_play_active");
-            setTimeout(() => {
-                this.scene.add("Demo", LevelDemo);
-                this.scene.start("Demo");
-            }, 250);
-        }, this)
+        const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
+        const logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo').setPosition(640, 110).setScale(0.75);
+        const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
+        const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
+            fontSize: 64,
+            color: "#00FFB7",
+            fontFamily: "Handjet-Regular",
+        });
 
-        btn_exit.on('pointerdown', function(){
-            setTimeout(() => {
-                window.location.href = "/login"
-            }, 250);
-        }, this)
+        const btn_play = this.add.image(this.scale.width / 2, 300, 'btn_play').setScale(0.75).setDepth(-3)
+            .setInteractive().on('pointerover', function () {
+                btn_play.setTexture("btn_play_hover");
+                btn_play.setScale(0.85)
+            }, this).on('pointerout', function () {
+                btn_play.setTexture("btn_play");
+                btn_play.setScale(0.75)
+            }, this).on('pointerdown', function () {
+                btn_play.setTexture("btn_play_active");
+                userText.setDepth(-4);
+
+                this.tweens.add({
+                    targets: logo,
+                    y: -190, // Centro vertical de la pantalla
+                    duration: 400,
+                    ease: 'Power2',
+                    onComplete: () => {
+                        this.tweens.add({
+                            targets: header,
+                            y: 190, // Centro vertical de la pantalla
+                            duration: 800,
+                            ease: 'Power2',
+                            onComplete: () => {
+                                this.scene.start("LevelSelect"); // Cambia a tu escena del juego
+                            }
+                        });
+                    }
+                });
+            }, this)
+
+            const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
+            .setInteractive().on('pointerover', function () {
+                btn_config.setTexture("btn_config_hover");
+                btn_config.setScale(0.85)
+            }, this).on('pointerout', function () {
+                btn_config.setTexture("btn_config");
+                btn_config.setScale(0.75)
+            }, this).on('pointerdown', function () {
+                btn_config.setTexture("btn_config_active");
+                setTimeout(() => {
+                    console.log("En proceso...");
+                }, 250);
+            }, this);
+
+        const btn_exit = this.add.image(this.scale.width / 2, 500, 'btn_exit').setScale(0.75).setDepth(-3)
+            .setInteractive().on('pointerover', function () {
+                btn_exit.setTexture("btn_exit_hover");
+                btn_exit.setScale(0.85)
+            }, this).on('pointerout', function () {
+                btn_exit.setTexture("btn_exit");
+                btn_exit.setScale(0.75)
+            }, this).on('pointerdown', function () {
+                btn_exit.setTexture("btn_exit_active");
+                setTimeout(() => {
+                    window.location.href = "/"
+                }, 300);
+            }, this);
     }
 
     update() {
-        this.background.tilePositionX += 2;
+        this.bg.tilePositionX += 1.2;
+        this.bg.tilePositionY += 0.2;
     }
-    
 }

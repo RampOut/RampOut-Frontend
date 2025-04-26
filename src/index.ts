@@ -1,5 +1,7 @@
 import Start from './scenes/Start';
+import LevelSelect from './scenes/LevelSelect';
 import Phaser from 'phaser';
+import VHSShaderPipeline from './VHSShaderPipeline';
 
 const config: Phaser.Core.Config = {
     type: Phaser.AUTO,
@@ -13,7 +15,10 @@ const config: Phaser.Core.Config = {
             debug: true
         }
     },
-    scene: [Start],
+    scene: [Start, LevelSelect],
+    pipeline: {
+        CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
+    },
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
