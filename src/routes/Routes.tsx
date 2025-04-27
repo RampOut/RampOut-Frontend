@@ -5,6 +5,7 @@ import Game from "../pages/Game";
 import Login from "../pages/Login";
 import Login_Profesor from "../pages/LoginProfesor";
 import RegistroProfesor from "../pages/RegistroProfesor";
+import ConfigProfesor from "../pages/ConfigProfesor";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
         element: <RegistroProfesor />,
         errorElement: <ErrorPage />
     },
+    {
+        path: "/micuenta",
+        element: <ConfigProfesor />,
+        errorElement: <ErrorPage />
+    }
 ]);
 
 export default router;

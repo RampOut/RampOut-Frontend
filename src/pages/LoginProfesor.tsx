@@ -31,7 +31,7 @@ const Login_Profesor = (_props: Props) => {
             alert("INGRESE UNA NÓMINA VÁLIDA");
             return;
         }
-        alert("Todo bien (deberia llevarte a otra pagina luego)")
+        window.location.href = ("/micuenta")
     };
 
     return (

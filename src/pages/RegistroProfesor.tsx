@@ -25,7 +25,7 @@ const RegistroProfesor = (_props: Props) => {
             alert("INGRESE UNA NÓMINA VÁLIDA");
             return;
         }
-        alert("Todo bien (deberia llevarte a otra pagina luego)")
+        window.location.href = ("/login/profesor")
     };
 
     return (
