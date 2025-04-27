@@ -20,8 +20,8 @@
             ]
         },
         "typeRoots": [
-            "node_module/@types",
-            "node_module/phaser/types"
+            "node_modules/@types",
+            "node_modules/phaser/types"
         ],
         "types": [
             "phaser"
