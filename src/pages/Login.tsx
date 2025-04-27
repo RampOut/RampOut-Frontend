@@ -6,7 +6,7 @@ function Login() {
           <div className="d-flex flex-column align-items-center justify-content-center w-100 h-100">
           <button
             className="btn col-10 m-2 p-2"
-            onClick={() => (window.location.href = "profesor")}>
+            onClick={() => (window.location.href = "/login/profesor")}>
             SOY UN PROFESOR
           </button>
           <button className="btn col-10 m-2 p-2" onClick={() => (window.location.href = "equipo")}>
