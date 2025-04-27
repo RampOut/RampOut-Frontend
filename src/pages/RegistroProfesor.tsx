@@ -1,9 +1,3 @@
-//ocupa tener un link que te lleve al registro
-//Ocupa tener un reestablecer contraseña??? no necesariamente tal vez en configuración
-
-//ocupo conectarme al backend para que compruebe que todo bien
-//Revisar que la profetricula sea de 9 (ej: LA01255302 )  (ejMalo: A012) )
-
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +6,7 @@ import { Link } from "react-router";
 
 interface Props {};
 
-const Login_Profesor = (_props: Props) => {
+const RegistroProfesor = (_props: Props) => {
     const [nomina, setNomina] = useState("");
     const [isNominaValid, setIsNominaValid] = useState(false);
     const [showPwd, setShowPwd] = useState(false);
@@ -35,14 +29,13 @@ const Login_Profesor = (_props: Props) => {
     };
 
     return (
-        <>
         <div className="background-login container-fluid d-flex justify-content-center align-content-center align-items-center">
             <form 
                 onSubmit={handleSubmit}
                 className="d-flex flex-column align-items-center top-50 start-50 box-shadow"
                 style={{ background: "linear-gradient(#e0e0e0, #c0c0c0)", width: "100vh", height: "80vh" }}
             >
-                <h1>Log-In Profesores</h1>
+                <h1>Registro Profesores</h1>
 
                 <label>Nomina</label>
                 <input 
@@ -67,11 +60,10 @@ const Login_Profesor = (_props: Props) => {
                 </div>
 
                 <button type="submit">Submit</button>
-                <Link to="/registro">Registrate aquí</Link>
+                <Link to="/login">Log-In</Link>
             </form>
         </div>
-        </>
     );
 }
 
-export default Login_Profesor;
+export default RegistroProfesor;

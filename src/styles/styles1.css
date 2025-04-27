@@ -45,7 +45,7 @@ a {
 .background-login {
     background-image: url(../assets/game/bg.png);
     background-size: cover;
-    background-repeat: repeat-y; 
+    background-repeat: repeat; 
     background-position: center;
     height: 100vh;
     font-family: "Handjet", sans-serif;
