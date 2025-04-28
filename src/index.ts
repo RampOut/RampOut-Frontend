@@ -1,9 +1,12 @@
+import 'phaser';
 import Start from './scenes/Start';
 import LevelSelect from './scenes/LevelSelect';
-import Phaser from 'phaser';
+import LevelGameSetup from './scenes/LevelGameSetup';
+import LevelBlack from './scenes/LevelBlack';
 import VHSShaderPipeline from './VHSShaderPipeline';
+import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
-const config: Phaser.Core.Config = {
+const config = {
     type: Phaser.AUTO,
     width: 1280,
     height: 720,
@@ -15,19 +18,28 @@ const config: Phaser.Core.Config = {
             debug: true
         }
     },
-    scene: [Start, LevelSelect],
+    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
     },
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    plugins: {
+		scene: [
+			{
+				key: 'rexUI',
+				plugin: RexUIPlugin,
+				mapping: 'rexUI'
+			}
+		]
     }
-    
 };
 
-if (window.location.pathname == "/game"){
-    const game = new Phaser.Game(config);
-} else {
+const game = new Phaser.Game(config);
+export default game;
+
+if (window.location.pathname !== "/game") {
     game.destroy(true);
 }

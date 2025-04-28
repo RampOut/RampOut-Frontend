@@ -1,5 +1,4 @@
-import Phaser from "phaser";
-import LevelSelect from "./LevelSelect";
+import "phaser";
 import VHSShaderPipeline from "../VHSShaderPipeline";
 
 // Importar imágenes y sprites
@@ -16,7 +15,7 @@ import btn_exit_a from "../assets/game/ui/menu/btn_exit/btn_exit_a.png";
 import btn_config from "../assets/game/ui/menu/btn_config/btn_config.png";
 import btn_config_h from "../assets/game/ui/menu/btn_config/btn_config_h.png";
 import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
-import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
+import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -38,13 +37,11 @@ export default class Start extends Phaser.Scene {
         this.load.image('btn_config_hover', btn_config_h);
         this.load.image('btn_config_active', btn_config_a);
         this.load.font("Handjet-Regular", fontHJ, "truetype");
-        
+
     }
 
     create() {
-        if (!VHSShaderPipeline){
-            this.renderer.pipelines.add('VHSShader', new VHSShaderPipeline(this.game));
-        }
+        this.renderer.pipelines.add('VHSShader', new VHSShaderPipeline(this.game));
 
         this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0).setDepth(-4);
 
@@ -53,10 +50,10 @@ export default class Start extends Phaser.Scene {
 
         this.bg.setPipeline('VHSShader');
 
-        const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
-        const logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo').setPosition(640, 110).setScale(0.75);
+        const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, 190).setScale(2).setDepth(-2);
+        const logo = this.add.image(this.scale.width / 2, this.scale.height / 2, 'logo').setPosition(640, -190).setScale(0.75);
         const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
-        const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
+        const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
             fontFamily: "Handjet-Regular",
@@ -92,7 +89,7 @@ export default class Start extends Phaser.Scene {
                 });
             }, this)
 
-            const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
+        const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
             .setInteractive().on('pointerover', function () {
                 btn_config.setTexture("btn_config_hover");
                 btn_config.setScale(0.85)
@@ -119,6 +116,20 @@ export default class Start extends Phaser.Scene {
                     window.location.href = "/"
                 }, 300);
             }, this);
+
+        this.tweens.add({
+            targets: header,
+            y: -160, // Centro vertical de la pantalla
+            duration: 400,
+            ease: 'Power2',
+        });
+
+        this.tweens.add({
+            targets: logo,
+            y: 110, // Centro vertical de la pantalla
+            duration: 400,
+            ease: 'Power2',
+        });
     }
 
     update() {
