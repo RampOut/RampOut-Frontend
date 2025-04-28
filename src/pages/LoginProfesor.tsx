@@ -13,18 +13,20 @@ import { Link } from "react-router";
 interface Props {};
 
 const Login_Profesor = (_props: Props) => {
+    
     const [nomina, setNomina] = useState("");
     const [isNominaValid, setIsNominaValid] = useState(false);
     const [showPwd, setShowPwd] = useState(false);
 
+    //Verifica si el estado "nomina" tiene el formato L + 8 dígitos
     const handleNominaChange = (nomina) => {
         const value = nomina.target.value;
         setNomina(value);
-
         const pattern = /^L\d{8}$/;
         setIsNominaValid(pattern.test(value));
     };
 
+    //En caso de que no sea un formato válido no permitirá el post a la api
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isNominaValid) {
@@ -47,11 +49,13 @@ const Login_Profesor = (_props: Props) => {
                 <label>Nomina</label>
                 <input 
                     type="text"
+                    //Lo escrito aqui se vuelve el estado nomina
                     value={nomina}
                     onChange={handleNominaChange}
                     placeholder="ej. L01255302"
                     required
                 />
+                {/*Campo que permite visualizar si el formato es válido o no antes de enviarlo */}
                 <span className="validity" style={{ color: isNominaValid ? "green" : "red" }}>
                     {isNominaValid ? "Nómina válida" : "Nómina inválida"}
                 </span>
@@ -62,6 +66,7 @@ const Login_Profesor = (_props: Props) => {
                     placeholder="Contraseña" 
                     required 
                 />
+                {/*Modifica el estado de visibilidad de la contraseña */}
                 <div onClick={() => setShowPwd(!showPwd)} style={{ cursor: "pointer" }}>
                     {showPwd ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                 </div>

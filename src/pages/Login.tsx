@@ -1,7 +1,9 @@
 function Login() {
   return (
     <>
+      {/* Fondo que abarca toda la pantalla*/}
       <div className="background-login cointainer-fluid d-flex justify-content-center align-content-center align-items-center">
+        {/* Recueadro donde se encuentran los botones*/}
         <div className="d-flex flex-column align-items-center top-50 start-50 box-shadow"  style={{ background: "linear-gradient(#e0e0e0, #c0c0c0)", width: "100vh", height:"60vh" }}>
           <div className="d-flex flex-column align-items-center justify-content-center w-100 h-100">
           <button
