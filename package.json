@@ -30,18 +30,3 @@
     "vite": "^6.3.1"
   }
 }
-{
-  "name": "phasermattertest",
-  "version": "1.0.0",
-  "description": "Test project to try Phaser and MatterJS",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon -q part10.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "phaser": "^3.88.2"
-  }
-}
