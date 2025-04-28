@@ -1,5 +1,6 @@
 import Start from './scenes/Start';
 import LevelSelect from './scenes/LevelSelect';
+import Guia from './scenes/Guia';
 import Phaser from 'phaser';
 import VHSShaderPipeline from './VHSShaderPipeline';
 
@@ -15,7 +16,7 @@ const config: Phaser.Core.Config = {
             debug: true
         }
     },
-    scene: [Start, LevelSelect],
+    scene: [Start, LevelSelect, Guia],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
     },
