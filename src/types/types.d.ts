@@ -4,4 +4,9 @@ declare module "my-types"{
         username: string;
         password: string;
     }
-}
+
+    export interface AuthResponse {
+        body: {
+            token: string;
+        }
+    }}

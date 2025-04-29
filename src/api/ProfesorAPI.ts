@@ -16,19 +16,20 @@ export const register = async(host: Profesor) => {
 }
 
 //Obtienes el token de dicho profesor
-export const logIn = async (host: Profesor) => {
+export const logIn = async (username:string, password: string) => {
     try{
-        const res= await api.post("api/login", {username: host.username, password: host.password});
+        const res= await api.post("api/login", {username, password});
         const token = res.data.token;
         localStorage.setItem("token",token);
+        return token;
     }
     catch (e){
-        console.log("Error durante el LogIn:", e)
+        throw e;
     }
 } 
 
 //El token se usará como header del resto de las llamadas
-api.interceptors.request.use(
+/*api.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem("token");
       if (token && config.headers) {
@@ -39,7 +40,7 @@ api.interceptors.request.use(
     (e) => {
       return Promise.reject(e);
     }
-  );
+  );*/
 
 // Obtener el host por ID. (R)
 export const getHostById = async(id: number) => {
@@ -83,9 +84,15 @@ export const deleteHost = async (id: number): Promise<void> => {
 //Verifica el acceso, el endpoint da valores en booleanos
 export const getAccess = async() => {
     try {
-        const res = await api.get("api/host");
-        const acceso: boolean = res.data.payload;
-        return acceso;
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw new Error("No hay token disponible");
+        }
+        const res = await api.get("api/host",{
+            headers:
+            {Authorization: `Bearer ${token}`}
+        });
+        return res.data.payload === true;
     } catch(e) {
         console.log("Error al obtener verficación de acceso:", e);
         return false;

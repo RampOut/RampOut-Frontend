@@ -10,6 +10,7 @@ const RegistroProfesor = (_props: Props) => {
     const [nomina, setNomina] = useState("");
     const [isNominaValid, setIsNominaValid] = useState(false);
     const [showPwd, setShowPwd] = useState(false);
+    const [password, setPwd] = useState("");
 
     const handleNominaChange = (nomina) => {
         const value = nomina.target.value;
@@ -52,6 +53,8 @@ const RegistroProfesor = (_props: Props) => {
                 <label>Contraseña</label>
                 <input 
                     type={showPwd ? "text" : "password"} 
+                    value={password}
+                    onChange={(p)=> setPwd(p.target.value)}
                     placeholder="Contraseña" 
                     required 
                 />

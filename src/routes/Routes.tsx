@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Login_Profesor from "../pages/LoginProfesor";
 import RegistroProfesor from "../pages/RegistroProfesor";
 import ConfigProfesor from "../pages/ConfigProfesor";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const router = createBrowserRouter([
     {
@@ -34,10 +35,18 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />
     },
     {
-        path: "/micuenta",
-        element: <ConfigProfesor />,
+        path:"/",
+        element: <ProtectedRoute />,
+        children: [
+            {
+                path: "/micuenta",
+                element: <ConfigProfesor />,
+                errorElement: <ErrorPage />
+            },
+        ],
         errorElement: <ErrorPage />
     }
+
 ]);
 
 export default router;
