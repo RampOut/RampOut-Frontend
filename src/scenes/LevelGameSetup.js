@@ -198,7 +198,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelBlack"); // Cambia a tu escena del juego
+                                this.scene.start('GameScene', { playerName: 'A01254623' });
                             }
                         });
                     }

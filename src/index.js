@@ -2,6 +2,7 @@ import 'phaser';
 import Start from './scenes/Start';
 import LevelSelect from './scenes/LevelSelect';
 import LevelGameSetup from './scenes/LevelGameSetup';
+import GameScene from './scenes/GameScene';
 import LevelBlack from './scenes/LevelBlack';
 import VHSShaderPipeline from './VHSShaderPipeline';
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
@@ -18,7 +19,7 @@ const config = {
             debug: true
         }
     },
-    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack],
+    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack, GameScene],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
     },
@@ -38,6 +39,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
 export default game;
 
 if (window.location.pathname !== "/game") {
