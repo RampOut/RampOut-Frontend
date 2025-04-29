@@ -14,7 +14,6 @@ const COLOR_GRAY2 = 0x333333;
 const COLOR_BLACK = 0x000000;
 
 export default class LevelGameSetup extends Phaser.Scene {
-    rexUI: RexUIPlugin;
 
     constructor() {
         super("LevelGameSetup");

@@ -1,33 +1,7 @@
 {
-    "compilerOptions": {
-        "target": "ES2016",
-        "module": "ES6",
-        "strict": true,
-        "noImplicitAny": false,
-        "noEmit": true,
-        "allowJs": true,
-        "jsx": "preserve",
-        "importHelpers": true,
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "sourceMap": true,
-        "baseUrl": "./src",
-        "paths": {
-            "~/*": [
-                "./*"
-            ]
-        },
-        "typeRoots": [
-            "node_module/@types",
-            "node_module/phaser/types"
-        ],
-        "types": [
-            "phaser"
-        ]
-    },
-    "include": [
-        "src/**/*"
-    ]
+    "files": [],
+    "references": [
+        { "path": "tsconfig.app.json" },
+        { "path": "tsconfig.node.json" },
+    ],
 }
