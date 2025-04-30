@@ -2,7 +2,7 @@ import { Profesor } from "my-types";
 import { useState, useEffect } from "react";
 import Filter from "../components/Filter";
 import ProList from "../components/ProList";
-import { deleteHost, getAllHosts } from "../api/ProfesorAPI";
+import { deleteHost, getAllHosts, updateHost } from "../api/ProfesorAPI";
 import { useNavigate } from "react-router-dom";
 
 
@@ -40,6 +40,15 @@ const ConfigAdmin = (_props: Props) => {
     setProfesor(updatedP ?? []);
   };
 
+  const handleModify = async (id: number, username:string, newPassword:string, newRole:string) => {
+    const confirmModify = confirm(`¿Estás seguro de que quieres modificar al profesor "${username}"?`);
+    if (!confirmModify) return;
+
+    await updateHost(id,newPassword,newRole);
+    const updatedP = await getAllHosts();
+    setProfesor(updatedP ?? []);
+  };
+
   return (
     <>
       <header className="sticky-top">
@@ -51,7 +60,7 @@ const ConfigAdmin = (_props: Props) => {
 
       <button onClick={()=>{navigate("/registro")}}>Registrar Profesor</button>
 
-      <ProList profesores={filteredPros} onDelete={handleDelete} />
+      <ProList profesores={filteredPros} onDelete={handleDelete} onModify={handleModify}/>
     </>
   );
 };

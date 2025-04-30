@@ -66,10 +66,8 @@ export const createHost = async(username:string, password: string,role:string ) 
         if (!token) {
             throw new Error("No hay token disponible");
         };
-
-
         const res = await api.post("api/host/", {"username":username,"password":password,"role":role},{
-            headers:{Authorization: `Bearer ${token}`, "Content-Type": "application/json"}}
+            headers:{Authorization: `Bearer ${token}`}}
         );
         return res.data;
     }catch (e) {
@@ -79,11 +77,17 @@ export const createHost = async(username:string, password: string,role:string ) 
 }
 
 //Actualizar Contraseña (U)
-export const updateHostPassword = async(id: number, newPassword: string): Promise<void> => {
+export const updateHost = async(id: number, pwd: string, role:string): Promise<void> => {
     try {
-        await api.patch(`/api/host/${id}`, {newPassword});
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw new Error("No hay token disponible");
+        };
+        await api.patch(`/api/host/${id}`, {"newPassword":pwd,"newRole":role},
+            {headers:{Authorization: `Bearer ${token}`}}
+        );
     } catch(e) {
-        console.log("Error al actualizar la contraseña:", e);
+        console.log("Error al actualizar el profesor:", e);
     }
 }
 
