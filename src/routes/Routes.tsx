@@ -7,6 +7,8 @@ import Login_Profesor from "../pages/LoginProfesor";
 import RegistroProfesor from "../pages/RegistroProfesor";
 import ConfigProfesor from "../pages/ConfigProfesor";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Login_Admin from "../pages/LoginAdmin";
+import ConfigAdmin from "../pages/ConfigAdmin";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +32,11 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />
     },
     {
+        path: "/login/admin",
+        element: <Login_Admin />,
+        errorElement: <ErrorPage />
+    },
+    {
         path: "/registro",
         element: <RegistroProfesor />,
         errorElement: <ErrorPage />
@@ -43,6 +50,11 @@ const router = createBrowserRouter([
                 element: <ConfigProfesor />,
                 errorElement: <ErrorPage />
             },
+            {
+                path: "/admin",
+                element: <ConfigAdmin />,
+                errorElement: <ErrorPage />
+            }
         ],
         errorElement: <ErrorPage />
     }

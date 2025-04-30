@@ -92,10 +92,11 @@ export const getAccess = async() => {
             headers:
             {Authorization: `Bearer ${token}`}
         });
-        return res.data.payload === true;
+        const { acceso, role } = res.data;
+        return {acceso,role};
     } catch(e) {
         console.log("Error al obtener verficación de acceso:", e);
-        return false;
+        return { payload: false, role: null };
     }
 }
 

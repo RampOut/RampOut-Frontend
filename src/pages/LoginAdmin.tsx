@@ -1,9 +1,3 @@
-//ocupa tener un link que te lleve al registro
-//Ocupa tener un reestablecer contraseña??? no necesariamente tal vez en configuración
-
-//ocupo conectarme al backend para que compruebe que todo bien
-//Revisar que la profetricula sea de 9 (ej: LA01255302 )  (ejMalo: A012) )
-
 import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +11,7 @@ import axios from "axios";
 
 interface Props {};
 
-const Login_Profesor = (_props: Props) => {
+const Login_Admin = (_props: Props) => {
     
     //Validacion de datos del log-in
     const [nomina, setNomina] = useState("");
@@ -48,9 +42,10 @@ const Login_Profesor = (_props: Props) => {
         try {
             await logIn(nomina, password);
             const {acceso,role} = await getAccess();
-            if(acceso === true ){
+            //ocupo que compruebe que es administrador
+            if(acceso === true && role==="admin"){
                 auth.setIsAuthenticated(true);
-                navigate("/micuenta");
+                navigate("/admin");
             }else{
                 setErrorView("Acceso Denegado");
             }
@@ -68,9 +63,9 @@ const Login_Profesor = (_props: Props) => {
             <form 
                 onSubmit={handleSubmit}
                 className="d-flex flex-column align-items-center top-50 start-50 box-shadow"
-                style={{ background: "linear-gradient(#e0e0e0,rgb(148, 177, 110))", width: "100vh", height: "80vh" }}
+                style={{ background: "linear-gradient(#e0e0e0,rgb(166, 110, 177))", width: "100vh", height: "80vh" }}
             >
-                <h1>Log-In Profesores</h1>
+                <h1>Log-In Administrador</h1>
                 {!!errorView && <p>{errorView}</p>}
                 <label>Nomina</label>
                 <input 
@@ -100,11 +95,11 @@ const Login_Profesor = (_props: Props) => {
                 </div>
 
                 <button type="submit">Submit</button>
-                <Link to="/login/admin">Ingresa como Administrador</Link>
+                <Link to="/login/profesor">Ingresa como Profesor</Link>
             </form>
         </div>
         </>
     );
 }
 
-export default Login_Profesor;
+export default Login_Admin;
