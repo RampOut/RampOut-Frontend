@@ -89,18 +89,37 @@ export default class Start extends Phaser.Scene {
                 });
             }, this)
 
-        const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
-            .setInteractive().on('pointerover', function () {
+            const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
+            .setInteractive()
+            .on('pointerover', function () {
                 btn_config.setTexture("btn_config_hover");
                 btn_config.setScale(0.85)
-            }, this).on('pointerout', function () {
+            }, this)
+            .on('pointerout', function () {
                 btn_config.setTexture("btn_config");
                 btn_config.setScale(0.75)
-            }, this).on('pointerdown', function () {
+            }, this)
+            .on('pointerdown', function () {
                 btn_config.setTexture("btn_config_active");
-                setTimeout(() => {
-                    console.log("En proceso...");
-                }, 250);
+                userText.setDepth(-4);
+
+                this.tweens.add({
+                    targets: logo,
+                    y: -190,
+                    duration: 400,
+                    ease: 'Power2',
+                    onComplete: () => {
+                        this.tweens.add({
+                            targets: header,
+                            y: 190,
+                            duration: 800,
+                            ease: 'Power2',
+                            onComplete: () => {
+                                this.scene.start("Guia"); 
+                            }
+                        });
+                    }
+                });
             }, this);
 
         const btn_exit = this.add.image(this.scale.width / 2, 500, 'btn_exit').setScale(0.75).setDepth(-3)
