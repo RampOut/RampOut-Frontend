@@ -115,7 +115,7 @@ export default class Start extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("Guia"); // Aquí el hechizo, la puerta, el pasaje.
+                                this.scene.start("Guia"); 
                             }
                         });
                     }

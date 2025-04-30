@@ -1,7 +1,9 @@
 import Phaser from "phaser";
 import VHSShaderPipeline from "../VHSShaderPipeline";
 
+
 import background from "../assets/game/ui/menu/checkersBG1.png";
+import backgroundGS from "../assets/game/ui/menu/checkersPurple.png";
 import header from "../assets/game/ui/menu/Header.png";
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
 import backBtn_h from "../assets/game/ui/menu/btn_back/btn_back_h.png";
@@ -13,13 +15,14 @@ import cancelar from "../assets/game/ui/menu/botonCancelar.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
 import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
 
-export default class Guia extends Phaser.Scene {
+export default class StudentGuide extends Phaser.Scene {
     constructor() {
-        super("Guia");
+        super("StudentGuide");
     }
 
     preload() {
         this.load.image('background', background);
+        this.load.image('backgroundGS', backgroundGS);
         this.load.image('header', header);
         this.load.image('footer', footer);
         this.load.image('guiaTitle', guTitle);
@@ -32,7 +35,7 @@ export default class Guia extends Phaser.Scene {
     }
 
     create() {
-        this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'background').setOrigin(0).setDepth(-6);
+        this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'backgroundGS').setOrigin(0).setDepth(-6);
 
         this.bg.setScrollFactor(0);
 
@@ -41,55 +44,19 @@ export default class Guia extends Phaser.Scene {
         const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
         const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
         const guiaTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'guiaTitle').setPosition(300, -80).setScale(1).setDepth(-2);
-        const cuadrotxt = this.add.image(this.scale.width / 2, this.scale.height / 2, 'cuadroText').setPosition(640, 300).setScale(0.6).setDepth(-5);
 
-        /*const desc = this.add.text(300, 160, 'Pista a los alumnos', {
-            fontSize: 40,
-            color: "#8C8C8C",
+        //Se recupera el texto dado por el profe
+        const savedText = this.registry.get('guiaText') || "El profe aún no ha dado indicaciones"; 
+
+        //Se muestra el texo en medio de la pantalla
+        this.add.text(280, 180, savedText, {
+            fontSize: 50,
+            color: "#FFFFFF",
             fontFamily: "Handjet-Regular",
-        });*/
+            wordWrap: { width: 700 }
+        }).setDepth(-3);
 
-        //Cuadro de texto con input funcional creado con HTML
-        this.textArea = document.createElement('textarea');
-        this.textArea.style.position = 'absolute';
-        this.textArea.style.left = '380px';
-        this.textArea.style.top = '160px';
-        this.textArea.style.width = '720px';
-        this.textArea.style.height = '280px';
-        this.textArea.style.fontSize = '40px';
-        this.textArea.style.color = '#8C8C8C';
-        this.textArea.style.backgroundColor = 'transparent';
-        this.textArea.style.border = 'none';
-        this.textArea.style.fontFamily = 'Handjet-Regular';
-        this.textArea.style.padding = '10px';
-        this.textArea.style.outline = 'none';
-        this.textArea.placeholder = 'Escribe algo aquí...';
-        this.textArea.setAttribute('wrap', 'soft');
-
-        document.body.appendChild(this.textArea);
-
-         //Cancelar reinicia el cuadro de texto
-         const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(-4);
-         btn_cancel.setInteractive().on('pointerdown', () => {
-             this.textArea.value = ''; 
-         });
-
-        //Aceptar guarda el valor de la guía
-        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(-4);
-        btn_accept.setInteractive().on('pointerdown', () => {
-            const userText = this.textArea.value;
-            this.registry.set('guiaText', userText);
-            console.log("Texto guardado: ", userText); // Aquí puedes guardar el texto o hacer cualquier acción
-        });
-
-
-        const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
-            fontSize: 64,
-            color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
-        });
-
-        const about = this.add.text(450, 35, "Aqui puedes escribir instrucciones", {
+        const about = this.add.text(820, 40, "Pistas de tu profe", {
             fontSize: 70,
             color: "#FFFFFF",
             fontFamily: "Handjet-Regular",
@@ -105,9 +72,7 @@ export default class Guia extends Phaser.Scene {
                 btn_back.setScale(1)
             }, this).on('pointerdown', function () {
                 btn_back.setTexture("btn_back_a");
-                if (this.textArea) this.textArea.value = " ";
                 about.text = "";
-                userText.text = "";
 
                 this.tweens.add({
                     targets: [guiaTitle, btn_back],
@@ -156,14 +121,7 @@ export default class Guia extends Phaser.Scene {
             duration: 400,
             ease: 'Power2',
         });
-     // Elimina el textarea al cambiar de escena
-     this.events.on('shutdown', this.removeTextArea, this);
-    }
 
-    removeTextArea() {
-        if (this.textArea) {
-            document.body.removeChild(this.textArea); 
-        }
     }
 
     update() {
