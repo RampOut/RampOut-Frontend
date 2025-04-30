@@ -5,6 +5,8 @@ export default class Car {
         scene,
         x,
         y,
+        masaChasis,
+        masaPiloto,
         {
             
             width = 110,//150,//137.5,
@@ -12,9 +14,11 @@ export default class Car {
             wheelSize = 12, // tamaño de la rueda en cm
             wheelOffsetX = 20,
             wheelOffsetY = 30,
-            masaChasis = 1400, // kg
+            //masaPiloto = 30,
+            masaMotor = 150,
+            //masaChasis = 1400, // kg
             masaLlantas = 120, // densidad específica para las llantas
-            potenciaMotor = 120, // hp
+            potenciaMotor = 12*5, // hp
             rpm = 3000 // revoluciones por minuto
         } = {}
     ) {
@@ -38,7 +42,7 @@ export default class Car {
         this.gas = { left: false, right: false };
         this.ACCELERATION = 0.002 * 8;
         this.ACCELERATION_BACKWARDS = 0.001;
-        this.MAX_SPEED = 0.04 * 20;
+        this.MAX_SPEED = 0.04 * 40;
         this.MAX_SPEED_BACKWARDS = 0.04;
     
         const Matter = Phaser.Physics.Matter.Matter;
@@ -105,14 +109,14 @@ export default class Car {
 
 
         // Asignar velocidad a las ruedas
-        if (this.wheelsDown?.rear && this.wheelsDown?.front) {
-            Matter.Body.setAngularVelocity(wheelRear, wheelRear.angularVelocity * 0.2);
-            Matter.Body.setAngularVelocity(wheelFront, wheelFront.angularVelocity * 0.5);
-        }
-        else{
-        Matter.Body.setAngularVelocity(wheelFront, wheelRear.angularVelocity * 0.8);
-        Matter.Body.setAngularVelocity(wheelRear, autoSpeed);
-        }
+        //if (this.wheelsDown?.rear && this.wheelsDown?.front) {
+        //    Matter.Body.setAngularVelocity(wheelRear, wheelRear.angularVelocity * 0.5);
+        //    Matter.Body.setAngularVelocity(wheelFront, wheelFront.angularVelocity * 0.5);
+        //}
+        //else{
+        Matter.Body.setAngularVelocity(wheelFront, wheelFront.angularVelocity);
+        Matter.Body.setAngularVelocity(wheelRear, wheelRear.angularVelocity);
+        //}
 
     }
 }

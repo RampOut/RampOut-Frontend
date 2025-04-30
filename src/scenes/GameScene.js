@@ -1,5 +1,6 @@
 import Car from "../scripts/objects/car";
-
+import Slider from "../scripts/objects/slider";
+//import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 import background from "../assets/game/carTest/sky_daytime.png";
 import ground from "../assets/game/carTest/platform.png";
@@ -7,6 +8,12 @@ import car_chasis from "../assets/game/carTest/car_chasis.png";
 import car_wheel from "../assets/game/carTest/car_wheel.png";
 import btn_play from "../assets/game/ui/menu/btn_play/btn_play.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
+
+
+
+
+
+
 
 
 
@@ -19,7 +26,15 @@ export default class GameScene extends Phaser.Scene {
         this.timerRunning = false;
         this.playerId = '';
         this.puntaje = 0;
+        this.pesoChasis = 0;
+        this.pesoPiloto = 0;
+
     }
+
+
+    
+
+
 
     init(data) {
         this.playerName = data.playerName || 'Invitado'; // si no viene nada, usar 'Invitado'
@@ -67,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
             label: 'goal'   // Un nombre para identificarlo
         });
 
-        this.car = new Car(this, 200, 500);
+        
 
         this.matter.world.on('collisionstart', (event) => {
             event.pairs.forEach((pair) => {
@@ -96,6 +111,23 @@ export default class GameScene extends Phaser.Scene {
             fill: '#000'
         }).setScrollFactor(0);
         
+
+        this.pesoChasisSlider = new Slider(this, 'PesoChasis (kg)', 400, 600, 1000, (val) => {
+            console.log('Peso Chasis (kg):', val);
+            this.pesoChasis = val;
+        });
+
+        this.pesoPilotoSlider = new Slider(this, 'PesoPiloto (kg)', 400, 400, 100,(val) => {
+            console.log('Peso Piloto (kg)', val);
+            this.pesoPiloto = val;
+        });
+
+
+
+
+
+
+
         
         this.hasStarted = false;
         this.startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
@@ -108,7 +140,15 @@ export default class GameScene extends Phaser.Scene {
                 this.startTime = this.time.now; // Guarda el tiempo inicial
                 this.timerRunning = true; // El timer empieza
                 this.startButton.setVisible(false); // Oculta el botón una vez iniciado
+                this.car = new Car(this, 200, 500, this.pesoChasis, this.pesoPiloto); // Crea el carro
             });
+        this.cameras.main.setBackgroundColor('#ffffff');
+
+        
+
+        
+
+        
     }
 
     update() {
@@ -120,22 +160,30 @@ export default class GameScene extends Phaser.Scene {
 
 
         if (this.hasStarted){
-        this.car.update();
-        }
-        const velocity = this.car.bodies[0].velocity;
-        const speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
+            this.car.update();
+            const velocity = this.car.bodies[0].velocity;
+            const speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
 
-        const carBody = this.car.bodies[0];
-        this.cameras.main.centerOn(carBody.position.x + 300, carBody.position.y - 100);
+            const carBody = this.car.bodies[0];
+            this.cameras.main.centerOn(carBody.position.x + 300, carBody.position.y - 100);
+            this.debugText.setText('Current Speed: ' + Math.round((speed) * 100) / 100 + 'km/h'+'\n');
+            this.debugText.setPosition(carBody.position.x - 300, carBody.position.y - 430);
+        }
+        
         //this.cameras.main.centerOn(600,400 );
 
 
         this.startButton.setPosition(700+(this.cameras.main.scrollX + this.scale.width / 2),350+ (this.cameras.main.scrollY + this.scale.height / 2));
 
-        this.debugText.setText('Current Speed: ' + Math.round((speed) * 100) / 100 + 'km/h'+'\n');
-        this.debugText.setPosition(carBody.position.x - 300, carBody.position.y - 430);
+        
 
         
+        
+
+
+
+
+
     }
 
     onGoalReached() {
@@ -143,7 +191,7 @@ export default class GameScene extends Phaser.Scene {
     this.timerRunning = false; // Detener el timer
     this.puntaje = 1500 - this.elapsedTime.toFixed(2)*100;
 
-
+    
     this.add.text(this.cameras.main.scrollX + 400, this.cameras.main.scrollY + 300, 
         'Player: ' + this.playerName + '\n' + '¡Level Complete!\nTime: ' + this.elapsedTime.toFixed(2) + 's' + '\n' + 'Score: ' + this.puntaje, {
         fontSize: '48px',
