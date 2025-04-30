@@ -141,7 +141,7 @@ export default class LevelSelect extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelGameSetup"); // Cambia a tu escena del juego
+                                this.scene.start("LevelResults"); // Cambia a tu escena del juego
                             }
                         });
                     }
@@ -173,7 +173,7 @@ export default class LevelSelect extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelGameSetup"); // Cambia a tu escena del juego
+                                this.scene.start("LevelResults"); // Cambia a tu escena del juego
                             }
                         });
                     }
