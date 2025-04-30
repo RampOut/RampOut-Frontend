@@ -1,12 +1,11 @@
 import { Profesor } from "my-types";
-import { Link } from "react-router-dom";
 
 interface ListProps {
   profesores: Array<Profesor>;
-  /*onDelete: (id: number, title: string) => void;*/
+  onDelete: (id: number, username: string) => void;
 }
 
-export default function ProList({ profesores, /*onDelete*/ }: ListProps) {
+export default function ProList({ profesores, onDelete }: ListProps) {
 
   return (
     <>
@@ -23,7 +22,7 @@ export default function ProList({ profesores, /*onDelete*/ }: ListProps) {
             <button className="btn">
               Modificar
             </button>
-            <button className="btn">
+            <button className="btn" onClick={()=>onDelete(p.id, p.username)}>
               Eliminar
             </button>
           </div>

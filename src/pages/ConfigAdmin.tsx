@@ -2,7 +2,7 @@ import { Profesor } from "my-types";
 import { useState, useEffect } from "react";
 import Filter from "../components/Filter";
 import ProList from "../components/ProList";
-import { getAllHosts } from "../api/ProfesorAPI";
+import { deleteHost, getAllHosts } from "../api/ProfesorAPI";
 
 interface Props {}
 
@@ -14,12 +14,11 @@ const ConfigAdmin = (_props: Props) => {
   // Estado del componente.
   const [profesor, setProfesor] = useState<Profesor[]>([]);
 
-  //Se podria poner que se cambie la categoria y filtre por rol
+  //Filtra por rol y por nómina
   const filteredPros = profesor.filter((profesor) => {
     return (
       (category === "All" || profesor.role === category) && profesor.username &&
       profesor.username.toLowerCase().includes(name.toLowerCase())
-      //man de manzana
     );
   });
 
@@ -27,6 +26,15 @@ const ConfigAdmin = (_props: Props) => {
   useEffect(() => {
     getAllHosts().then((data: any) => setProfesor(data));
   }, []);
+
+  const handleDelete = async (id: number, username:string) => {
+    const confirmDelete = confirm(`¿Estás seguro de que quieres eliminar al profesor "${username}"?`);
+    if (!confirmDelete) return;
+
+    await deleteHost(id);
+    const updatedP = await getAllHosts();
+    setProfesor(updatedP ?? []);
+  };
 
   return (
     <>
@@ -39,7 +47,7 @@ const ConfigAdmin = (_props: Props) => {
 
       <button>Registrar Profesor</button>
 
-      <ProList profesores={filteredPros} />
+      <ProList profesores={filteredPros} onDelete={handleDelete} />
     </>
   );
 };

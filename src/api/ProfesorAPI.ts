@@ -79,8 +79,16 @@ export const updateHostPassword = async(id: number, newPassword: string): Promis
 
 //Eliminar Profesor (D)
 export const deleteHost = async (id: number): Promise<void> => {
+    
     try {
-        await api.delete(`/api/host/${id}`);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw new Error("No hay token disponible");
+        };
+        await api.delete(`/api/host/${id}`, {
+            headers:
+            {Authorization: `Bearer ${token}`}
+        });
     } catch (e) {
         console.log("Error al eliminar el profesor:", e);
     }
