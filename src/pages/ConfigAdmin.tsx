@@ -2,14 +2,14 @@ import { Profesor } from "my-types";
 import { useState, useEffect } from "react";
 import Filter from "../components/Filter";
 import ProList from "../components/ProList";
-import { deleteHost, getAllHosts, updateHost } from "../api/ProfesorAPI";
+import { deleteHost, getAllHosts, logOut, updateHost } from "../api/ProfesorAPI";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth} from "../auth/AuthProvider";
 
 interface Props {}
 
 const ConfigAdmin = (_props: Props) => {
-
+  const auth = useAuth();
   const navigate = useNavigate();
   //Filtro
   const [name, setName] = useState<string>("");
@@ -53,7 +53,14 @@ const ConfigAdmin = (_props: Props) => {
     <>
       <header className="sticky-top">
         <h1>Administracion de Profesores</h1>
-        <button className="bttn" >Log Out</button>
+        <button className="bttn" onClick={()=>{
+          try{
+            logOut();
+            alert("Logging Out");
+            auth.setIsAuthenticated(false);
+          }
+          catch(e){console.log(e)}
+        }} >Log Out</button>
         <Filter filterby="Nómina" name={name} setName={setName} category={category} setCategory={setCategory} />
       </header>
       <p>Lista de Profesores</p>
