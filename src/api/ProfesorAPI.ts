@@ -1,7 +1,7 @@
 import api from "./index";
 import { Profesor } from "my-types";
 
-//Para realizar el CRUD de profesores necesitas a un profesor sin proteger que sirva de administrador, usando su token se podran realizar acciones como agregar, modificar o eliminar los elementos 
+//Para realizar el CRUD de profesores necesitas al administrador, usando su token se podran realizar acciones como agregar, modificar o eliminar los elementos 
 
 //Que hago si no está registrado (no ocupa token)
 //Endpoint: http://localhost:3000/api/register
@@ -28,19 +28,24 @@ export const logIn = async (username:string, password: string) => {
     }
 } 
 
-//El token se usará como header del resto de las llamadas
-/*api.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("token");
-      if (token && config.headers) {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (e) => {
-      return Promise.reject(e);
+// Obtener todos. (R)
+export const getAllHosts = async() => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw new Error("No hay token disponible");
+        };
+        const res = await api.get("api/host/admin",{
+            headers:
+            {Authorization: `Bearer ${token}`}
+        });
+        const host: Profesor[] = await res.data.data;
+        return host;
+    } catch(e) {
+        console.log("Error al obtener la información todos los profesores:", e);
+        return [];
     }
-  );*/
+}
 
 // Obtener el host por ID. (R)
 export const getHostById = async(id: number) => {
