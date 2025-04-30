@@ -29,7 +29,7 @@ export default class Slider {
         });
 
         scene.input.setDraggable(this.knob);
-        this.value = constante / 2; // valor inicial
+
         this.knob.on('drag', (pointer, dragX) => {
             const minX = x - 100;
             const maxX = x + 100;

@@ -1,21 +1,12 @@
-import Car from "../scripts/objects/car";
 import Slider from "../scripts/objects/slider";
-//import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
-
 import background from "../assets/game/carTest/sky_daytime.png";
 import ground from "../assets/game/carTest/platform.png";
 import car_chasis from "../assets/game/carTest/car_chasis.png";
+import car_test from "../assets/game/carTest/car_test.png";
 import car_wheel from "../assets/game/carTest/car_wheel.png";
 import btn_play from "../assets/game/ui/menu/btn_play/btn_play.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
-
-
-
-
-
-
-
-
+import Car from "../scripts/objects/car"; // Importa la clase Car
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -26,15 +17,10 @@ export default class GameScene extends Phaser.Scene {
         this.timerRunning = false;
         this.playerId = '';
         this.puntaje = 0;
-        this.pesoChasis = 0;
-        this.pesoPiloto = 0;
-
+        this.pesoChasis = 100;
+        this.pesoPiloto = 1000;
+        this.car = null; // Inicializa la variable car
     }
-
-
-    
-
-
 
     init(data) {
         this.playerName = data.playerName || 'Invitado'; // si no viene nada, usar 'Invitado'
@@ -45,35 +31,14 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('ground', ground);  
         this.load.image('car_chasis' ,  car_chasis);
         this.load.image('car_wheel' , car_wheel);
+        this.load.image('car_test' , car_test);
         this.load.image('btn_play' , btn_play);
         this.load.font("Handjet-Regular", fontHJ, "truetype");
+        console.log('Recursos cargados');
     }
-
-
 
     create() {
         this.matter.world.setBounds(0, 0, 2000, 720);
-        /*this.add.image(0, 0, 'background').setOrigin(0, 0);
-
-        this.matter.add.image(100, 300, 'ground', null, {
-            isStatic: true,
-            angle: Math.PI / 6
-        });
-
-        this.matter.add.image(450, 480, 'ground', null, {
-            isStatic: true,
-            angle: Math.PI / 8
-        });
-
-        this.matter.add.image(830, 560, 'ground', null, {
-            isStatic: true
-        });
-
-        this.matter.add.image(1100, 530, 'ground', null, {
-            isStatic: true,
-            angle: Math.PI / -8
-        });*/
-
 
         // Crear la línea de meta como un sensor
         this.goal = this.matter.add.rectangle(1800, 600, 100, 300, {
@@ -81,8 +46,6 @@ export default class GameScene extends Phaser.Scene {
             isStatic: true, // No se mueve
             label: 'goal'   // Un nombre para identificarlo
         });
-
-        
 
         this.matter.world.on('collisionstart', (event) => {
             event.pairs.forEach((pair) => {
@@ -110,99 +73,91 @@ export default class GameScene extends Phaser.Scene {
             fontFamily: "Handjet-Regular",
             fill: '#000'
         }).setScrollFactor(0);
-        
 
         this.pesoChasisSlider = new Slider(this, 'PesoChasis (kg)', 400, 600, 1000, (val) => {
             console.log('Peso Chasis (kg):', val);
             this.pesoChasis = val;
         });
 
-        this.pesoPilotoSlider = new Slider(this, 'PesoPiloto (kg)', 400, 400, 100,(val) => {
+        this.pesoPilotoSlider = new Slider(this, 'PesoPiloto (kg)', 400, 400, 100, (val) => {
             console.log('Peso Piloto (kg)', val);
             this.pesoPiloto = val;
         });
 
+        this.carConfig = {
+            hp: 120,
+            rpm: 4000,
+            diametroLlantasCM: 50,
+            piloto: this.pesoPiloto,
+            chasis: this.pesoChasis,
+            motor: 300,
+            llantas: 50,
+            escala: 0.1 // o el valor que desees
+        }
 
 
-
-
-
-
-        
         this.hasStarted = false;
         this.startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
-            .setOrigin(1.1, 1) 
-            .setInteractive() 
+            .setOrigin(1.1, 1)
+            .setInteractive()
             .setScale(0.6)
             .setDepth(-3)
             .on('pointerdown', () => {
                 this.hasStarted = true; 
-                this.startTime = this.time.now; // Guarda el tiempo inicial
-                this.timerRunning = true; // El timer empieza
-                this.startButton.setVisible(false); // Oculta el botón una vez iniciado
-                this.car = new Car(this, 200, 500, this.pesoChasis, this.pesoPiloto); // Crea el carro
+                this.startTime = this.time.now; 
+                this.timerRunning = true; 
+                this.startButton.setVisible(false);
+
+                // Crear el carro al presionar el botón
+                this.car = new Car(this, 200, 500, 'car_test', this.carConfig);
             });
+            
+
+        this.matter.add.image(830, 700, 'ground', null, {
+            isStatic: true,
+            angle: Math.PI / -8
+        });
+
         this.cameras.main.setBackgroundColor('#ffffff');
-
-        
-
-        
-
-        
     }
 
-    update() {
-
+    update(time, delta) {
         if (this.timerRunning) {
-            this.elapsedTime = (this.time.now - this.startTime) / 1000; // en segundos
+            this.elapsedTime = (this.time.now - this.startTime) / 1000;
             this.timerText.setText('Time: ' + this.elapsedTime.toFixed(2));
         }
-
-
-        if (this.hasStarted){
-            this.car.update();
-            const velocity = this.car.bodies[0].velocity;
+    
+        if (this.hasStarted && this.car) {
+            this.car.update(time, delta);
+    
+            // Centramos la cámara en el sprite del carro
+            this.cameras.main.centerOn(this.car.x, this.car.y);
+    
+            // Mostrar velocidad
+            const velocity = this.car.body.velocity;
             const speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
-
-            const carBody = this.car.bodies[0];
-            this.cameras.main.centerOn(carBody.position.x + 300, carBody.position.y - 100);
-            this.debugText.setText('Current Speed: ' + Math.round((speed) * 100) / 100 + 'km/h'+'\n');
-            this.debugText.setPosition(carBody.position.x - 300, carBody.position.y - 430);
+            this.debugText.setText('Current Speed: ' + Math.round(speed * 100) / 100 + ' km/h');
+            this.debugText.setPosition(this.car.x - 300, this.car.y - 430);
         }
-        
-        //this.cameras.main.centerOn(600,400 );
-
-
-        this.startButton.setPosition(700+(this.cameras.main.scrollX + this.scale.width / 2),350+ (this.cameras.main.scrollY + this.scale.height / 2));
-
-        
-
-        
-        
-
-
-
-
-
+    
+        // Actualizar posición del botón de inicio
+        this.startButton.setPosition(
+            this.car ? this.car.x : 1300 + this.cameras.main.scrollX,
+            this.car ? this.car.y - 150 : 700 + this.cameras.main.scrollY
+        );
     }
 
     onGoalReached() {
-    this.matter.world.pause();
-    this.timerRunning = false; // Detener el timer
-    this.puntaje = 1500 - this.elapsedTime.toFixed(2)*100;
+        this.matter.world.pause();
+        this.timerRunning = false; // Detener el timer
+        this.puntaje = 1500 - this.elapsedTime.toFixed(2) * 100;
 
-    
-    this.add.text(this.cameras.main.scrollX + 400, this.cameras.main.scrollY + 300, 
-        'Player: ' + this.playerName + '\n' + '¡Level Complete!\nTime: ' + this.elapsedTime.toFixed(2) + 's' + '\n' + 'Score: ' + this.puntaje, {
-        fontSize: '48px',
-        fontFamily: "Handjet-Regular",
-        fill: '#000000',
-        align: 'center'
-    }).setOrigin(0.5);
-
-    
-
-
-
-}
+        this.add.text(this.cameras.main.scrollX + 400, this.cameras.main.scrollY + 300, 
+            'Player: ' + this.playerName + '\n' + '¡Level Complete!\nTime: ' + this.elapsedTime.toFixed(2) + 's' + '\n' + 'Score: ' + this.puntaje, {
+            fontSize: '48px',
+            fontFamily: "Handjet-Regular",
+            fill: '#000000',
+            align: 'center'
+        }).setOrigin(0.5);
+    }
 }
