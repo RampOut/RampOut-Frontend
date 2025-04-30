@@ -1,0 +1,77 @@
+[33mcommit 97ccafe64fe97b9eb1f2de2a0cda81fb5fade790[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mLogInWithAdmin[m[33m)[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Tue Apr 29 20:16:17 2025 -0700
+
+    Added DeleteProfesor
+
+[33mcommit cb6d33a1966a605160d72a92f6f1e0eb44c213a1[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Tue Apr 29 19:46:09 2025 -0700
+
+    Implemented List of All  Profesors in Administrator
+
+[33mcommit 564485d9fbda970f590dbc8d1430c301f87e69fa[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Tue Apr 29 17:26:00 2025 -0700
+
+    Functional Log-In for only administrators
+
+[33mcommit d7c7e02d2f7c26f79f18289df696176506ec670f[m[33m ([m[1;32mLogIn2[m[33m)[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Tue Apr 29 15:44:25 2025 -0700
+
+    modified default protectedRoute route
+
+[33mcommit 68af4f20ac8d3cc84fea5481b4206e7edf416edd[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Mon Apr 28 17:17:08 2025 -0700
+
+    Functional Authorization in Log-in
+
+[33mcommit ef663410b394ec18868e00c9a658da982adc7b90[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sun Apr 27 23:06:55 2025 -0700
+
+    feat: Created functions for connection to hostAPI
+
+[33mcommit c5efe3c0b4b6ba9e9f4271c2d27d7e610b596d01[m[33m ([m[1;32mLog-In[m[33m)[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sun Apr 27 20:52:09 2025 -0700
+
+    Comentarios de estados en Login
+
+[33mcommit 4ef06527ada31f31c49033dcd263ef01a9e0c0d7[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sun Apr 27 15:41:29 2025 -0700
+
+    Preparativos para conexión con back-end
+
+[33mcommit 430ba29ab8a173a1489779531a38bed436b57086[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sat Apr 26 23:10:17 2025 -0700
+
+    Adicion de Pagina RegistroProfesores
+
+[33mcommit 0c9e59554db69009cc8d93c44e467c5b32e6652e[m[33m ([m[1;31morigin/Log-In[m[33m)[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sat Apr 26 22:20:34 2025 -0700
+
+    LoginProfesor Validación de Submits
+
+[33mcommit 089fdff3ea253379a7e52237981c47ee759ff30b[m
+Author: Araceli <aracelirusa@gmail.com>
+Date:   Sat Apr 26 19:23:55 2025 -0700
+
+    feat: Creación y estilización de página de inicio para poder hacer login
+
+[33mcommit 3ccc42af3176da4d6c11c066a36f53fe02bfe5f6[m[33m ([m[1;31morigin/Routing[m[33m, [m[1;32mRouting[m[33m)[m
+Author: JonathanUzielMedina22 <uziel.jonathan22@gmail.com>
+Date:   Fri Apr 25 23:33:45 2025 -0700
+
+    Configuración básica de routing.
+
+[33mcommit 74f4f4d4a73f345987830d0a06c240ae687d5952[m[33m ([m[1;31morigin/staging[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: LuisPablo25cs <A01254955@tec.mx>
+Date:   Fri Apr 4 12:58:21 2025 -0700
+
+    Initial commit

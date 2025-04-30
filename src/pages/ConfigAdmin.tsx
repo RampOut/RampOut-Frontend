@@ -3,10 +3,14 @@ import { useState, useEffect } from "react";
 import Filter from "../components/Filter";
 import ProList from "../components/ProList";
 import { deleteHost, getAllHosts } from "../api/ProfesorAPI";
+import { useNavigate } from "react-router-dom";
+
 
 interface Props {}
 
 const ConfigAdmin = (_props: Props) => {
+
+  const navigate = useNavigate();
   //Filtro
   const [name, setName] = useState<string>("");
   const[category,setCategory] = useState<string>("All")
@@ -40,12 +44,12 @@ const ConfigAdmin = (_props: Props) => {
     <>
       <header className="sticky-top">
         <h1>Administracion de Profesores</h1>
-        <button className="bttn">Log Out</button>
+        <button className="bttn" >Log Out</button>
         <Filter filterby="Nómina" name={name} setName={setName} category={category} setCategory={setCategory} />
       </header>
       <p>Lista de Profesores</p>
 
-      <button>Registrar Profesor</button>
+      <button onClick={()=>{navigate("/registro")}}>Registrar Profesor</button>
 
       <ProList profesores={filteredPros} onDelete={handleDelete} />
     </>

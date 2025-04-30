@@ -60,11 +60,21 @@ export const getHostById = async(id: number) => {
 }
 
 //Crear el host (C)
-export const createHost = async(host:Profesor ) => {
+export const createHost = async(username:string, password: string,role:string ) => {
     try{
-        await api.post("/api/host", host);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            throw new Error("No hay token disponible");
+        };
+
+
+        const res = await api.post("api/host/", {"username":username,"password":password,"role":role},{
+            headers:{Authorization: `Bearer ${token}`, "Content-Type": "application/json"}}
+        );
+        return res.data;
     }catch (e) {
-        console.log("Error al registrar al profesor", e)
+        console.log("Error al registrar al profesor", e);
+        throw e;
     }
 }
 
