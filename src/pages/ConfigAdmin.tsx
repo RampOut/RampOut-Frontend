@@ -5,6 +5,7 @@ import ProList from "../components/ProList";
 import { deleteHost, getAllHosts, logOut, updateHost } from "../api/ProfesorAPI";
 import { useNavigate } from "react-router-dom";
 import { useAuth} from "../auth/AuthProvider";
+import "../styles/index.css"; // Importamos los estilos
 
 interface Props {}
 
@@ -51,33 +52,53 @@ const ConfigAdmin = (_props: Props) => {
 
   return (
     <>
-    <div className="admin" style={{ backgroundColor: '#423782' }}>
-      <header className="sticky-top d-flex row w-100 top-0 start-0 gx-0">
-        <div className="container-fluid">
-        <div className="d-flex justify-content-between align-items-center px-2">
-        <h1>Administracion de Profesores</h1>
-        <button className="bttn" onClick={()=>{
-          try{
-            logOut();
-            alert("Logging Out");
-            auth.setIsAuthenticated(false);
-          }
-          catch(e){console.log(e)}
-        }} >Log Out</button>
+    <div className="rampout-container">
+      <header className="rampout-header sticky-top">
+        <div className="header-content">
+          <h1 className="glow-text">ADMINISTRACIÓN DE PROFESORES</h1>
+          <button 
+            className="rampout-btn logout-btn" 
+            onClick={()=>{
+              try{
+                logOut();
+                alert("Logging Out");
+                auth.setIsAuthenticated(false);
+              }
+              catch(e){console.log(e)}
+            }}
+          >
+            <span className="btn-text">LOG OUT</span>
+          </button>
         </div>
-        <div>
-        <Filter filterby="Nómina" name={name} setName={setName} category={category} setCategory={setCategory} />
-        </div>
-        </div>
+        <Filter 
+          filterby="Nómina" 
+          name={name} 
+          setName={setName} 
+          category={category} 
+          setCategory={setCategory} 
+        />
       </header>
-
-      <p>Lista de Profesores</p>
-
-      <button onClick={()=>{navigate("/registro")}}>Registrar Profesor</button>
-
-      <ProList profesores={filteredPros} onDelete={handleDelete} onModify={handleModify}/>
-
+      
+      <div className="content-container">
+        <div className="section-header">
+          <h2 className="retro-label">LISTA DE PROFESORES</h2>
+          <button 
+            className="rampout-btn add-btn"
+            onClick={() => {navigate("/registro")}}
+          >
+            <span className="btn-text">REGISTRAR PROFESOR</span>
+          </button>
+        </div>
+        
+        <div className="profesores-list-container">
+          <ProList 
+            profesores={filteredPros} 
+            onDelete={handleDelete} 
+            onModify={handleModify}
+          />
+        </div>
       </div>
+    </div>
     </>
   );
 };

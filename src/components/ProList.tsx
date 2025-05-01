@@ -1,7 +1,9 @@
 import { Profesor } from "my-types";
 import { use, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faCheck,faEdit,faTrash } from "@fortawesome/free-solid-svg-icons";
+import "../styles/index.css";
+
 
 interface ListProps {
   profesores: Array<Profesor>;
@@ -23,57 +25,101 @@ export default function ProList({ profesores, onDelete, onModify }: ListProps) {
   };
   return (
     <>
-      {profesores.map((p, index) => (
-        <div key={index} className="d-flex producto mx-4 mb-4 p-3 rounded">
-          <div className="flex-grow-1 d-flex flex-column justify-content-between ps-3">
-            <h2 className="mt-3">{p.username}</h2>
-            <p>{p.id}</p>
-            <p>{p.role === "admin" ? "Administrador" : "Usuario"}</p>
-          </div>
-          <div className="d-flex flex-column align-items-center">
-            <button
-              className="btn"
-              onClick={() => {
-                if(viewModify === index){setViewModify(null)}else{
-                  setViewModify(index);
-                  setIsChecked(p.role === "admin");
-                  setRole(p.role);
-                  setPwd("");
-                }
-              }}
-            >
-              Modificar
-            </button>
-            <button className="btn" onClick={() => onDelete(p.id, p.username)}>
-              Eliminar
-            </button>
-          </div>
-          <div hidden={viewModify !== index}>
-            <label>Contraseña</label>
+       <div className="pro-list">
+      {profesores.length === 0 ? (
+        <div className="no-data-message">
+          <p>No hay profesores que coincidan con el filtro</p>
+        </div>
+      ) : (
+        profesores.map((p, index) => (
+          <div key={index} className={`profesor-card ${viewModify === index ? 'expanded' : ''}`}>
+            <div className="profesor-info">
+              <div className="profesor-header">
+                <h3 className="profesor-name">{p.username}</h3>
+                <div className="profesor-badge">
+                  {p.role === "admin" ? "ADMIN" : "USER"}
+                </div>
+              </div>
+              <div className="profesor-id">ID: {p.id}</div>
+            </div>
+            
+            <div className="profesor-actions">
+              <button
+                className="action-btn edit-btn"
+                onClick={() => {
+                  if (viewModify === index) {
+                    setViewModify(null);
+                  } else {
+                    setViewModify(index);
+                    setIsChecked(p.role === "admin");
+                    setRole(p.role);
+                    setPwd("");
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faEdit} />
+                <span className="btn-label">Modificar</span>
+              </button>
+              
+              <button 
+                className="action-btn delete-btn"
+                onClick={() => onDelete(p.id, p.username)}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                <span className="btn-label">Eliminar</span>
+              </button>
+            </div>
+            
+            <div className={`modify-panel ${viewModify === index ? 'show' : ''}`}>
+              <div className="modify-form">
+                <div className="form-group">
+                  <label className="form-label">Contraseña</label>
+                  <div className="password-input-group">
                     <input
                       type={showPwd ? "text" : "password"}
+                      className="retro-input"
                       value={password}
                       onChange={(p) => setPwd(p.target.value)}
-                      placeholder="Contraseña"
+                      placeholder="Nueva contraseña"
                       required
                     />
-                    <div onClick={() => setShowPwd(!showPwd)} style={{ cursor: "pointer" }}>
-                      {showPwd ? (
-                        <FontAwesomeIcon icon={faEye} />
-                      ) : (
-                        <FontAwesomeIcon icon={faEyeSlash} />
-                      )}
-                    </div>
-                    <label>Administrador</label>
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    ></input>
-                    <button onClick={()=> onModify(p.id,p.username,password,role)}>Submit</button>
+                    <button
+                      className="visibility-toggle"
+                      onClick={() => setShowPwd(!showPwd)}
+                    >
+                      <FontAwesomeIcon icon={showPwd ? faEye : faEyeSlash} />
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">
+                    <span className="checkbox-container">
+                      <input
+                        type="checkbox"
+                        className="retro-checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="checkmark"></span>
+                    </span>
+                    Administrador
+                  </label>
+                </div>
+                
+                <button 
+                  className="submit-btn" 
+                  onClick={() => onModify(p.id, p.username, password, role)}
+                >
+                  <FontAwesomeIcon icon={faCheck} />
+                  <span className="btn-label">Guardar Cambios</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
+    </div>
     </>
   );
 }
