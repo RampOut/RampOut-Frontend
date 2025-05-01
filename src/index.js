@@ -2,8 +2,10 @@ import 'phaser';
 import Start from './scenes/Start';
 import LevelSelect from './scenes/LevelSelect';
 import LevelGameSetup from './scenes/LevelGameSetup';
+import ArmarCarrito from './scenes/ArmarCarrito';
 import LevelBlack from './scenes/LevelBlack';
 import Guia from './scenes/Guia';
+import EsperandoPartida from './scenes/EsperandoPartida';
 import VHSShaderPipeline from './VHSShaderPipeline';
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
@@ -19,7 +21,7 @@ const config = {
             debug: true
         }
     },
-    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack, Guia],
+    scene: [Start, LevelSelect, EsperandoPartida, LevelBlack, Guia, ArmarCarrito],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
     },

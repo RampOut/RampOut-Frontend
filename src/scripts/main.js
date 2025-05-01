@@ -1,7 +1,7 @@
 import MenuScene from './scenes/MenuScene.js';
 import GameScene from './scenes/GameScene.js';
 import LevelSelectScene from './scenes/LevelSelectScene.js';
-import VHSShaderPipeline from './VHSShaderPipeline.js'; 
+import VHSShaderPipeline from './VHSShaderPipeline.js';
 
 
 const config = {

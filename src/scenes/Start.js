@@ -15,7 +15,8 @@ import btn_exit_a from "../assets/game/ui/menu/btn_exit/btn_exit_a.png";
 import btn_config from "../assets/game/ui/menu/btn_config/btn_config.png";
 import btn_config_h from "../assets/game/ui/menu/btn_config/btn_config_h.png";
 import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
-import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
+import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
+import fontHJsb from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -37,6 +38,7 @@ export default class Start extends Phaser.Scene {
         this.load.image('btn_config_hover', btn_config_h);
         this.load.image('btn_config_active', btn_config_a);
         this.load.font("Handjet-Regular", fontHJ, "truetype");
+        this.load.font("Handjet-SemiBold", fontHJsb, "truetype");
 
     }
 
@@ -115,7 +117,7 @@ export default class Start extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("Guia"); // Aquí el hechizo, la puerta, el pasaje.
+                                this.scene.start("ArmarCarrito"); // Aquí el hechizo, la puerta, el pasaje.
                             }
                         });
                     }
