@@ -51,7 +51,10 @@ const ConfigAdmin = (_props: Props) => {
 
   return (
     <>
-      <header className="sticky-top">
+    <div className="admin" style={{ backgroundColor: '#423782' }}>
+      <header className="sticky-top d-flex row w-100 top-0 start-0 gx-0">
+        <div className="container-fluid">
+        <div className="d-flex justify-content-between align-items-center px-2">
         <h1>Administracion de Profesores</h1>
         <button className="bttn" onClick={()=>{
           try{
@@ -61,13 +64,20 @@ const ConfigAdmin = (_props: Props) => {
           }
           catch(e){console.log(e)}
         }} >Log Out</button>
+        </div>
+        <div>
         <Filter filterby="Nómina" name={name} setName={setName} category={category} setCategory={setCategory} />
+        </div>
+        </div>
       </header>
+
       <p>Lista de Profesores</p>
 
       <button onClick={()=>{navigate("/registro")}}>Registrar Profesor</button>
 
       <ProList profesores={filteredPros} onDelete={handleDelete} onModify={handleModify}/>
+
+      </div>
     </>
   );
 };

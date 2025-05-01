@@ -1,0 +1,253 @@
+.pro-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .profesor-card {
+    background-color: rgba(25, 25, 40, 0.7);
+    border: 2px solid #423782;
+    border-radius: 5px;
+    padding: 15px;
+    transition: all 0.3s;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+  
+  .profesor-card.expanded {
+    grid-column: 1 / -1;
+    background-color: rgba(35, 35, 50, 0.85);
+  }
+  
+  .profesor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .profesor-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    margin: 0;
+  }
+  
+  .profesor-badge {
+    background-color: #534494;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    font-family: 'Press Start 2P', cursive;
+    box-shadow: 2px 2px 0 #000;
+  }
+  
+  .profesor-id {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-family: 'VT323', monospace;
+  }
+  
+  .profesor-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .action-btn {
+    padding: 8px 15px;
+    border: none;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    color: white;
+    border: 2px solid #fff;
+    box-shadow: 2px 2px 0 #000;
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  .edit-btn {
+    background-color: #423782;
+  }
+  
+  .delete-btn {
+    background-color: #ff3c7b;
+  }
+  
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 4px 0 #000;
+  }
+  
+  .action-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0 #000;
+  }
+  
+  .modify-panel {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+    margin-top: 0;
+    opacity: 0;
+  }
+  
+  .modify-panel.show {
+    height: auto;
+    margin-top: 20px;
+    opacity: 1;
+    border-top: 2px dashed #534494;
+    padding-top: 20px;
+  }
+  
+  .modify-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .form-label {
+    display: flex;
+    align-items: center;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: #ff3c7b;
+    margin-bottom: 8px;
+    text-shadow: 1px 1px 0 #000;
+  }
+  
+  .password-input-group {
+    position: relative;
+    display: flex;
+  }
+  
+  .visibility-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ff3c7b;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .checkbox-container {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .retro-checkbox {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #2c2c3d;
+    border: 2px solid #423782;
+  }
+  
+  .retro-checkbox:checked ~ .checkmark {
+    background-color: #423782;
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  .retro-checkbox:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  .checkbox-container .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  .submit-btn {
+    background-color: #3fc778;
+    color: white;
+    border: 2px solid #fff;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    transition: all 0.2s;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 5px 0 #000;
+  }
+  
+  .submit-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0 #000;
+  }
+  
+  .no-data-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+    font-family: 'Press Start 2P', cursive;
+    color: #ff3c7b;
+    background-color: rgba(25, 25, 40, 0.7);
+    border: 2px solid #423782;
+    border-radius: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .pro-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .modify-form {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-group {
+      width: 100%;
+    }
+  }
