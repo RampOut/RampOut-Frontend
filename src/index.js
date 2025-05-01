@@ -4,8 +4,12 @@ import LevelSelect from './scenes/LevelSelect';
 import LevelGameSetup from './scenes/LevelGameSetup';
 import GameScene from './scenes/GameScene';
 import LevelBlack from './scenes/LevelBlack';
+import LevelResults from './scenes/LevelResults';
 import VHSShaderPipeline from './VHSShaderPipeline';
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import StudentGuide from './scenes/StudentGuide';
+import TeacherGuide from './scenes/TeacherGuide';
+import LevelBuildYourCar from './scenes/LevelBuildYourCar';
 
 const config = {
     type: Phaser.AUTO,
@@ -19,9 +23,10 @@ const config = {
             debug: true
         }
     },
-    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack, GameScene],
+    scene: [Start, LevelSelect, LevelGameSetup, LevelResults, LevelBlack, TeacherGuide,
+            StudentGuide, LevelBuildYourCar],
     pipeline: {
-        CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
+        CustomShaderVHS: VHSShaderPipeline,
     },
     scale: {
         mode: Phaser.Scale.FIT,
