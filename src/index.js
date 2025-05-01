@@ -19,7 +19,7 @@ const config = {
             debug: true
         }
     },
-    scene: [GameScene, Start, LevelSelect, LevelGameSetup, LevelBlack],
+    scene: [Start, LevelSelect, LevelGameSetup, LevelBlack, GameScene],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline // Registrar el pipeline
     },

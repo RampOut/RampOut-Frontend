@@ -115,7 +115,7 @@ export default class GameScene extends Phaser.Scene {
             console.log('rpm', val);
             this.rpm = val;
         });
-        this.diametroLlantasSlider = new Slider(this, 'Diametro Llantas (cm)', 750, 400, 80, (val) => {
+        this.diametroLlantasSlider = new Slider(this, 'Diametro Llantas (cm)', 750, 400, 60, (val) => {
             console.log('diametroLlantas', val);
             this.diametroLlantas = val;
         });
