@@ -2,7 +2,7 @@ import "phaser";
 import VHSShaderPipeline from "../VHSShaderPipeline";
 
 // Importar imágenes y sprites
-import background from "../assets/game/ui/menu/checkersBG2.png";
+import background from "../assets/game/ui/menu/checkersBG1.png";
 import header from "../assets/game/ui/menu/Header.png";
 import logo from "../assets/game/ui/menu/RAMPOUT_logo.png";
 import footer from "../assets/game/ui/menu/footer.png";
