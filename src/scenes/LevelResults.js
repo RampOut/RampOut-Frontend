@@ -55,7 +55,8 @@ export default class LevelResults extends Phaser.Scene {
             fontFamily: "Handjet-Regular",
         });
 
-        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
+        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2)
+        .setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 btn_back.setTexture("btn_back_h");
                 btn_back.setScale(1.1)
@@ -185,7 +186,7 @@ export default class LevelResults extends Phaser.Scene {
             .layout().setDepth(-4);
 
         const btn_dR = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_dR').setPosition(640, 485).setScale(0.6).setDepth(-4)
-            .setInteractive().on('pointerover', function () {
+            .setInteractive({useHandCursor: true}).on('pointerover', function () {
                 btn_dR.setTexture("btn_dR_h");
             }, this).on('pointerout', function () {
                 btn_dR.setTexture("btn_dR");

@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import VHSShaderPipeline from "../VHSShaderPipeline";
 
 
 import background from "../assets/game/ui/menu/checkersBG1.png";
@@ -13,7 +12,6 @@ import footer from "../assets/game/ui/menu/footer.png";
 import cuadroTxt from "../assets/game/ui/menu/cuadroTXT.png"
 import cancelar from "../assets/game/ui/menu/botonCancelar.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
-import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
 
 export default class StudentGuide extends Phaser.Scene {
     constructor() {
@@ -46,7 +44,7 @@ export default class StudentGuide extends Phaser.Scene {
         const guiaTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'guiaTitle').setPosition(300, -80).setScale(1).setDepth(-2);
 
         //Se recupera el texto dado por el profe
-        const savedText = this.registry.get('guiaText') || "El profe aún no ha dado indicaciones"; 
+        const savedText = this.registry.get('guiaText') || "El profesor aún no ha dado indicaciones"; 
 
         //Se muestra el texo en medio de la pantalla
         this.add.text(280, 180, savedText, {
@@ -56,14 +54,15 @@ export default class StudentGuide extends Phaser.Scene {
             wordWrap: { width: 700 }
         }).setDepth(-3);
 
-        const about = this.add.text(820, 40, "Pistas de tu profe", {
+        const about = this.add.text(820, 40, "Pistas de tu profesor", {
             fontSize: 70,
             color: "#FFFFFF",
             fontFamily: "Handjet-Regular",
         }).setDepth(-1);
 
 
-        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
+        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2)
+        .setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 btn_back.setTexture("btn_back_h");
                 btn_back.setScale(1.1)

@@ -17,6 +17,8 @@ import btn_config_h from "../assets/game/ui/menu/btn_config/btn_config_h.png";
 import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
+let tipoUsuario = "profesor";
+
 export default class Start extends Phaser.Scene {
     constructor() {
         super("Start");
@@ -60,7 +62,8 @@ export default class Start extends Phaser.Scene {
         });
 
         const btn_play = this.add.image(this.scale.width / 2, 300, 'btn_play').setScale(0.75).setDepth(-3)
-            .setInteractive().on('pointerover', function () {
+            .setInteractive({useHandCursor: true})
+            .on('pointerover', function () {
                 btn_play.setTexture("btn_play_hover");
                 btn_play.setScale(0.85)
             }, this).on('pointerout', function () {
@@ -72,17 +75,22 @@ export default class Start extends Phaser.Scene {
 
                 this.tweens.add({
                     targets: logo,
-                    y: -190, // Centro vertical de la pantalla
+                    y: -190,
                     duration: 400,
                     ease: 'Power2',
                     onComplete: () => {
                         this.tweens.add({
                             targets: header,
-                            y: 190, // Centro vertical de la pantalla
+                            y: 190,
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelSelect"); // Cambia a tu escena del juego
+                                if (tipoUsuario == "profesor"){
+                                    this.scene.start("LevelSelect");
+                                }
+                                else if (tipoUsuario == "alumno"){
+                                    this.scene.start("StudentGuide");
+                                }
                             }
                         });
                     }
@@ -90,7 +98,7 @@ export default class Start extends Phaser.Scene {
             }, this)
 
             const btn_config = this.add.image(this.scale.width / 2, 400, 'btn_config').setScale(0.75).setDepth(-3)
-            .setInteractive()
+            .setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 btn_config.setTexture("btn_config_hover");
                 btn_config.setScale(0.85)
@@ -123,7 +131,8 @@ export default class Start extends Phaser.Scene {
             }, this);
 
         const btn_exit = this.add.image(this.scale.width / 2, 500, 'btn_exit').setScale(0.75).setDepth(-3)
-            .setInteractive().on('pointerover', function () {
+            .setInteractive({useHandCursor: true})
+            .on('pointerover', function () {
                 btn_exit.setTexture("btn_exit_hover");
                 btn_exit.setScale(0.85)
             }, this).on('pointerout', function () {

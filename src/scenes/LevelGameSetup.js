@@ -1,5 +1,4 @@
 import "phaser";
-import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 // Importar imágenes y sprites
 import backgroundGS from "../assets/game/ui/menu/checkersPurple.png";

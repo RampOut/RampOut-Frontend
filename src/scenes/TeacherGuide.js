@@ -11,11 +11,10 @@ import footer from "../assets/game/ui/menu/footer.png";
 import cuadroTxt from "../assets/game/ui/menu/cuadroTXT.png"
 import cancelar from "../assets/game/ui/menu/botonCancelar.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
-import fontHJ from "../assets/game/fonts/Handjet-Regular.ttf";
 
-export default class Guia extends Phaser.Scene {
+export default class TeacherGuide extends Phaser.Scene {
     constructor() {
-        super("Guia");
+        super("TeacherGuide");
     }
 
     preload() {
@@ -70,13 +69,14 @@ export default class Guia extends Phaser.Scene {
 
          //Cancelar reinicia el cuadro de texto
          const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(-4);
-         btn_cancel.setInteractive().on('pointerdown', () => {
-             this.textArea.value = ''; 
-         });
+         
+        btn_cancel.setInteractive({useHandCursor: true}).on('pointerdown', () => {
+            this.textArea.value = ''; 
+        });
 
         //Aceptar guarda el valor de la guía
         const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(-4);
-        btn_accept.setInteractive().on('pointerdown', () => {
+        btn_accept.setInteractive({useHandCursor: true}).on('pointerdown', () => {
             const userText = this.textArea.value;
             this.registry.set('guiaText', userText);
             console.log("Texto guardado: ", userText); // Aquí puedes guardar el texto o hacer cualquier acción
@@ -89,14 +89,15 @@ export default class Guia extends Phaser.Scene {
             fontFamily: "Handjet-Regular",
         });
 
-        const about = this.add.text(450, 35, "Aqui puedes escribir instrucciones", {
+        const about = this.add.text(450, 35, "Aquí puedes escribir instrucciones", {
             fontSize: 70,
             color: "#FFFFFF",
             fontFamily: "Handjet-Regular",
         }).setDepth(-1);
 
 
-        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
+        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2)
+        .setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 btn_back.setTexture("btn_back_h");
                 btn_back.setScale(1.1)
