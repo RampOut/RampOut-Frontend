@@ -4,7 +4,7 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         const options = {
             restitution: 0.2,  // Rebote
             frictionAir: 0,
-            friction: 0.5,
+            friction: 0.1,
             density: 0.001     // Controlará la masa en relación al tamaño
         };
         
@@ -57,8 +57,8 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         this.omega = Math.sqrt(this.torque / (4 * Math.pow(this.radioLlanta, 2) * this.mSistema));
 
         // Fuerza del motor usando la fórmula exacta proporcionada
-        this.fMotor = (Math.pow(this.rEje, 2) * this.mMuerta * Math.pow(this.omega, 2)) / 
-                     (this.dEje * 4);
+        /*this.fMotor = (Math.pow(this.rEje, 2) * this.mMuerta * Math.pow(this.omega, 2)) / 
+                     (this.dEje * 4);*/
         
         // Fuerza GoKart
         this.fGoKart = (3 * this.mSistema * Math.pow(this.omega, 2)) / (4 * this.dEje);

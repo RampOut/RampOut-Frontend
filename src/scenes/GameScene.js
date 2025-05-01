@@ -17,9 +17,17 @@ export default class GameScene extends Phaser.Scene {
         this.timerRunning = false;
         this.playerId = '';
         this.puntaje = 0;
-        this.pesoChasis = 100;
-        this.pesoPiloto = 500;
+
+        this.pesoChasis = 500;
+        this.pesoPiloto = 50;
+        this.pesoMotor = 50;
+        this.pesoLlantas = 50;
+        this.diametroLlantas = 40; // en cm
+
+        this.potencia = 150;
+        this.rpm = 3000;
         this.car = null; // Inicializa la variable car
+        this.hasStarted = false;
         
     }
 
@@ -40,6 +48,7 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         this.matter.world.setBounds(0, 0, 2000, 720);
+        this.cameras.main.setBackgroundColor('#ffffff');
 
         // Crear la línea de meta como un sensor
         this.goal = this.matter.add.rectangle(1800, 600, 100, 300, {
@@ -53,10 +62,11 @@ export default class GameScene extends Phaser.Scene {
                 const bodyA = pair.bodyA;
                 const bodyB = pair.bodyB;
         
-                // Verifica si uno de los cuerpos es el goal y el otro es el carro
-                if ((bodyA.label === 'goal' && this.car.bodies.includes(bodyB)) ||
-                    (bodyB.label === 'goal' && this.car.bodies.includes(bodyA))) {
-                    
+                // Verifica si uno de los cuerpos es el goal y el otro es el cuerpo del carro
+                if (
+                    (bodyA.label === 'goal' && bodyB === this.car.body) ||
+                    (bodyB.label === 'goal' && bodyA === this.car.body)
+                ) {
                     console.log('¡Meta alcanzada!');
                     this.onGoalReached();
                 }
@@ -74,30 +84,57 @@ export default class GameScene extends Phaser.Scene {
             fontFamily: "Handjet-Regular",
             fill: '#000'
         }).setScrollFactor(0);
+        
 
-        this.pesoChasisSlider = new Slider(this, 'PesoChasis (kg)', 400, 600, 1000, (val) => {
+        //Sliders para ajustar las propiedades del carro (PlaceHolder para la escena de configuracion)
+        this.pesoChasisSlider = new Slider(this, 'Peso Chasis (kg)', 400, 200, 1000, (val) => {
             console.log('Peso Chasis (kg):', val);
             this.pesoChasis = val;
         });
 
-        this.pesoPilotoSlider = new Slider(this, 'PesoPiloto (kg)', 400, 400, 100, (val) => {
+        this.pesoPilotoSlider = new Slider(this, 'Peso Piloto (kg)', 400, 300, 100, (val) => {
             console.log('Peso Piloto (kg)', val);
             this.pesoPiloto = val;
         });
 
-        this.carConfig = {
-            hp: 220,
-            rpm: 4000,
-            diametroLlantasCM: 50,
-            piloto: this.pesoPiloto,
-            chasis: this.pesoChasis,
-            motor: 300,
-            llantas: 50,
-            escala: 0.1 // o el valor que desees
-        }
+        this.pesoMotorSlider = new Slider(this, 'Peso Motor (kg)', 400, 400, 100, (val) => {
+            console.log('Peso Motor (kg)', val);
+            this.pesoMotor = val;
+        });
+
+        this.pesoLlantasSlider = new Slider(this, 'Peso Llantas (kg)', 400, 500, 100, (val) => {
+            console.log('Peso Llantas (kg)', val);
+            this.pesoLlantas = val;
+        });
+
+        this.potenciaSlider = new Slider(this, 'Potencia (hp)', 750, 200, 300, (val) => {
+            console.log('Potencia (hp)', val);
+            this.potencia = val;
+        });
+        this.rpmSlider = new Slider(this, 'rpm', 750, 300, 6000, (val) => {
+            console.log('rpm', val);
+            this.rpm = val;
+        });
+        this.diametroLlantasSlider = new Slider(this, 'Diametro Llantas (cm)', 750, 400, 80, (val) => {
+            console.log('diametroLlantas', val);
+            this.diametroLlantas = val;
+        });
 
 
-        this.hasStarted = false;
+
+
+
+        //debug
+        console.log('Peso Chasis:', this.pesoChasis);
+        console.log('Peso Piloto:', this.pesoPiloto);
+        console.log('Peso Motor:', this.pesoMotor);
+
+
+      
+        
+
+
+        
         this.startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
             .setOrigin(1.1, 1)
             .setInteractive()
@@ -110,6 +147,17 @@ export default class GameScene extends Phaser.Scene {
                 this.startButton.setVisible(false);
 
                 // Crear el carro al presionar el botón
+                this.carConfig = {
+                    hp: this.potencia,
+                    rpm: this.rpm,
+                    diametroLlantasCM: this.diametroLlantas,
+                    piloto: this.pesoPiloto,
+                    chasis: this.pesoChasis,
+                    motor: this.pesoMotor,
+                    llantas: this.pesoLlantas,
+                    escala: 0.1 // o el valor que desees
+                }
+
                 this.car = new Car(this, 200, 500, 'car_test', this.carConfig);
             });
             
@@ -119,7 +167,7 @@ export default class GameScene extends Phaser.Scene {
             angle: Math.PI / -8
         });
 
-        this.cameras.main.setBackgroundColor('#ffffff');
+        
     }
 
     update(time, delta) {

@@ -11,6 +11,7 @@ export default class Slider {
         this.label = scene.add.text(x - 130, y - 30, name + ':', {
             fontSize: '20px',
             fontFamily: "Handjet-Regular",
+            
             color: '#000'
         });
 
