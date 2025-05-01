@@ -18,8 +18,9 @@ export default class GameScene extends Phaser.Scene {
         this.playerId = '';
         this.puntaje = 0;
         this.pesoChasis = 100;
-        this.pesoPiloto = 1000;
+        this.pesoPiloto = 500;
         this.car = null; // Inicializa la variable car
+        
     }
 
     init(data) {
@@ -85,7 +86,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.carConfig = {
-            hp: 120,
+            hp: 220,
             rpm: 4000,
             diametroLlantasCM: 50,
             piloto: this.pesoPiloto,

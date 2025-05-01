@@ -1,14 +1,29 @@
 export default class Car extends Phaser.Physics.Matter.Sprite {
     constructor(scene, x, y, texture, config) {
-        super(scene.matter.world, x, y, texture);
-        scene.add.existing(this);
+        // Crear un cuerpo rectangular para la física que coincida con la forma del sprite
+        const options = {
+            restitution: 0.2,  // Rebote
+            frictionAir: 0,
+            friction: 0.5,
+            density: 0.001     // Controlará la masa en relación al tamaño
+        };
+        
+        
 
+        // Llamar al constructor del sprite con estas opciones para crear un cuerpo físico completo
+        super(scene.matter.world, x, y, texture, 0, options);
+        scene.add.existing(this);
+    
         // Escala del vehículo (default 1 si no se define)
         this.escala = config.escala || 1;
         this.setScale(this.escala);
-        this.setFriction(0.7);
-        this.setFrictionAir(0.05);
-        this.setBounce(0.2);
+        
+        // Asegurar que el cuerpo físico se actualice con la nueva escala
+        this.setRectangle(
+            this.width * this.escala,  // Ancho del cuerpo físico
+            this.height * this.escala,  // Alto del cuerpo físico
+            { isStatic: false }
+        );
         
         // Parámetros de entrada
         this.hp = config.hp || 150;
@@ -49,7 +64,7 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         this.fGoKart = (3 * this.mSistema * Math.pow(this.omega, 2)) / (4 * this.dEje);
         
         // Fuerza neta del vehículo (restando la fricción)
-        this.fVehiculo = this.fGoKart - (this.mSistema * 9.81 * 0.1); // 0.1 como coeficiente de fricción
+        this.fVehiculo = this.fGoKart - (this.mSistema * 9.81 * 0.2); // 0.2 como coeficiente de fricción
         
         // Aceleración
         this.aceleracion = this.fVehiculo / this.mSistema;
@@ -58,6 +73,9 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         this.prevDistance = 0;
         this.deltaT = 0;
         this.tiempo = 0;
+
+        // Fijar el centro de masa al centro del sprite
+        //this.setCenterOfMass({ x: 0.5, y: 0.5 });
     }
 
     update(time, delta) {
@@ -65,11 +83,11 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         const dt = delta / 1000;
         this.deltaT = dt;
         this.tiempo += dt;
-
+        
         // Verificar si está en el suelo
         const velocity = this.body.velocity;
         const onGround = Math.abs(velocity.y) < 0.5 && Math.abs(this.body.angle) < 0.5;
-
+        
         if (onGround) {
             // Calcular la nueva velocidad usando v(t) = A∆t + v(t-1)
             const newVelocity = this.aceleracion * dt + this.prevVelocity;
@@ -84,18 +102,8 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
             // Actualizar los valores previos para el siguiente frame
             this.prevVelocity = newVelocity;
             this.prevDistance += distanceIncrement;
-        }
-        else {
-            // Si no está en el suelo, aplicar una fuerza de frenado
-            this.setVelocityX(this.body.velocity.x * 0.95); // Reducir la velocidad un 5%
+            this.groundedAngle = this.body.angle;
         }
         
-        // Estabilizar el coche para evitar caídas o vuelcos
-        /*if (Math.abs(this.body.angle) > 0.1) {
-            this.setAngularVelocity(this.body.angle > 0 ? -0.05 : 0.05);
-        } else {
-            //this.setAngularVelocity(0);
-            //this.setAngle(0);
-        }*/
     }
 }
