@@ -1,0 +1,66 @@
+import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+import ErrorPage from "../pages/ErrorPage";
+import Game from "../pages/Game";
+import Login from "../pages/Login";
+import Login_Profesor from "../pages/LoginProfesor";
+import RegistroProfesor from "../pages/RegistroProfesor";
+import ConfigProfesor from "../pages/ConfigProfesor";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Login_Admin from "../pages/LoginAdmin";
+import ConfigAdmin from "../pages/ConfigAdmin";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        errorElement: <ErrorPage />
+    },
+    {
+        path: "/game",
+        element: <Game />,
+        errorElement: <ErrorPage />
+        
+    },
+    {
+        path: "/login",
+        element: <Login />,
+        errorElement: <ErrorPage />
+
+    },
+    {
+        path: "/login/profesor",
+        element: <Login_Profesor />,
+        errorElement: <ErrorPage />
+    },
+    {
+        path: "/login/admin",
+        element: <Login_Admin />,
+        errorElement: <ErrorPage />
+    },
+    {
+        path:"/",
+        element: <ProtectedRoute />,
+        children: [
+            {
+                path: "/micuenta",
+                element: <ConfigProfesor />,
+                errorElement: <ErrorPage />
+            },
+            {
+                path: "/admin",
+                element: <ConfigAdmin />,
+                errorElement: <ErrorPage />
+            },
+            {
+                path: "/registro",
+                element: <RegistroProfesor />,
+                errorElement: <ErrorPage />
+            }
+        ],
+        errorElement: <ErrorPage />
+    }
+
+]);
+
+export default router;
