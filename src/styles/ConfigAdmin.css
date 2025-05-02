@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+  --primary-color: #423782;
+  --secondary-color: #ff3c7b;
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --panel-bg: rgba(25, 25, 35, 0.85);
+  --panel-border: #423782;
+  --input-bg: #2c2c3d;
+  --btn-primary: #423782;
+  --btn-hover: #6353a9;
+  --btn-danger: #ff3c7b;
+  --btn-success: #3fc778;
+}
+
+.rampout-container {
+    font-family: 'VT323', monospace;
+    background-color: var(--dark-purple);
+    background-image: linear-gradient(45deg, var(--dark-purple) 25%, transparent 25%),
+                      linear-gradient(-45deg, var(--dark-purple) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, var(--dark-purple) 75%),
+                      linear-gradient(-45deg, transparent 75%, var(--dark-purple) 75%);
+    background-size: 100px 100px;
+    background-position: 0 0, 0 50px, 50px -50px, -50px 0px;
+    background-color: var(--light-purple);
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--text-color);
+  }
+.rampout-header {
+  background-color: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(66, 55, 130, 0.5);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.glow-text {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 24px;
+  color: var(--text-color);
+  text-shadow: 0 0 5px #423782, 0 0 10px #423782, 0 0 15px #423782;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.content-container {
+  background-color: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 15px rgba(66, 55, 130, 0.5);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 10px;
+}
+
+.retro-label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+  color: var(--secondary-color);
+  text-shadow: 2px 2px 0px #000;
+}
+
+.rampout-btn {
+  background-color: var(--btn-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid #fff;
+  box-shadow: 3px 3px 0 #000;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.rampout-btn:hover {
+  background-color: var(--btn-hover);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #000;
+}
+
+.rampout-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #000;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+.rampout-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.rampout-btn:hover::after {
+  width: 300px;
+  height: 300px;
+  opacity: 0.2;
+}
+
+.logout-btn {
+  background-color: var(--btn-danger);
+}
+
+.add-btn {
+  background-color: var(--btn-success);
+}
+
+.profesores-list-container {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .glow-text {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .retro-label {
+    margin-bottom: 15px;
+  }
+}
