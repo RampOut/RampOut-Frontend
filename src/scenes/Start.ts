@@ -18,7 +18,7 @@ import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
 //import tipoUsuario from login
-let tipoUsuario = "alumno";
+let tipoUsuario = "profesor"; // alumno | profesor
 
 export default class Start extends Phaser.Scene {
     constructor() {

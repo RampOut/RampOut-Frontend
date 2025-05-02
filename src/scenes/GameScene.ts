@@ -1,4 +1,3 @@
-import Slider from "../scripts/objects/slider";
 import background from "../assets/game/carTest/sky_daytime.png";
 import ground from "../assets/game/carTest/platform.png";
 import car_chasis from "../assets/game/carTest/car_chasis.png";
@@ -7,14 +6,17 @@ import car_wheel from "../assets/game/carTest/car_wheel.png";
 import btn_play from "../assets/game/ui/menu/btn_play/btn_play.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 import Car from "../scripts/objects/car"; // Importa la clase Car
+import carBtn from "../assets/game/carro_ui.png"
+import { masaPiloto, masaChasis, masaRueda, masaMotor, potenciaMotor } from "./BuildCarStudent";
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
-        super('GameScene');
+        super("GameScene");
+
+        this.timerRunning = false;
         this.startTime = 0;
         this.elapsedTime = 0;
         this.timerText = null;
-        this.timerRunning = false;
         this.playerId = '';
         this.puntaje = 0;
 
@@ -27,8 +29,7 @@ export default class GameScene extends Phaser.Scene {
         this.potencia = 150;
         this.rpm = 3000;
         this.car = null; // Inicializa la variable car
-        this.hasStarted = false;
-        
+        this.hasStarted = false;   
     }
 
     init(data) {
@@ -42,11 +43,13 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('car_wheel' , car_wheel);
         this.load.image('car_test' , car_test);
         this.load.image('btn_play' , btn_play);
+        this.load.image('carBtn' , carBtn);
         this.load.font("Handjet", fontHJ, "truetype");
-        console.log('Recursos cargados');
     }
 
     create() {
+        console.log(${masaPiloto}, ${masaChasis}, ${masaRueda}, ${masaMotor}, ${potenciaMotor}); 
+        
         this.matter.world.setBounds(0, 0, 2000, 720);
         this.cameras.main.setBackgroundColor('#ffffff');
 
@@ -84,61 +87,25 @@ export default class GameScene extends Phaser.Scene {
             fontFamily: "Handjet",
             fill: '#000'
         }).setScrollFactor(0);
+
+        const btn_car = this.add.image(this.scale.width / 2, this.scale.height / 2, 'carBtn').setOrigin(1.1,1)
+        .setPosition(440, 640).setScale(0.7).setDepth(-3).setInteractive()
+        .on("pointerdown", () => {
+            this.scene.sleep("GameScene");
+            this.scene.start("BuildCarStudent");
+        }, this);
         
-
-        //Sliders para ajustar las propiedades del carro (PlaceHolder para la escena de configuracion)
-        this.pesoChasisSlider = new Slider(this, 'Peso Chasis (kg)', 400, 200, 1000, (val) => {
-            console.log('Peso Chasis (kg):', val);
-            this.pesoChasis = val;
-        });
-
-        this.pesoPilotoSlider = new Slider(this, 'Peso Piloto (kg)', 400, 300, 100, (val) => {
-            console.log('Peso Piloto (kg)', val);
-            this.pesoPiloto = val;
-        });
-
-        this.pesoMotorSlider = new Slider(this, 'Peso Motor (kg)', 400, 400, 100, (val) => {
-            console.log('Peso Motor (kg)', val);
-            this.pesoMotor = val;
-        });
-
-        this.pesoLlantasSlider = new Slider(this, 'Peso Llantas (kg)', 400, 500, 100, (val) => {
-            console.log('Peso Llantas (kg)', val);
-            this.pesoLlantas = val;
-        });
-
-        this.potenciaSlider = new Slider(this, 'Potencia (hp)', 750, 200, 300, (val) => {
-            console.log('Potencia (hp)', val);
-            this.potencia = val;
-        });
-        this.rpmSlider = new Slider(this, 'rpm', 750, 300, 6000, (val) => {
-            console.log('rpm', val);
-            this.rpm = val;
-        });
-        this.diametroLlantasSlider = new Slider(this, 'Diametro Llantas (cm)', 750, 400, 60, (val) => {
-            console.log('diametroLlantas', val);
-            this.diametroLlantas = val;
-        });
-
-
-
-
-
-        //debug
-        console.log('Peso Chasis:', this.pesoChasis);
-        console.log('Peso Piloto:', this.pesoPiloto);
-        console.log('Peso Motor:', this.pesoMotor);
-        
-        this.startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
+        const startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
             .setOrigin(1.1, 1)
+            .setPosition(450, 550)
             .setInteractive()
             .setScale(0.6)
             .setDepth(-3)
             .on('pointerdown', () => {
                 this.hasStarted = true; 
+
                 this.startTime = this.time.now; 
-                this.timerRunning = true; 
-                this.startButton.setVisible(false);
+                this.timerRunning = false;
 
                 // Crear el carro al presionar el botón
                 this.carConfig = {
@@ -153,6 +120,8 @@ export default class GameScene extends Phaser.Scene {
                 }
 
                 this.car = new Car(this, 200, 500, 'car_test', this.carConfig);
+                
+                startButton.destroy();
             });
             
 
@@ -182,12 +151,6 @@ export default class GameScene extends Phaser.Scene {
             this.debugText.setText('Current Speed: ' + Math.round(speed * 100) / 100 + ' km/h');
             this.debugText.setPosition(this.car.x - 300, this.car.y - 430);
         }
-    
-        // Actualizar posición del botón de inicio
-        this.startButton.setPosition(
-            this.car ? this.car.x : 1300 + this.cameras.main.scrollX,
-            this.car ? this.car.y - 150 : 700 + this.cameras.main.scrollY
-        );
     }
 
     onGoalReached() {
@@ -202,5 +165,5 @@ export default class GameScene extends Phaser.Scene {
             fill: '#000000',
             align: 'center'
         }).setOrigin(0.5);
-    }
+    }
 }

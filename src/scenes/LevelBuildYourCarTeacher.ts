@@ -5,6 +5,7 @@ import { createMatch } from "../api/MatchAPI";
 import { getLastMatchId } from "../api/MatchAPI";
 
 
+
 // Importar imágenes y sprites
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
 import backBtn_h from "../assets/game/ui/menu/btn_back/btn_back_h.png";
@@ -22,6 +23,7 @@ import inputBox from "../assets/game/ui/menu/input.png"
 import Slider from "../scripts/objects/slider"
 import { equipo1, nombreEquipo1, equipo2, nombreEquipo2  } from "./LevelStudentTeam";
 import userText from "./TeacherGuide";
+import { getLevelsByMatchIdFromAll, patchLevelsPresets } from "../api/LevelAPI";
 
 export let rpm = 3000;
 export let diametroLlantas = 40;
@@ -46,7 +48,7 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
         this.load.image('btn_back', backBtn);
         this.load.image('btn_back_h', backBtn_h);
         this.load.image('btn_back_a', backBtn_a);
-        this.load.image('levelBYCTitle', lvlTitle);
+
         this.load.image('btn_display', displayBtn);
         this.load.image('line', line);
         this.load.image('carA', carA);
@@ -75,7 +77,17 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
             color: 0xffffff,
         }).setPosition(0, 288).setDepth(-6);
 
-        const levelTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'levelBYCTitle').setPosition(460, -80).setScale(1).setDepth(-2);
+        const levelTitle = this.add.text(150, 30, "Configura tu partida", {
+            fontSize: 56,
+            color: "#ffffff",
+            fontFamily: "Handjet",
+        }).setDepth(0)     
+
+        const statusText = this.add.text(150, 150, "", {
+            fontSize: 56,
+            color: "#000000",
+            fontFamily: "Handjet",
+        }).setDepth(0) 
 
         const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
@@ -116,28 +128,14 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                 });
             }, this)
         
-        const optionText = this.add.text(90, 165, "OPCIÓN", {
-            fontSize: 44,
-            color: "#000000",
-            fontFamily: "Handjet",
-        }).setDepth(-3)
 
-        const linea1 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'line').setPosition(335, 245).setScale(0.9, 1).setDepth(-3);
 
-        const noCar = this.add.text(95, 340, "Presione uno de los tres botones\npara escoger uno de los carros.", {
-            fontSize: 44,
-            color: "#000000",
-            fontFamily: "Handjet",
-            align: "center",
-        }).setDepth(-3)
+        
+        
 
-        const carName = this.add.text(245, 270, "", {
-            fontSize: 64,
-            color: "#000000",
-            fontFamily: "Handjet",
-        }).setDepth(-3)
 
-        const carImg = this.add.image(335, 430, "transpImg").setScale(1).setDepth(-3);
+
+
 
         const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1020, 445).setScale(0.6)
             .setDepth(-4).setInteractive({useHandCursor: true})
@@ -146,6 +144,8 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                 console.log(diametroLlantas)
                 console.log(nombreEquipo2)
                 console.log(nombreEquipo1)
+                btn_accept.destroy();
+                btn_back.destroy();
                 
                 let jugadores: Player[] = [];
                 
@@ -162,102 +162,69 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                         teamTempId: 2
                     });
                 }
+                
+                const handleLevelPatch = async () => {
+                    try {
+                        // Espera a que se cree la partida
+                        await createMatch({
+                            hostId: 2,
+                            teams: [
+                                { tempId: 1, name: nombreEquipo1, scoreTotal: 0, scorePerRound: [] },
+                                { tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: [] }
+                            ],
+                            levels: [
+                                { motors: [rpm, diametroLlantas], description: userText.text }
+                            ]
+                        });
+                
+                        // Espera a obtener correctamente el último ID
+                        const inputId = await getLastMatchId(); 
+                
+                        if (!inputId) {
+                            console.error("No se obtuvo un matchId válido.");
+                            return;
+                        }
+                
+                        const levelValues = await getLevelsByMatchIdFromAll(inputId);
+                
+                        if (!levelValues || levelValues.length === 0) {
+                            console.error("No se encontraron niveles para el matchId:", inputId);
+                            return;
+                        }
+                
+                        await patchLevelsPresets(
+                            levelValues.map(level => ({
+                                id: level.id,
+                                motors: [rpm, diametroLlantas],
+                                description: userText.text,
+                            }))
+                        );
+                
+                        
+                        userText.setPosition(850, 735);
+                        statusText.setText("Partida creada con éxito.\nID de partida: " + inputId + "\nEsperando Jugadores...");
 
-                createMatch({
-                    hostId: 2,
-                    teams: [
-                        {tempId: 1, name: nombreEquipo1, scoreTotal: 0, scorePerRound: []},
-                        {tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: []}
-                    ],
-                    //players: jugadores,
-                    
-                    levels:[
-                        {levelVariables: [rpm, diametroLlantas], clue: userText}
-                    ]
-                })
-                console.log(getLastMatchId());
+                        
+                    } catch (error) {
+                        console.error("Error al crear la partida o configurar niveles:", error);
+                    }
+                };  
+
+                handleLevelPatch();
+                
+                
+                
+
+                
+                
 
                 
                 
 
             });
         
-        const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(1020, 520).setScale(0.6)
-            .setDepth(-4).setInteractive({useHandCursor: true})
-            .on('pointerdown', () => {
-            });
 
-        const optA = this.add.text(280, 160, "a)", {
-            fontFamily: "Handjet",
-            fontSize: 44,
-            color: "#ffffff",
-            fixedWidth: 80,
-            backgroundColor: "#000000",
-            align: "center",
-        }).setPadding(0,3,0,3).setDepth(-3).setInteractive({useHandCursor: true})
-        .on("pointerover", () => {
-            optA.setColor("#95E8E8");
-        }, this)
-        .on("pointerout", () => {
-            optA.setColor("#FFFFFF");
-        }, this)
-        .on("pointerdown", () => {
-            optA.setColor("#FFFE91");
-            setTimeout(()=>{
-                optA.setColor("#95E8E8");
-                noCar.setText("");
-                carName.setText("CARRO A");
-                carImg.setTexture("carA");
-            }, 250);
-        }, this);
-
-        const optB = this.add.text(388, 160, "b)", {
-            fontFamily: "Handjet",
-            fontSize: 44,
-            color: "#ffffff",
-            fixedWidth: 80,
-            backgroundColor: "#000000",
-            align: "center",
-        }).setPadding(0,3,0,3).setDepth(-3).setInteractive({useHandCursor: true})
-        .on("pointerover", () => {
-            optB.setColor("#95E8E8");
-        }, this)
-        .on("pointerout", () => {
-            optB.setColor("#FFFFFF");
-        }, this)
-        .on("pointerdown", () => {
-            optB.setColor("#FFFE91");
-            setTimeout(()=>{
-                optB.setColor("#95E8E8");
-                noCar.setText("");
-                carName.setText("CARRO B");
-                carImg.setTexture("carB");
-            }, 250);
-        }, this);
-
-        const optC = this.add.text(495, 160, "c)", {
-            fontFamily: "Handjet",
-            fontSize: 44,
-            color: "#ffffff",
-            fixedWidth: 80,
-            backgroundColor: "#000000",
-            align: "center",
-        }).setPadding(0,3,0,3).setDepth(-3).setInteractive({useHandCursor: true})
-        .on("pointerover", () => {
-            optC.setColor("#95E8E8");
-        }, this)
-        .on("pointerout", () => {
-            optC.setColor("#FFFFFF");
-        }, this)
-        .on("pointerdown", () => {
-            optC.setColor("#FFFE91");
-            setTimeout(()=>{
-                optC.setColor("#95E8E8");
-                noCar.setText("");
-                carName.setText("CARRO C");
-                carImg.setTexture("carC");
-            }, 250);
-        }, this);
+        
 
         this.tweens.add({
             targets: header,

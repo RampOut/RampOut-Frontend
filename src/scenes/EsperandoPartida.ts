@@ -87,16 +87,27 @@ export default class EsperandoPartida extends Phaser.Scene {
 
        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1000, 180).setScale(0.6)
         .setDepth(-4).setInteractive({useHandCursor: true})
-        .on('pointerdown', () => {
-            const inputId = parseInt(this.inputId.value);
+        .on('pointerdown', async () => {
+            let inputId = parseInt(this.inputId.value);
             this.registry.set('guiaText', inputId);
-            console.log("Texto guardado: ", inputId); // Aquí puedes guardar el texto o hacer cualquier acción
-            
-            let teamValues = getTeamsByMatchIdFromAll(inputId);
-            let levelValues = getLevelsByMatchIdFromAll(inputId);
-            console.log(teamValues, levelValues);
-            //this.scene.start("")
-        });
+            console.log("Texto guardado: ", inputId);
+          
+            try {
+              const teamValues = await getTeamsByMatchIdFromAll(inputId);
+              const levelValues = await getLevelsByMatchIdFromAll(inputId);
+          
+              console.log("Equipos:", teamValues);
+              console.log("Niveles completos:", levelValues);
+          
+              // Imprimir los motors de cada nivel
+              levelValues.forEach((level, index) => {
+                console.log(`Motores del nivel ${index}:`, level.motors);
+              });
+          
+            } catch (error) {
+              console.error("Error al obtener los datos:", error);
+            }
+          });
 
 
 

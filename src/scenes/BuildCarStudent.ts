@@ -8,6 +8,9 @@ import lvlTitle from "../assets/game/ui/menu/LGS_title.png";
 import aplicar from "../assets/game/ui/menu/aplicar.png";
 import carmakeBG from "../assets/game/ui/menu/carmakeBG.png";
 import armatucarro from "../assets/game/ui/menu/armatucarro.png";
+import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
+import backBtn_h from "../assets/game/ui/menu/btn_back/btn_back_h.png";
+import backBtn_a from "../assets/game/ui/menu/btn_back/btn_back_a.png";
 
 //options
 
@@ -21,26 +24,32 @@ import c_white from "../assets/game/ui/menu/options/c.png";
 import c_black from "../assets/game/ui/menu/options/c_held.png";
 
 //carpsrites
-
 import car0 from "../assets/game/sprites/mediumcar.png";
 import car1 from "../assets/game/sprites/oddcar.png";
 import car2 from "../assets/game/sprites/van.png";
 
 
 //the rest
-
 import inputbar from "../assets/game/ui/menu/inputbar.png";
-
 
 const COLOR_WHITE = 0xffffff;
 const COLOR_GRAY = 0xbbbbbb;
 const COLOR_GRAY2 = 0x333333;
 const COLOR_BLACK = 0x000000;
 
-export default class ArmarCarrito extends Phaser.Scene {
+export let masaPiloto = 0;
+export let masaChasis = 0;
+export let masaRueda = 0;
+export let masaMotor = 0;
+export let potenciaMotor = 0;
+export let timerBuildCar = 0;
+
+export default class BuildCarStudent extends Phaser.Scene {
 
     constructor() {
-        super("ArmarCarrito");
+        super("BuildCarStudent");
+        this.startTime = 0;
+        this.elapsedTime = 0;
     }
 
     preload() {
@@ -65,20 +74,23 @@ export default class ArmarCarrito extends Phaser.Scene {
         this.load.image('car2', car2);
 
         this.load.image('inputbar', inputbar);
+
+        this.load.image('btn_back', backBtn);
+        this.load.image('btn_back_h', backBtn_h);
+        this.load.image('btn_back_a', backBtn_a);
     }
 
     create() {
+        this.startTime = this.time.now; 
+        this.timerRunning = true; 
 
-        const masapilotoindex = ['???','','',''];
-        const masachasisindex = ['???','', '', ''];
-        const masaruedaindex = ['???', '', '', ''];
-        const torqueindex = ['???', '', '', ''];
+        const masapilotoindex = ['???', 75, 100, 80];
+        const masachasisindex = ['???', 800, 1200, 500];
+        const masaruedaindex = ['???', 20, 25, 10];
+        const masamotorindex = ['???', 180, 250, 140];
+        const potenciaindex = ['???', 300, 450, 250];
 
         const carindex = ['car0', 'car1', 'car2', 'car0'];
-
-        const masamotorindex = ['???', 10, 100, 1000];
-        const potenciaindex = ['???', 10, 100, 1000];
-
 
         //DIVIDER
 
@@ -100,9 +112,9 @@ export default class ArmarCarrito extends Phaser.Scene {
 
         this.bg.setPipeline('VHSShader');
 
-        const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
+        const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(1);
         const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
-        const armatucarro = this.add.image(this.scale.width / 2, 200, 'armatucarro').setPosition(390,320).setScale(0.8).setDepth(-2);
+        const armatucarro = this.add.image(this.scale.width / 2, 200, 'armatucarro').setPosition(390,320).setScale(0.8).setDepth(2);
 
         const carmakeBG = this.add.image(this.scale.width / 2, this.scale.height/2 , 'carmakeBG')
             .setPosition(275, this.scale.height / 2)
@@ -188,12 +200,14 @@ export default class ArmarCarrito extends Phaser.Scene {
                 c_button.setTexture(selectedOptionIndex === 3 ? 'c_black' : 'c_white');
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
+                
+                masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
+                masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
+                masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
 
-
-                this.masapilotoINPUT.value = masapilotoindex[selectedOptionIndex];
-                this.masachasisINPUT.value = masachasisindex[selectedOptionIndex];
-                this.masaruedaINPUT.value = masaruedaindex[selectedOptionIndex];
-                this.torqueINPUT.value = torqueindex[selectedOptionIndex];
+                masaPilotoDISPLAY.setText(${masaPiloto});
+                masaChasisDISPLAY.setText(${masaChasis});
+                masaRuedaDISPLAY.setText(${masaRueda});
             }, this);
 
 
@@ -225,10 +239,13 @@ export default class ArmarCarrito extends Phaser.Scene {
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
 
-                this.masapilotoINPUT.value = masapilotoindex[selectedOptionIndex];
-                this.masachasisINPUT.value = masachasisindex[selectedOptionIndex];
-                this.masaruedaINPUT.value = masaruedaindex[selectedOptionIndex];
-                this.torqueINPUT.value = torqueindex[selectedOptionIndex];
+                masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
+                masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
+                masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
+
+                masaPilotoDISPLAY.setText(${masaPiloto});
+                masaChasisDISPLAY.setText(${masaChasis});
+                masaRuedaDISPLAY.setText(${masaRueda});
             }, this);
 
         const c_button = this.add.image(this.scale.width / 2, this.scale.height / 2, 'c_white')
@@ -257,10 +274,13 @@ export default class ArmarCarrito extends Phaser.Scene {
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
 
-                this.masapilotoINPUT.value = masapilotoindex[selectedOptionIndex];
-                this.masachasisINPUT.value = masachasisindex[selectedOptionIndex];
-                this.masaruedaINPUT.value = masaruedaindex[selectedOptionIndex];
-                this.torqueINPUT.value = torqueindex[selectedOptionIndex];
+                masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
+                masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
+                masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
+
+                masaPilotoDISPLAY.setText(${masaPiloto});
+                masaChasisDISPLAY.setText(${masaChasis});
+                masaRuedaDISPLAY.setText(${masaRueda});
             }, this);
         
         //OPCIONES DE MOTOR
@@ -287,6 +307,9 @@ export default class ArmarCarrito extends Phaser.Scene {
                 a_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 1 ? 'a_black' : 'a_white');
                 b_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 2 ? 'b_black' : 'b_white');
                 c_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 3 ? 'c_black' : 'c_white');
+
+                masaMotor = parseInt(masamotorindex[MOTORselectedOptionIndex]);
+                potenciaMotor = parseInt(potenciaindex[MOTORselectedOptionIndex]);
 
                 masamotorDISPLAY.setText(masamotorindex[MOTORselectedOptionIndex]);
                 potenciaDISPLAY.setText(potenciaindex[MOTORselectedOptionIndex]);
@@ -319,6 +342,9 @@ export default class ArmarCarrito extends Phaser.Scene {
                 b_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 2 ? 'b_black' : 'b_white');
                 c_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 3 ? 'c_black' : 'c_white');
 
+                masaMotor = parseInt(masamotorindex[MOTORselectedOptionIndex]);
+                potenciaMotor = parseInt(potenciaindex[MOTORselectedOptionIndex]);
+
                 masamotorDISPLAY.setText(masamotorindex[MOTORselectedOptionIndex]);
                 potenciaDISPLAY.setText(potenciaindex[MOTORselectedOptionIndex]);
 
@@ -348,13 +374,13 @@ export default class ArmarCarrito extends Phaser.Scene {
                 b_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 2 ? 'b_black' : 'b_white');
                 c_buttonMOTOR.setTexture(MOTORselectedOptionIndex === 3 ? 'c_black' : 'c_white');
 
+                masaMotor = parseInt(masamotorindex[MOTORselectedOptionIndex]);
+                potenciaMotor = parseInt(potenciaindex[MOTORselectedOptionIndex]);
+
                 masamotorDISPLAY.setText(masamotorindex[MOTORselectedOptionIndex]);
                 potenciaDISPLAY.setText(potenciaindex[MOTORselectedOptionIndex]);
 
             }, this);
-
-
-
 
         const carro = this.add.image(this.scale.width / 2, this.scale.height / 2 , 'car0').setPosition(320, this.scale.height / 2).setScale(0.6).setDepth(-2);
             
@@ -366,7 +392,7 @@ export default class ArmarCarrito extends Phaser.Scene {
             align: 'right'
         });
 
-        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
+        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(2).setInteractive()
             .on('pointerover', function () {
                 btn_back.setTexture("btn_back_h");
                 btn_back.setScale(1.1)
@@ -389,19 +415,7 @@ export default class ArmarCarrito extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelSelect"); // Cambia a tu escena del juego
-
-                                this.masapilotoINPUT.remove();
-                                delete this.masapilotoINPUT;
-
-                                this.masachasisINPUT.remove();
-                                delete this.masachasisINPUT;
-
-                                this.masaruedaINPUT.remove();
-                                delete this.masaruedaINPUT;
-
-                                this.torqueINPUT.remove();
-                                delete this.torqueINPUT;
+                                this.scene.start("GameScene"); // Cambia a tu escena del juego
                             }
                         });
                     }
@@ -419,11 +433,7 @@ export default class ArmarCarrito extends Phaser.Scene {
                 aplicar.setScale(0.3)
             }, this).on('pointerdown', function () {
                 aplicar.setTexture("aplicar");
-
-                masapilotoindex[selectedOptionIndex] = this.masapilotoINPUT.value;
-                masachasisindex[selectedOptionIndex] = this.masachasisINPUT.value;
-                masaruedaindex[selectedOptionIndex] = this.masaruedaINPUT.value;
-                torqueindex[selectedOptionIndex] = this.torqueINPUT.value;
+                this.scene.start("GameScene");
             }, this);
 
         this.tweens.add({
@@ -471,8 +481,7 @@ export default class ArmarCarrito extends Phaser.Scene {
             "MASA CHASIS(kg):",
             "MASA RUEDA(kg):",
             "MASA MOTOR(kg):",
-            "POTENCIA(Hp):",
-            "TORQUE:"
+            "POTENCIA(Hp):"
         ];
         
         inputs.forEach((label, index) => {
@@ -482,125 +491,50 @@ export default class ArmarCarrito extends Phaser.Scene {
         
         });
 
-        const masamotorDISPLAY = this.add.text(780, 20, "OPCIÓN", {
+        const masaPilotoDISPLAY = this.add.text(380, 20, "???", {
+            fontSize: 32,
+            fontFamily: "Handjet",
+            color: "#252525",
+            align: 'right'
+        }).setPosition(1140, 175);
+
+        const masaChasisDISPLAY = this.add.text(780, 20, "???", {
+            fontSize: 32,
+            fontFamily: "Handjet",
+            color: "#252525",
+            align: 'right'
+        }).setPosition(1140, 225);
+
+        const masaRuedaDISPLAY = this.add.text(780, 20, "???", {
+            fontSize: 32,
+            fontFamily: "Handjet",
+            color: "#252525",
+            align: 'right'
+        }).setPosition(1140, 270);
+
+        const masamotorDISPLAY = this.add.text(780, 20, "???", {
             fontSize: 32,
             fontFamily: "Handjet",
             color: "#252525",
             align: 'right'
         }).setPosition(1140, 315);
 
-        const potenciaDISPLAY = this.add.text(780, 20, "OPCIÓN", {
+        const potenciaDISPLAY = this.add.text(780, 20, "???", {
             fontSize: 32,
             fontFamily: "Handjet",
             color: "#252525",
             align: 'right'
         }).setPosition(1140, 365);
 
-        this.masapilotoINPUT = document.createElement('textarea');
-        this.masapilotoINPUT.style.position = 'absolute';
-        this.masapilotoINPUT.style.left = '950px';
-        this.masapilotoINPUT.style.top = '151px';
-        this.masapilotoINPUT.style.width = '275px';
-        this.masapilotoINPUT.style.height = '40px';
-        this.masapilotoINPUT.style.fontSize = '20px';
-        this.masapilotoINPUT.style.color = '#252525';
-        this.masapilotoINPUT.style.backgroundColor = '#FFFFFF';
-        this.masapilotoINPUT.style.borderWidth = '2px';
-        this.masapilotoINPUT.style.borderStyle = 'solid';
-        this.masapilotoINPUT.style.borderColor = '#A0A0A0';
-        this.masapilotoINPUT.style.fontFamily = 'Handjet';
-        this.masapilotoINPUT.style.padding = '10px';
-        this.masapilotoINPUT.style.outline = 'none';
-        this.masapilotoINPUT.setAttribute('wrap', 'soft');
-        this.masapilotoINPUT.style.resize = 'none';
-        this.masapilotoINPUT.style.boxShadow = '2px 2px 10px rgba(0, 0, 0, 0.5)';
-        this.masapilotoINPUT.addEventListener('input', function(event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        document.body.appendChild(this.masapilotoINPUT);
-
-        
-        this.masachasisINPUT = document.createElement('textarea');
-        this.masachasisINPUT.style.position = 'absolute';
-        this.masachasisINPUT.style.left = '950px';
-        this.masachasisINPUT.style.top = '197px';
-        this.masachasisINPUT.style.width = '275px';
-        this.masachasisINPUT.style.height = '40px';
-        this.masachasisINPUT.style.fontSize = '20px';
-        this.masachasisINPUT.style.color = '#252525';
-        this.masachasisINPUT.style.backgroundColor = '#FFFFFF';
-        this.masachasisINPUT.style.borderWidth = '2px';
-        this.masachasisINPUT.style.borderStyle = 'solid';
-        this.masachasisINPUT.style.borderColor = '#A0A0A0';
-        this.masachasisINPUT.style.fontFamily = 'Handjet';
-        this.masachasisINPUT.style.padding = '10px';
-        this.masachasisINPUT.style.outline = 'none';
-        this.masachasisINPUT.setAttribute('wrap', 'soft');
-        this.masachasisINPUT.style.resize = 'none';
-        this.masachasisINPUT.style.boxShadow = '2px 2px 10px rgba(0, 0, 0, 0.5)';
-        this.masachasisINPUT.addEventListener('input', function(event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        document.body.appendChild(this.masachasisINPUT);
-
-
-        this.masaruedaINPUT = document.createElement('textarea');
-        this.masaruedaINPUT.style.position = 'absolute';
-        this.masaruedaINPUT.style.left = '950px';
-        this.masaruedaINPUT.style.top = '243px';
-        this.masaruedaINPUT.style.width = '275px';
-        this.masaruedaINPUT.style.height = '40px';
-        this.masaruedaINPUT.style.fontSize = '20px';
-        this.masaruedaINPUT.style.color = '#252525';
-        this.masaruedaINPUT.style.backgroundColor = '#FFFFFF';
-        this.masaruedaINPUT.style.borderWidth = '2px';
-        this.masaruedaINPUT.style.borderStyle = 'solid';
-        this.masaruedaINPUT.style.borderColor = '#A0A0A0';
-        this.masaruedaINPUT.style.fontFamily = 'Handjet';
-        this.masaruedaINPUT.style.padding = '10px';
-        this.masaruedaINPUT.style.outline = 'none';
-        this.masaruedaINPUT.setAttribute('wrap', 'soft');
-        this.masaruedaINPUT.style.resize = 'none';
-        this.masaruedaINPUT.style.boxShadow = '2px 2px 10px rgba(0, 0, 0, 0.5)';
-        this.masaruedaINPUT.addEventListener('input', function(event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        document.body.appendChild(this.masaruedaINPUT);
-
-
-        this.torqueINPUT = document.createElement('textarea');
-        this.torqueINPUT.style.position = 'absolute';
-        this.torqueINPUT.style.left = '950px';
-        this.torqueINPUT.style.top = '381px';
-        this.torqueINPUT.style.width = '275px';
-        this.torqueINPUT.style.height = '40px';
-        this.torqueINPUT.style.fontSize = '20px';
-        this.torqueINPUT.style.color = '#252525';
-        this.torqueINPUT.style.backgroundColor = '#FFFFFF';
-        this.torqueINPUT.style.borderWidth = '2px';
-        this.torqueINPUT.style.borderStyle = 'solid';
-        this.torqueINPUT.style.borderColor = '#A0A0A0';
-        this.torqueINPUT.style.fontFamily = 'Handjet';
-        this.torqueINPUT.style.padding = '10px';
-        this.torqueINPUT.style.outline = 'none';
-        this.torqueINPUT.setAttribute('wrap', 'soft');
-        this.torqueINPUT.style.resize = 'none';
-        this.torqueINPUT.style.boxShadow = '2px 2px 10px rgba(0, 0, 0, 0.5)';
-        this.torqueINPUT.addEventListener('input', function(event) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-
-        document.body.appendChild(this.torqueINPUT);
-        
-        //PLAYERINPUTSEND//
     }
 
-    update() {
+    update(time, delta) {
+        if (this.timerRunning) {
+            timerBuildCar = this.elapsedTime = (this.time.now - this.startTime) / 1000;
+        }
+        
         this.bg.tilePositionX += 1.2;
-        this.bg.tilePositionY += 0.2;
-    }
+        this.bg.tilePositionY += 0.2;
+    }
 
 }

@@ -19,3 +19,19 @@ export const getLevelsByMatchIdFromAll = async (matchId: number) => {
     throw error;
   }
 };
+
+
+export const patchLevelsPresets = async (levels: any[]) => {
+  try {
+    const res = await api.patch("/api/level/", { levels });
+
+    if (res.data.status !== "success") {
+      throw new Error("No se pudieron actualizar los niveles.");
+    }
+
+    return res.data.payload; // Devuelve los niveles actualizados
+  } catch (error) {
+    console.error("Error al actualizar los niveles con patchLevelsPresets:", error);
+    throw error;
+  }
+};
