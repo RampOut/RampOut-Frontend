@@ -63,14 +63,17 @@ const RegistroProfesor = (_props: Props) => {
         onSubmit={handleSubmit}
         className="d-flex flex-column align-items-center top-50 start-50 box-shadow"
         style={{
-          background: "linear-gradient(#e0e0e0, #c0c0c0)",
+          background: "linear-gradient(#603e91,rgb(99, 142, 197))",
           width: "100vh",
           height: "80vh",
         }}
       >
-        <h1>Registro Profesores</h1>
+        <div className="mt-3">
+          <h1>Registro Profesores</h1>
+        </div>
         {!!errorView && <p>{errorView}</p>}
         <label>Nomina</label>
+        <div className="py-2">
         <input
           type="text"
           value={nomina}
@@ -78,14 +81,18 @@ const RegistroProfesor = (_props: Props) => {
           placeholder="ej. L01255302"
           required
         />
+        </div>
+        <div className="pb-3">
         <span
           className="validity"
-          style={{ color: isNominaValid ? "green" : "red" }}
+          style={{ color: isNominaValid ? "#43ba14" : "#ba1f14" }}
         >
           {isNominaValid ? "Nómina válida" : "Nómina inválida"}
         </span>
+        </div>
 
         <label>Contraseña</label>
+        <div className="py-2">
         <input
           type={showPwd ? "text" : "password"}
           value={password}
@@ -93,6 +100,7 @@ const RegistroProfesor = (_props: Props) => {
           placeholder="Contraseña"
           required
         />
+        </div>
         <div onClick={() => setShowPwd(!showPwd)} style={{ cursor: "pointer" }}>
           {showPwd ? (
             <FontAwesomeIcon icon={faEye} />
@@ -107,8 +115,8 @@ const RegistroProfesor = (_props: Props) => {
           onChange={handleCheckboxChange}
         ></input>
 
-        <button type="submit">Submit</button>
-        <Link to="/login">Log-In</Link>
+        <button type="submit" className="m-2 p-2">Submit</button>
+        <Link to="/admin">Regresar</Link>
       </form>
     </div>
   );

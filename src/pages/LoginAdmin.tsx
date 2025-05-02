@@ -101,7 +101,7 @@ const Login_Admin = (_props: Props) => {
                 </div>
                 {/*Modifica el estado de visibilidad de la contraseña */}
                 <div onClick={() => setShowPwd(!showPwd)} style={{ cursor: "pointer" }}>
-                    {showPwd ? <FontAwesomeIcon icon={faEye} style={{color:"#424242"}} /> : <FontAwesomeIcon icon={faEyeSlash} style={{color:"#424242"}}/>}
+                    {showPwd ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                 </div>
 
                 <button type="submit" className="m-2 p-2">Submit</button>
