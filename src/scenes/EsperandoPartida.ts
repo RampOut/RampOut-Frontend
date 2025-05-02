@@ -48,7 +48,8 @@ export default class EsperandoPartida extends Phaser.Scene {
 
         // Center the title at the middle of the screen
         const levelTitle = this.add.text(this.scale.width / 2, this.scale.height / 2, 'ESPERANDO A QUE EL PROFESOR\nINICIE LA PARTIDA...', {
-            font: '620 75px Handjet-Regular',
+            fontSize: 75,
+            fontFamily: "Handjet",
             color: '#ffffff',
             align: 'center'
         }).setOrigin(0.5, 0.8).setDepth(-3);
@@ -58,7 +59,7 @@ export default class EsperandoPartida extends Phaser.Scene {
 
 
         const btn_regresar = this.add.image(this.scale.width / 2, this.scale.height / 2, 'botonRegresar').setPosition(640, 510).setScale(0.3).setDepth(-4)
-            .setInteractive().on('pointerover', function () {
+            .setInteractive({useHandCursor: true}).on('pointerover', function () {
                 btn_regresar.setTexture("botonRegresar");
                 btn_regresar.setScale(0.35)
             }, this).on('pointerout', function () {
@@ -73,7 +74,7 @@ export default class EsperandoPartida extends Phaser.Scene {
                     duration: 800,
                     ease: 'Power2',
                     onComplete: () => {
-                        this.scene.start("LevelSelect"); // Cambia a tu escena del juego
+                        this.scene.start("Start"); // Cambia a tu escena del juego
                     }
                 });
             }, this);

@@ -18,7 +18,7 @@ import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
 //import tipoUsuario from login
-let tipoUsuario = "profesor";
+let tipoUsuario = "alumno";
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -90,7 +90,7 @@ export default class Start extends Phaser.Scene {
                                     this.scene.start("LevelStudentTeam");
                                 }
                                 else if (tipoUsuario == "alumno"){
-                                    this.scene.start("StudentGuide");
+                                    this.scene.start("EsperandoPartida");
                                 }
                             }
                         });
