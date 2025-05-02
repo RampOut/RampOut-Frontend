@@ -59,7 +59,7 @@ export default class TeacherGuide extends Phaser.Scene {
         this.textArea.style.color = '#8C8C8C';
         this.textArea.style.backgroundColor = 'transparent';
         this.textArea.style.border = 'none';
-        this.textArea.style.fontFamily = 'Handjet-Regular';
+        this.textArea.style.fontFamily = 'Handjet';
         this.textArea.style.padding = '10px';
         this.textArea.style.outline = 'none';
         this.textArea.placeholder = 'Escribe algo aquí...';
@@ -75,8 +75,9 @@ export default class TeacherGuide extends Phaser.Scene {
         });
 
         //Aceptar guarda el valor de la guía
-        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(-4);
-        btn_accept.setInteractive({useHandCursor: true}).on('pointerdown', () => {
+        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6)
+        .setDepth(-4).setInteractive({useHandCursor: true})
+        .on('pointerdown', () => {
             const userText = this.textArea.value;
             this.registry.set('guiaText', userText);
             console.log("Texto guardado: ", userText); // Aquí puedes guardar el texto o hacer cualquier acción
@@ -86,13 +87,13 @@ export default class TeacherGuide extends Phaser.Scene {
         const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         });
 
         const about = this.add.text(450, 35, "Aquí puedes escribir instrucciones", {
             fontSize: 70,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-1);
 
 
@@ -106,7 +107,7 @@ export default class TeacherGuide extends Phaser.Scene {
                 btn_back.setScale(1)
             }, this).on('pointerdown', function () {
                 btn_back.setTexture("btn_back_a");
-                if (this.textArea) this.textArea.value = " ";
+                if (this.textArea) this.textArea.value = "";
                 about.text = "";
                 userText.text = "";
 
