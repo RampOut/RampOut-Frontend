@@ -1,4 +1,4 @@
-declare module "my-types"{
+declare module "my-types" {
     export interface Profesor{
         id: number;
         username: string;
@@ -10,4 +10,29 @@ declare module "my-types"{
         body: {
             token: string;
         }
-    }}
+    }
+
+    export interface Team {
+        tempId: number,
+        name: string,
+        scoreTotal: number,
+        scorePerRound: number[],
+    }
+
+    export interface Player {
+        matricula: string,
+        teamTempId: number,
+    }
+
+    export interface Level {
+        levelVariables: number[],
+        clue: string,
+    }
+
+    export interface Match {
+        hostId: number;
+        teams: Team[];
+        players: Player[];
+        levels: Level[];
+    }
+}

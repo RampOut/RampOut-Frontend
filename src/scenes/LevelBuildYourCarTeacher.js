@@ -1,6 +1,8 @@
 import "phaser";
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js';
 
+
+
 // Importar imágenes y sprites
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
 import backBtn_h from "../assets/game/ui/menu/btn_back/btn_back_h.png";
@@ -16,6 +18,8 @@ import acceptBtn from "../assets/game/ui/menu/botonAceptar.png"
 import cancelBtn from "../assets/game/ui/menu/botonCancelar.png"
 import inputBox from "../assets/game/ui/menu/input.png"
 import Slider from "../scripts/objects/slider"
+import { equipo1, nombreEquipo1, equipo2, nombreEquipo2  } from "./LevelStudentTeam";
+
 
 export let rpm = 3000;
 export let diametroLlantas = 40;
@@ -76,42 +80,6 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
             color: "#00FFB7",
             fontFamily: "Handjet",
         });
-
-        /*
-        this.inputRPM = document.createElement("input");
-        this.inputRPM.style.position = 'absolute';
-        this.inputRPM.style.left = '75%';
-        this.inputRPM.style.top = '25%';
-        this.inputRPM.style.width = '120px';
-        this.inputRPM.style.height = '64px';
-        this.inputRPM.style.fontSize = '24px';
-        this.inputRPM.style.color = '#8C8C8C';
-        this.inputRPM.style.backgroundColor = 'transparent';
-        this.inputRPM.style.border = 'none';
-        this.inputRPM.style.fontFamily = 'Handjet';
-        this.inputRPM.style.padding = '10px';
-        this.inputRPM.style.outline = 'none';
-        this.inputRPM.placeholder = 'Inserte valor...';
-        this.inputRPM.setAttribute('wrap', 'soft');
-        document.body.appendChild(this.inputRPM);
-
-        this.inputDiam = document.createElement("input");
-        this.inputDiam.style.position = 'absolute';
-        this.inputDiam.style.left = '75%';
-        this.inputDiam.style.top = '39%';
-        this.inputDiam.style.width = '120px';
-        this.inputDiam.style.height = '64px';
-        this.inputDiam.style.fontSize = '24px';
-        this.inputDiam.style.color = '#8C8C8C';
-        this.inputDiam.style.backgroundColor = 'transparent';
-        this.inputDiam.style.border = 'none';
-        this.inputDiam.style.fontFamily = 'Handjet';
-        this.inputDiam.style.padding = '10px';
-        this.inputDiam.style.outline = 'none';
-        this.inputDiam.placeholder = 'Inserte valor...';
-        this.inputDiam.setAttribute('wrap', 'soft');
-        document.body.appendChild(this.inputDiam);
-        */
 
         const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1)
         .setDepth(-2).setInteractive({useHandCursor: true})
@@ -174,6 +142,37 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
             .on('pointerdown', () => { 
                 console.log(rpm)
                 console.log(diametroLlantas)
+                
+                let jugadores = [];
+                /*
+                for (let i = 0; i < equipo1.length; i++) {
+                    jugadores.push({
+                        matricula: equipo1[i],
+                        teamTempId: 1
+                    });
+                }
+
+                for (let i = 0; i < equipo2.length; i++) {
+                    jugadores.push({
+                        matricula: equipo2[i],
+                        teamTempId: 2
+                    });
+                }
+
+                CreateMatch({
+                    teams: [
+                        {tempId: 1, name: nombreEquipo1, scoreTotal: 0, scorePerRound: []},
+                        {tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: []},
+                    ],
+                    players: [
+                        jugadores,
+                    ],
+                    levels:[
+                        {levelVariables: [rpm, diametroLlantas], clue: ""}
+                    ]
+                })
+                */
+
             });
         
         const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(1020, 520).setScale(0.6)
