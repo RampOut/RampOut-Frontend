@@ -1,7 +1,7 @@
 import "phaser";
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js';
-
-
+import { Match, Player } from "my-types";
+import { createMatch } from "../api/MatchAPI";
 
 // Importar imágenes y sprites
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
@@ -143,8 +143,8 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                 console.log(rpm)
                 console.log(diametroLlantas)
                 
-                let jugadores = [];
-                /*
+                let jugadores: Player[] = [];
+                
                 for (let i = 0; i < equipo1.length; i++) {
                     jugadores.push({
                         matricula: equipo1[i],
@@ -159,19 +159,19 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                     });
                 }
 
-                CreateMatch({
+                createMatch({
+                    hostId: 1,
                     teams: [
                         {tempId: 1, name: nombreEquipo1, scoreTotal: 0, scorePerRound: []},
                         {tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: []},
                     ],
-                    players: [
-                        jugadores,
-                    ],
+                    //players: jugadores,
+                    
                     levels:[
                         {levelVariables: [rpm, diametroLlantas], clue: ""}
                     ]
                 })
-                */
+                
 
             });
         

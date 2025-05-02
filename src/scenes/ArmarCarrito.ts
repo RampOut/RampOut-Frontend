@@ -82,7 +82,7 @@ export default class ArmarCarrito extends Phaser.Scene {
 
         //DIVIDER
 
-        this.add.rectangle(300, 275, 550, 8, '#474747', 1);
+        this.add.rectangle(300, 275, 550, 8, 0x474747, 1);
 
         //DIVIDER
 
@@ -139,17 +139,17 @@ export default class ArmarCarrito extends Phaser.Scene {
             align: 'left'
         }).setPosition(225, 460);
 
-        const rpmVARIABLE = 0;
-        const ruedasizeVARIABLE = 0;
+        const rpmVARIABLE:number = 0;
+        const ruedasizeVARIABLE:number = 0;
 
-        const rpmvalue = this.add.text(780, 20, rpmVARIABLE, {
+        const rpmvalue = this.add.text(780, 20, rpmVARIABLE.toString(), {
             fontSize: 40,
             fontFamily: "Handjet",
             color: "#6C6C6C",
             align: 'right'
         }).setPosition(550, 420);
 
-        const ruedasizevalue = this.add.text(780, 20, ruedasizeVARIABLE, {
+        const ruedasizevalue = this.add.text(780, 20, ruedasizeVARIABLE.toString(), {
             fontSize: 40,
             fontFamily: "Handjet",
             color: "#6C6C6C",
@@ -160,8 +160,8 @@ export default class ArmarCarrito extends Phaser.Scene {
             
             // BOTON DE OPCION A
 
-        let selectedOptionIndex = null; // starts with no selection
-        let MOTORselectedOptionIndex = null; // starts with no selection
+        let selectedOptionIndex: number | null = 0 || null; // starts with no selection
+        let MOTORselectedOptionIndex: number | null = null; // starts with no selection
 
         const a_button = this.add.image(this.scale.width / 2, this.scale.height / 2, 'a_white')
             .setPosition(230, 215)
