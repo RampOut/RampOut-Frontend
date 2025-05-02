@@ -42,23 +42,53 @@ export default class StudentGuide extends Phaser.Scene {
         const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
         const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
         const guiaTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'guiaTitle').setPosition(300, -80).setScale(1).setDepth(-2);
+        const cuadrotxt = this.add.image(this.scale.width / 2, this.scale.height / 2, 'cuadroText').setPosition(640, 300).setScale(0.6).setDepth(-5);
+        const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(0.6);
+        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(0.6);
 
-        //Se recupera el texto dado por el profe
-        const savedText = this.registry.get('guiaText') || "El profesor aún no ha dado indicaciones."; 
 
-        //Se muestra el texo en medio de la pantalla
-        this.add.text(300, 180, savedText, {
-            fontSize: 50,
-            color: "#FFFFFF",
-            fontFamily: "Handjet",
-            wordWrap: { width: 700 }
-        }).setDepth(-3);
-
-        const about = this.add.text(660, 40, "Pistas de tu profesor", {
+        const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
+            fontSize: 64,
+            color: "#00FFB7",
+            fontFamily: "Handjet-Regular",
+        });
+    
+        const explicacion = this.add.text(450, 35, "Aqui puedes escribir instrucciones", {
             fontSize: 70,
             color: "#FFFFFF",
             fontFamily: "Handjet",
         }).setDepth(-1);
+
+
+        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
+        .on('pointerover', function () {
+            btn_back.setTexture("btn_back_h");
+            btn_back.setScale(1.1)
+        }, this).on('pointerout', function () {
+            btn_back.setTexture("btn_back");
+            btn_back.setScale(1)
+        }, this).on('pointerdown', function () {
+            btn_back.setTexture("btn_back_a");
+            userText.text = "";
+            
+            this.tweens.add({
+                targets: [guiaTitle, btn_back],
+                y: -190, // Centro vertical de la pantalla
+                duration: 400,
+                ease: 'Power2',
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: header,
+                        y: 190, // Centro vertical de la pantalla
+                        duration: 800,
+                        ease: 'Power2',
+                        onComplete: () => {
+                            this.scene.start("Start"); // Cambia a tu escena del juego
+                        }
+                    });
+                }
+            });
+        }, this)
 
 
         this.tweens.add({
@@ -88,7 +118,6 @@ export default class StudentGuide extends Phaser.Scene {
             duration: 400,
             ease: 'Power2',
         });
-
     }
 
     update() {
