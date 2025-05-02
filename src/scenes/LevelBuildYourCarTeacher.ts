@@ -2,6 +2,8 @@ import "phaser";
 import InputText from 'phaser3-rex-plugins/plugins/inputtext.js';
 import { Match, Player } from "my-types";
 import { createMatch } from "../api/MatchAPI";
+import { getLastMatchId } from "../api/MatchAPI";
+
 
 // Importar imágenes y sprites
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
@@ -173,6 +175,9 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                         {levelVariables: [rpm, diametroLlantas], clue: userText}
                     ]
                 })
+                console.log(getLastMatchId());
+
+                
                 
 
             });
