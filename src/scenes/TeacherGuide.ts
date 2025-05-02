@@ -12,6 +12,9 @@ import cuadroTxt from "../assets/game/ui/menu/cuadroTXT.png"
 import cancelar from "../assets/game/ui/menu/botonCancelar.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
 
+export const userText = "";
+
+
 export default class TeacherGuide extends Phaser.Scene {
     constructor() {
         super("TeacherGuide");
@@ -124,6 +127,7 @@ export default class TeacherGuide extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
+                                
                                 this.scene.start("Start"); // Cambia a tu escena del juego
                             }
                         });

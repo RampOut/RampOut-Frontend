@@ -19,7 +19,7 @@ import cancelBtn from "../assets/game/ui/menu/botonCancelar.png"
 import inputBox from "../assets/game/ui/menu/input.png"
 import Slider from "../scripts/objects/slider"
 import { equipo1, nombreEquipo1, equipo2, nombreEquipo2  } from "./LevelStudentTeam";
-
+import userText from "./TeacherGuide";
 
 export let rpm = 3000;
 export let diametroLlantas = 40;
@@ -142,6 +142,8 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
             .on('pointerdown', () => { 
                 console.log(rpm)
                 console.log(diametroLlantas)
+                console.log(nombreEquipo2)
+                console.log(nombreEquipo1)
                 
                 let jugadores: Player[] = [];
                 
@@ -160,15 +162,15 @@ export default class LevelBuildYourCarTeacher extends Phaser.Scene {
                 }
 
                 createMatch({
-                    hostId: 1,
+                    hostId: 2,
                     teams: [
                         {tempId: 1, name: nombreEquipo1, scoreTotal: 0, scorePerRound: []},
-                        {tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: []},
+                        {tempId: 2, name: nombreEquipo2, scoreTotal: 0, scorePerRound: []}
                     ],
                     //players: jugadores,
                     
                     levels:[
-                        {levelVariables: [rpm, diametroLlantas], clue: ""}
+                        {levelVariables: [rpm, diametroLlantas], clue: userText}
                     ]
                 })
                 

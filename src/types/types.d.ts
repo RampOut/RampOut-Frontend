@@ -14,7 +14,7 @@ declare module "my-types" {
 
     export interface Team {
         tempId: number,
-        name: string,
+        name: string | null,
         scoreTotal: number,
         scorePerRound: number[],
     }
@@ -32,7 +32,7 @@ declare module "my-types" {
     export interface Match {
         hostId: number;
         teams: Team[];
-        players: Player[];
+        //players: Player[];
         levels: Level[];
     }
 }
