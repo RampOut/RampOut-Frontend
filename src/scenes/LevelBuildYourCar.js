@@ -1,4 +1,5 @@
 import "phaser";
+import InputText from 'phaser3-rex-plugins/plugins/inputtext.js';
 
 // Importar imágenes y sprites
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
@@ -10,8 +11,18 @@ import line from "../assets/game/ui/menu/line.png"
 import carA from "../assets/game/cars/carroA.png"
 import carB from "../assets/game/cars/carroB.png"
 import carC from "../assets/game/cars/carroC.png"
+import transpImg from "../assets/game/blank.png"
+import acceptBtn from "../assets/game/ui/menu/botonAceptar.png"
+import cancelBtn from "../assets/game/ui/menu/botonCancelar.png"
+import inputBox from "../assets/game/ui/menu/input.png"
+
+let acelMAX = null;
+let velMAX = null;
+let peso = null;
+let torque = null;
 
 export default class LevelBuildYourCar extends Phaser.Scene {
+    
     constructor() {
         super("LevelBuildYourCar");
     }
@@ -36,6 +47,10 @@ export default class LevelBuildYourCar extends Phaser.Scene {
         this.load.image('carA', carA);
         this.load.image('carB', carB);
         this.load.image('carC', carC);
+        this.load.image('transpImg', transpImg);
+        this.load.image('btn_accept', acceptBtn);
+        this.load.image('btn_cancel', cancelBtn);
+        this.load.image('input_box', inputBox);
     }
 
     create() {
@@ -60,8 +75,42 @@ export default class LevelBuildYourCar extends Phaser.Scene {
         const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         });
+
+        this.inputRPM = document.createElement("input");
+        this.inputRPM.style.position = 'absolute';
+        this.inputRPM.style.left = '75%';
+        this.inputRPM.style.top = '25%';
+        this.inputRPM.style.width = '120px';
+        this.inputRPM.style.height = '64px';
+        this.inputRPM.style.fontSize = '24px';
+        this.inputRPM.style.color = '#8C8C8C';
+        this.inputRPM.style.backgroundColor = 'transparent';
+        this.inputRPM.style.border = 'none';
+        this.inputRPM.style.fontFamily = 'Handjet';
+        this.inputRPM.style.padding = '10px';
+        this.inputRPM.style.outline = 'none';
+        this.inputRPM.placeholder = 'Inserte valor...';
+        this.inputRPM.setAttribute('wrap', 'soft');
+        document.body.appendChild(this.inputRPM);
+
+        this.inputDiam = document.createElement("input");
+        this.inputDiam.style.position = 'absolute';
+        this.inputDiam.style.left = '75%';
+        this.inputDiam.style.top = '39%';
+        this.inputDiam.style.width = '120px';
+        this.inputDiam.style.height = '64px';
+        this.inputDiam.style.fontSize = '24px';
+        this.inputDiam.style.color = '#8C8C8C';
+        this.inputDiam.style.backgroundColor = 'transparent';
+        this.inputDiam.style.border = 'none';
+        this.inputDiam.style.fontFamily = 'Handjet';
+        this.inputDiam.style.padding = '10px';
+        this.inputDiam.style.outline = 'none';
+        this.inputDiam.placeholder = 'Inserte valor...';
+        this.inputDiam.setAttribute('wrap', 'soft');
+        document.body.appendChild(this.inputDiam);
 
         const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1)
         .setDepth(-2).setInteractive({useHandCursor: true})
@@ -74,6 +123,8 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             }, this).on('pointerdown', function () {
                 btn_back.setTexture("btn_back_a");
                 userText.text = "";
+                document.body.removeChild(this.inputRPM);
+                document.body.removeChild(this.inputDiam);
 
                 this.tweens.add({
                     targets: [levelTitle, btn_back],
@@ -97,22 +148,51 @@ export default class LevelBuildYourCar extends Phaser.Scene {
         const optionText = this.add.text(90, 165, "OPCIÓN", {
             fontSize: 44,
             color: "#000000",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-3)
 
         const linea1 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'line').setPosition(335, 245).setScale(0.9, 1).setDepth(-3);
-        const linea2 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'line').setPosition(335, 390).setScale(0.9, 1).setDepth(-3);
 
-        const carName = this.add.text(90, 290, "", {
+        const noCar = this.add.text(95, 340, "Presione uno de los tres botones\npara escoger uno de los carros.", {
             fontSize: 44,
             color: "#000000",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
+            align: "center",
         }).setDepth(-3)
 
-        const carImg = this.add.image(375, 318, "").setScale(0.7).setDepth(-3);
+        const carName = this.add.text(245, 270, "", {
+            fontSize: 64,
+            color: "#000000",
+            fontFamily: "Handjet",
+        }).setDepth(-3)
+
+        const carImg = this.add.image(335, 430, "transpImg").setScale(1).setDepth(-3);
+
+        const carPresets = this.add.text(815, 180, "RPM:\n\nDIÁMETRO\nRUEDA (CM):", {
+            fontSize: 42,
+            color: "#000000",
+            fontFamily: "Handjet",
+            align: "left",
+        }).setDepth(-3);
+
+        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1020, 445).setScale(0.6)
+            .setDepth(-4).setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                
+            });
+        
+        const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(1020, 520).setScale(0.6)
+            .setDepth(-4).setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.inputRPM.value = "";
+                this.inputDiam.value = "";
+            });
+        
+        const input1 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'input_box').setPosition(1120, 220).setScale(0.9).setDepth(-4);
+        const input2 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'input_box').setPosition(1120, 320).setScale(0.9).setDepth(-4);
 
         const optA = this.add.text(280, 160, "a)", {
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fontSize: 44,
             color: "#ffffff",
             fixedWidth: 80,
@@ -129,13 +209,14 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             optA.setColor("#FFFE91");
             setTimeout(()=>{
                 optA.setColor("#95E8E8");
+                noCar.setText("");
                 carName.setText("CARRO A");
                 carImg.setTexture("carA");
             }, 250);
         }, this);
 
         const optB = this.add.text(388, 160, "b)", {
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fontSize: 44,
             color: "#ffffff",
             fixedWidth: 80,
@@ -152,13 +233,14 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             optB.setColor("#FFFE91");
             setTimeout(()=>{
                 optB.setColor("#95E8E8");
+                noCar.setText("");
                 carName.setText("CARRO B");
                 carImg.setTexture("carB");
             }, 250);
         }, this);
 
         const optC = this.add.text(495, 160, "c)", {
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fontSize: 44,
             color: "#ffffff",
             fixedWidth: 80,
@@ -175,6 +257,7 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             optC.setColor("#FFFE91");
             setTimeout(()=>{
                 optC.setColor("#95E8E8");
+                noCar.setText("");
                 carName.setText("CARRO C");
                 carImg.setTexture("carC");
             }, 250);

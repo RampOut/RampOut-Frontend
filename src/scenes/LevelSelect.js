@@ -37,25 +37,25 @@ export default class LevelSelect extends Phaser.Scene {
         const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         });
 
         const lvl1 = this.add.text(400, 233, "01", {
             fontSize: 70,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4);
 
         const lvl2 = this.add.text(400, 393, "02", {
             fontSize: 70,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4);
 
         const setuplvl1 = this.add.text(500, 241, "EMPEZAR", {
             fontSize: 55,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4).setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 setuplvl1.setColor("#95E8E8");
@@ -87,7 +87,7 @@ export default class LevelSelect extends Phaser.Scene {
         const setuplvl2 = this.add.text(500, 401, "EMPEZAR", {
             fontSize: 55,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4).setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 setuplvl2.setColor("#95E8E8");
@@ -119,7 +119,7 @@ export default class LevelSelect extends Phaser.Scene {
         const VP1 = this.add.text(700, 241, "VER PUNTAJES", {
             fontSize: 55,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4).setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 VP1.setColor("#95E8E8");
@@ -151,7 +151,7 @@ export default class LevelSelect extends Phaser.Scene {
         const VP2 = this.add.text(700, 401, "VER PUNTAJES", {
             fontSize: 55,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-4).setInteractive({useHandCursor: true})
             .on('pointerover', function () {
                 VP2.setColor("#95E8E8");

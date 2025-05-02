@@ -42,7 +42,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('car_wheel' , car_wheel);
         this.load.image('car_test' , car_test);
         this.load.image('btn_play' , btn_play);
-        this.load.font("Handjet-Regular", fontHJ, "truetype");
+        this.load.font("Handjet", fontHJ, "truetype");
         console.log('Recursos cargados');
     }
 
@@ -75,13 +75,13 @@ export default class GameScene extends Phaser.Scene {
 
         this.debugText = this.add.text(0, 0, 'Current Speed: ', {
             fontSize: '32px',
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fill: '#000000'
         });
 
         this.timerText = this.add.text(1100, 35, 'Time: 0.00', {
             fontSize: '32px',
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fill: '#000'
         }).setScrollFactor(0);
         
@@ -128,12 +128,6 @@ export default class GameScene extends Phaser.Scene {
         console.log('Peso Chasis:', this.pesoChasis);
         console.log('Peso Piloto:', this.pesoPiloto);
         console.log('Peso Motor:', this.pesoMotor);
-
-
-      
-        
-
-
         
         this.startButton = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_play')
             .setOrigin(1.1, 1)
@@ -202,9 +196,9 @@ export default class GameScene extends Phaser.Scene {
         this.puntaje = 1500 - this.elapsedTime.toFixed(2) * 100;
 
         this.add.text(this.cameras.main.scrollX + 400, this.cameras.main.scrollY + 300, 
-            'Player: ' + this.playerName + '\n' + '¡Level Complete!\nTime: ' + this.elapsedTime.toFixed(2) + 's' + '\n' + 'Score: ' + this.puntaje, {
+            'Player: ' + this.playerName + '\n' + '¡Nivel Completado!\nTiempo: ' + this.elapsedTime.toFixed(2) + 's' + '\n' + 'Puntos: ' + this.puntaje, {
             fontSize: '48px',
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             fill: '#000000',
             align: 'center'
         }).setOrigin(0.5);
