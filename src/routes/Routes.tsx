@@ -13,7 +13,7 @@ import ConfigAdmin from "../pages/ConfigAdmin";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <Login />,
         errorElement: <ErrorPage />
     },
     {

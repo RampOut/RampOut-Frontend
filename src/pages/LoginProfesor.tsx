@@ -50,7 +50,7 @@ const Login_Profesor = (_props: Props) => {
             const {acceso,role} = await getAccess();
             if(acceso === true ){
                 auth.setIsAuthenticated(true);
-                navigate("/micuenta");
+                window.location.href = "/game";
             }else{
                 setErrorView("Acceso Denegado");
             }
