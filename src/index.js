@@ -8,6 +8,7 @@ import Guia from './scenes/Guia';
 import EsperandoPartida from './scenes/EsperandoPartida';
 import VHSShaderPipeline from './VHSShaderPipeline';
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import RexTextEditPlugin from 'phaser3-rex-plugins/plugins/textedit-plugin.js';
 
 const config = {
     type: Phaser.AUTO,

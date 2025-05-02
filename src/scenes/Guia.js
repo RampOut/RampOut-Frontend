@@ -42,8 +42,45 @@ export default class Guia extends Phaser.Scene {
         const footer = this.add.image(this.scale.width / 2, this.scale.height / 2, 'footer').setPosition(640, 650).setScale(0.9);
         const guiaTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'guiaTitle').setPosition(300, -80).setScale(1).setDepth(-2);
         const cuadrotxt = this.add.image(this.scale.width / 2, this.scale.height / 2, 'cuadroText').setPosition(640, 300).setScale(0.6).setDepth(-5);
-        const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(0.6);
-        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(0.6);
+
+        /*const desc = this.add.text(300, 160, 'Pista a los alumnos', {
+            fontSize: 40,
+            color: "#8C8C8C",
+            fontFamily: "Handjet-Regular",
+        });*/
+
+        //Cuadro de texto con input funcional creado con HTML
+        this.textArea = document.createElement('textarea');
+        this.textArea.style.position = 'absolute';
+        this.textArea.style.left = '380px';
+        this.textArea.style.top = '160px';
+        this.textArea.style.width = '720px';
+        this.textArea.style.height = '280px';
+        this.textArea.style.fontSize = '40px';
+        this.textArea.style.color = '#8C8C8C';
+        this.textArea.style.backgroundColor = 'transparent';
+        this.textArea.style.border = 'none';
+        this.textArea.style.fontFamily = 'Handjet-Regular';
+        this.textArea.style.padding = '10px';
+        this.textArea.style.outline = 'none';
+        this.textArea.placeholder = 'Escribe algo aquí...';
+        this.textArea.setAttribute('wrap', 'soft');
+
+        document.body.appendChild(this.textArea);
+
+         //Cancelar reinicia el cuadro de texto
+         const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(-4);
+         btn_cancel.setInteractive().on('pointerdown', () => {
+             this.textArea.value = ''; 
+         });
+
+        //Aceptar guarda el valor de la guía
+        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(810, 500).setScale(0.6).setDepth(-4);
+        btn_accept.setInteractive().on('pointerdown', () => {
+            const userText = this.textArea.value;
+            this.registry.set('guiaText', userText);
+            console.log("Texto guardado: ", userText); // Aquí puedes guardar el texto o hacer cualquier acción
+        });
 
 
         const userText = this.add.text(950, 630, "SESIÓN ACTIVA", {
@@ -51,8 +88,8 @@ export default class Guia extends Phaser.Scene {
             color: "#00FFB7",
             fontFamily: "Handjet-Regular",
         });
-    
-        const explicacion = this.add.text(450, 35, "Aqui puedes escribir instrucciones", {
+
+        const about = this.add.text(450, 35, "Aqui puedes escribir instrucciones", {
             fontSize: 70,
             color: "#FFFFFF",
             fontFamily: "Handjet-Regular",
@@ -60,34 +97,36 @@ export default class Guia extends Phaser.Scene {
 
 
         const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
-        .on('pointerover', function () {
-            btn_back.setTexture("btn_back_h");
-            btn_back.setScale(1.1)
-        }, this).on('pointerout', function () {
-            btn_back.setTexture("btn_back");
-            btn_back.setScale(1)
-        }, this).on('pointerdown', function () {
-            btn_back.setTexture("btn_back_a");
-            userText.text = "";
-            
-            this.tweens.add({
-                targets: [guiaTitle, btn_back],
-                y: -190, // Centro vertical de la pantalla
-                duration: 400,
-                ease: 'Power2',
-                onComplete: () => {
-                    this.tweens.add({
-                        targets: header,
-                        y: 190, // Centro vertical de la pantalla
-                        duration: 800,
-                        ease: 'Power2',
-                        onComplete: () => {
-                            this.scene.start("Start"); // Cambia a tu escena del juego
-                        }
-                    });
-                }
-            });
-        }, this)
+            .on('pointerover', function () {
+                btn_back.setTexture("btn_back_h");
+                btn_back.setScale(1.1)
+            }, this).on('pointerout', function () {
+                btn_back.setTexture("btn_back");
+                btn_back.setScale(1)
+            }, this).on('pointerdown', function () {
+                btn_back.setTexture("btn_back_a");
+                if (this.textArea) this.textArea.value = " ";
+                about.text = "";
+                userText.text = "";
+
+                this.tweens.add({
+                    targets: [guiaTitle, btn_back],
+                    y: -190, // Centro vertical de la pantalla
+                    duration: 400,
+                    ease: 'Power2',
+                    onComplete: () => {
+                        this.tweens.add({
+                            targets: header,
+                            y: 190, // Centro vertical de la pantalla
+                            duration: 800,
+                            ease: 'Power2',
+                            onComplete: () => {
+                                this.scene.start("Start"); // Cambia a tu escena del juego
+                            }
+                        });
+                    }
+                });
+            }, this)
 
 
         this.tweens.add({
@@ -117,6 +156,14 @@ export default class Guia extends Phaser.Scene {
             duration: 400,
             ease: 'Power2',
         });
+     // Elimina el textarea al cambiar de escena
+     this.events.on('shutdown', this.removeTextArea, this);
+    }
+
+    removeTextArea() {
+        if (this.textArea) {
+            document.body.removeChild(this.textArea); 
+        }
     }
 
     update() {
