@@ -18,7 +18,7 @@ import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
 //import tipoUsuario from login
-let tipoUsuario = "profesor"; // alumno | profesor
+let tipoUsuario = "alumno"; // alumno | profesor
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -124,7 +124,7 @@ export default class Start extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("ArmarCarrito"); // Aquí el hechizo, la puerta, el pasaje.
+                                this.scene.start("GameScene"); // Aquí el hechizo, la puerta, el pasaje.
                             }
                         });
                     }

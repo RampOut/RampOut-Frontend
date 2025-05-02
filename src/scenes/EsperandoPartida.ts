@@ -14,12 +14,13 @@ import startBtn_h from "../assets/game/ui/menu/btn_start/btn_start_h.png"
 import startBtn_a from "../assets/game/ui/menu/btn_start/btn_start_a.png"
 import cuadroTxt from "../assets/game/ui/menu/cuadroTXT.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
-import { g } from "react-router/dist/development/fog-of-war-BLArG-qZ";
 
 const COLOR_WHITE = 0xffffff;
 const COLOR_GRAY = 0xbbbbbb;
 const COLOR_GRAY2 = 0x333333;
 const COLOR_BLACK = 0x000000;
+
+export let allMotors = [];
 
 export default class EsperandoPartida extends Phaser.Scene {
 
@@ -55,13 +56,13 @@ export default class EsperandoPartida extends Phaser.Scene {
         this.bg.setPipeline('VHSShader');
 
         const header = this.add.image(this.scale.width / 2, this.scale.height / 2, 'header').setPosition(640, -160).setScale(2).setDepth(-2);
-        const cuadrotxt = this.add.image(this.scale.width / 2, this.scale.height / 2, 'cuadroText').setPosition(550, 170).setScale(0.4,0.2).setDepth(-5);
+        const cuadrotxt = this.add.image(this.scale.width / 2, this.scale.height / 2, 'cuadroText').setPosition(550, 170).setScale(0.4, 0.2).setDepth(-5);
 
         //Ingresa ID Input
         //Cuadro de texto con input funcional creado con HTML
         this.inputId = document.createElement('input');
         this.inputId.style.position = 'absolute';
-        this.inputId.style.left = '380px';
+        this.inputId.style.left = '430px';
         this.inputId.style.top = '0px';
         this.inputId.style.width = '720px';
         this.inputId.style.height = '280px';
@@ -74,58 +75,53 @@ export default class EsperandoPartida extends Phaser.Scene {
         this.inputId.style.outline = 'none';
         this.inputId.placeholder = 'Ingresa el ID de la partida';
         this.inputId.setAttribute('wrap', 'soft');
-        
+
 
         document.body.appendChild(this.inputId);
 
         //Cancelar reinicia el cuadro de texto
         const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(470, 500).setScale(0.6).setDepth(-4);
-        
-       btn_cancel.setInteractive({useHandCursor: true}).on('pointerdown', () => {
-           this.inputId.value = ''; 
-       });
 
-       const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1000, 180).setScale(0.6)
-        .setDepth(-4).setInteractive({useHandCursor: true})
-        .on('pointerdown', async () => {
-            let inputId = parseInt(this.inputId.value);
-            this.registry.set('guiaText', inputId);
-            console.log("Texto guardado: ", inputId);
-          
-            try {
-              const teamValues = await getTeamsByMatchIdFromAll(inputId);
-              const levelValues = await getLevelsByMatchIdFromAll(inputId);
-          
-              console.log("Equipos:", teamValues);
-              console.log("Niveles completos:", levelValues);
-          
-              // Imprimir los motors de cada nivel
-              levelValues.forEach((level, index) => {
-                console.log(`Motores del nivel ${index}:`, level.motors);
-              });
-          
-            } catch (error) {
-              console.error("Error al obtener los datos:", error);
-            }
-          });
+        btn_cancel.setInteractive({ useHandCursor: true }).on('pointerdown', () => {
+            this.inputId.value = '';
+        });
 
+        const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1000, 180).setScale(0.6)
+            .setDepth(-4).setInteractive({ useHandCursor: true })
+            .on('pointerdown', async () => {
+                let inputId = parseInt(this.inputId.value);
+                this.registry.set('guiaText', inputId);
+                console.log("Texto guardado: ", inputId);
 
+                try {
+                    const teamValues = await getTeamsByMatchIdFromAll(inputId);
+                    const levelValues = await getLevelsByMatchIdFromAll(inputId);
 
+                    console.log("Equipos:", teamValues);
+                    console.log("Niveles completos:", levelValues);
 
-        // Center the title at the middle of the screen
-        const levelTitle = this.add.text(this.scale.width / 2, this.scale.height / 2, 'ESPERANDO A QUE EL PROFESOR\nINICIE LA PARTIDA...', {
-            fontSize: 75,
-            fontFamily: "Handjet",
-            color: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5, 0.8).setDepth(-3);
+                    // Imprimir los motors de cada nivel
+                    levelValues.forEach((level, index) => {
+                        console.log(`Motores del nivel ${index}:`, level.motors);
+                    });
 
-        // Ensure it stays centered by setting position directly
-        levelTitle.setPosition(this.scale.width / 2, this.scale.height / 2);
+                    levelValues.forEach((level) => {
+                        if (Array.isArray(level.motors)) {
+                            allMotors.push(level.motors); // Cada uno es un array [rpm, diametro]
+                        }
+                    });
+
+                    document.body.removeChild(this.inputId);
+                    this.scene.start("GameScene");
+
+                } catch (error) {
+                    console.error("Error al obtener los datos:", error);
+                }
+            });
 
 
         const btn_regresar = this.add.image(this.scale.width / 2, this.scale.height / 2, 'botonRegresar').setPosition(640, 510).setScale(0.3).setDepth(-4)
-            .setInteractive({useHandCursor: true}).on('pointerover', function () {
+            .setInteractive({ useHandCursor: true }).on('pointerover', function () {
                 btn_regresar.setTexture("botonRegresar");
                 btn_regresar.setScale(0.35)
             }, this).on('pointerout', function () {
@@ -140,6 +136,7 @@ export default class EsperandoPartida extends Phaser.Scene {
                     duration: 800,
                     ease: 'Power2',
                     onComplete: () => {
+                        document.body.removeChild(this.inputId);
                         this.scene.start("Start"); // Cambia a tu escena del juego
                     }
                 });

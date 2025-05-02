@@ -86,7 +86,7 @@ export default class Car extends Phaser.Physics.Matter.Sprite {
         
         // Verificar si está en el suelo
         const velocity = this.body.velocity;
-        const onGround = Math.abs(velocity.y) < 0.5 && Math.abs(this.body.angle) < 0.5;
+        const onGround = Math.abs(velocity.y) < 0.5 && Math.abs(this.body.angle) < 0.8;
         
         if (onGround) {
             // Calcular la nueva velocidad usando v(t) = A∆t + v(t-1)

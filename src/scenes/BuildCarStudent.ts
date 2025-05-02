@@ -31,6 +31,7 @@ import car2 from "../assets/game/sprites/van.png";
 
 //the rest
 import inputbar from "../assets/game/ui/menu/inputbar.png";
+import { allMotors } from "./EsperandoPartida";
 
 const COLOR_WHITE = 0xffffff;
 const COLOR_GRAY = 0xbbbbbb;
@@ -42,7 +43,10 @@ export let masaChasis = 0;
 export let masaRueda = 0;
 export let masaMotor = 0;
 export let potenciaMotor = 0;
+export let rpmVARIABLE;
+export let ruedasizeVARIABLE;
 export let timerBuildCar = 0;
+export let carSprite = ""; 
 
 export default class BuildCarStudent extends Phaser.Scene {
 
@@ -87,8 +91,8 @@ export default class BuildCarStudent extends Phaser.Scene {
         const masapilotoindex = ['???', 75, 100, 80];
         const masachasisindex = ['???', 800, 1200, 500];
         const masaruedaindex = ['???', 20, 25, 10];
-        const masamotorindex = ['???', 180, 250, 140];
-        const potenciaindex = ['???', 300, 450, 250];
+        const masamotorindex = ['???', 100, 150, 200];
+        const potenciaindex = ['???', 200, 450, 650];
 
         const carindex = ['car0', 'car1', 'car2', 'car0'];
 
@@ -151,8 +155,8 @@ export default class BuildCarStudent extends Phaser.Scene {
             align: 'left'
         }).setPosition(225, 460);
 
-        const rpmVARIABLE:number = 0;
-        const ruedasizeVARIABLE:number = 0;
+        rpmVARIABLE = allMotors[0][0];
+        ruedasizeVARIABLE = allMotors[0][1];
 
         const rpmvalue = this.add.text(780, 20, rpmVARIABLE.toString(), {
             fontSize: 40,
@@ -200,14 +204,15 @@ export default class BuildCarStudent extends Phaser.Scene {
                 c_button.setTexture(selectedOptionIndex === 3 ? 'c_black' : 'c_white');
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
+                carSprite = carindex[selectedOptionIndex];
                 
                 masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
                 masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
                 masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
 
-                masaPilotoDISPLAY.setText(${masaPiloto});
-                masaChasisDISPLAY.setText(${masaChasis});
-                masaRuedaDISPLAY.setText(${masaRueda});
+                masaPilotoDISPLAY.setText(`${masaPiloto}`);
+                masaChasisDISPLAY.setText(`${masaChasis}`);
+                masaRuedaDISPLAY.setText(`${masaRueda}`);
             }, this);
 
 
@@ -238,14 +243,15 @@ export default class BuildCarStudent extends Phaser.Scene {
                 c_button.setTexture(selectedOptionIndex === 3 ? 'c_black' : 'c_white');
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
+                carSprite = carindex[selectedOptionIndex];
 
                 masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
                 masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
                 masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
 
-                masaPilotoDISPLAY.setText(${masaPiloto});
-                masaChasisDISPLAY.setText(${masaChasis});
-                masaRuedaDISPLAY.setText(${masaRueda});
+                masaPilotoDISPLAY.setText(`${masaPiloto}`);
+                masaChasisDISPLAY.setText(`${masaChasis}`);
+                masaRuedaDISPLAY.setText(`${masaRueda}`);
             }, this);
 
         const c_button = this.add.image(this.scale.width / 2, this.scale.height / 2, 'c_white')
@@ -273,14 +279,15 @@ export default class BuildCarStudent extends Phaser.Scene {
                 c_button.setTexture(selectedOptionIndex === 3 ? 'c_black' : 'c_white');
                 console.log("Trying to switch to:", carindex[selectedOptionIndex]);
                 carro.setTexture(carindex[selectedOptionIndex]);
+                carSprite = carindex[selectedOptionIndex];
 
                 masaPiloto = parseInt(masapilotoindex[selectedOptionIndex]);
                 masaChasis = parseInt(masachasisindex[selectedOptionIndex]);
                 masaRueda = parseInt(masaruedaindex[selectedOptionIndex]);
 
-                masaPilotoDISPLAY.setText(${masaPiloto});
-                masaChasisDISPLAY.setText(${masaChasis});
-                masaRuedaDISPLAY.setText(${masaRueda});
+                masaPilotoDISPLAY.setText(`${masaPiloto}`);
+                masaChasisDISPLAY.setText(`${masaChasis}`);
+                masaRuedaDISPLAY.setText(`${masaRueda}`);
             }, this);
         
         //OPCIONES DE MOTOR
