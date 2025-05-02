@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Gothic+A1&family=Handjet:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Neuton:ital,wght@0,200;0,300;0,400;0,700;0,800;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 *,
 *::before,
 *::after {
@@ -10,6 +12,7 @@ html,
 body {
     width: 100%;
     height: 100%;
+    color:#424242;
 }
 
 h1{
@@ -18,7 +21,7 @@ h1{
 
 body {
     line-height: 1;
-    font-family: Arial, sans-serif;
+    font-family: "Handjet", sans-serif;
     background-color: #000000;
 }
 
@@ -38,3 +41,34 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.background-login {
+    background-image: url(../assets/game/bg.png);
+    background-size: cover;
+    background-repeat: repeat; 
+    background-position: center;
+    height: 100vh;
+    font-family: "Handjet", sans-serif;
+    font-size: xx-large;
+    color: #424242;
+  }
+
+  .background-login button {
+    font-weight: bold;
+    font-size: 100%;
+    background-color: #ffffff;
+  }
+
+  .background-login button:hover{
+    background-color: #423782;
+    color: #ffffff;
+  }
+/*
+  .admin{
+    background: linear-gradient(#e0e0e0,rgb(166, 110, 177));
+  }
+
+  .admin header{
+    background: #423782;
+
+  }*/
