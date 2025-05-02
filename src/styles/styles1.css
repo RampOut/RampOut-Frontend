@@ -21,7 +21,7 @@ h1{
 
 body {
     line-height: 1;
-    font-family: Arial, sans-serif;
+    font-family: "Handjet", sans-serif;
     background-color: #000000;
 }
 
@@ -63,3 +63,12 @@ a {
     background-color: #423782;
     color: #ffffff;
   }
+/*
+  .admin{
+    background: linear-gradient(#e0e0e0,rgb(166, 110, 177));
+  }
+
+  .admin header{
+    background: #423782;
+
+  }*/
