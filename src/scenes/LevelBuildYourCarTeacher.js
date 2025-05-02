@@ -15,16 +15,15 @@ import transpImg from "../assets/game/blank.png"
 import acceptBtn from "../assets/game/ui/menu/botonAceptar.png"
 import cancelBtn from "../assets/game/ui/menu/botonCancelar.png"
 import inputBox from "../assets/game/ui/menu/input.png"
+import Slider from "../scripts/objects/slider"
 
-let acelMAX = null;
-let velMAX = null;
-let peso = null;
-let torque = null;
+export let rpm = 3000;
+export let diametroLlantas = 40;
 
-export default class LevelBuildYourCar extends Phaser.Scene {
+export default class LevelBuildYourCarTeacher extends Phaser.Scene {
     
     constructor() {
-        super("LevelBuildYourCar");
+        super("LevelBuildYourCarTeacher");
     }
 
     preload() {
@@ -78,6 +77,7 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             fontFamily: "Handjet",
         });
 
+        /*
         this.inputRPM = document.createElement("input");
         this.inputRPM.style.position = 'absolute';
         this.inputRPM.style.left = '75%';
@@ -111,6 +111,7 @@ export default class LevelBuildYourCar extends Phaser.Scene {
         this.inputDiam.placeholder = 'Inserte valor...';
         this.inputDiam.setAttribute('wrap', 'soft');
         document.body.appendChild(this.inputDiam);
+        */
 
         const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1)
         .setDepth(-2).setInteractive({useHandCursor: true})
@@ -138,7 +139,7 @@ export default class LevelBuildYourCar extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelSelect"); // Cambia a tu escena del juego
+                                this.scene.start(""); // Cambia a tu escena del juego
                             }
                         });
                     }
@@ -168,28 +169,17 @@ export default class LevelBuildYourCar extends Phaser.Scene {
 
         const carImg = this.add.image(335, 430, "transpImg").setScale(1).setDepth(-3);
 
-        const carPresets = this.add.text(815, 180, "RPM:\n\nDIÁMETRO\nRUEDA (CM):", {
-            fontSize: 42,
-            color: "#000000",
-            fontFamily: "Handjet",
-            align: "left",
-        }).setDepth(-3);
-
         const btn_accept = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_accept').setPosition(1020, 445).setScale(0.6)
             .setDepth(-4).setInteractive({useHandCursor: true})
-            .on('pointerdown', () => {
-                
+            .on('pointerdown', () => { 
+                console.log(rpm)
+                console.log(diametroLlantas)
             });
         
         const btn_cancel = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_cancel').setPosition(1020, 520).setScale(0.6)
             .setDepth(-4).setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
-                this.inputRPM.value = "";
-                this.inputDiam.value = "";
             });
-        
-        const input1 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'input_box').setPosition(1120, 220).setScale(0.9).setDepth(-4);
-        const input2 = this.add.image(this.scale.width / 2, this.scale.height / 2, 'input_box').setPosition(1120, 320).setScale(0.9).setDepth(-4);
 
         const optA = this.add.text(280, 160, "a)", {
             fontFamily: "Handjet",
@@ -289,6 +279,16 @@ export default class LevelBuildYourCar extends Phaser.Scene {
             y: 75, // Centro vertical de la pantalla
             duration: 400,
             ease: 'Power2',
+        });
+
+        //Sliders para ajustar las propiedades del carro (PlaceHolder para la escena de configuracion)
+        this.RPMSlider = new Slider(this, 'RPM', 1000, 200, 6000, (val) => {
+            rpm = val;
+        });
+
+        //Sliders para ajustar las propiedades del carro (PlaceHolder para la escena de configuracion)
+        this.diametroSlider = new Slider(this, 'DIÁMETRO LLANTAS (CM)', 1000, 300, 80, (val) => {
+            diametroLlantas = val;
         });
     }
 

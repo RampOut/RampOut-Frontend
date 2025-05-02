@@ -5,7 +5,7 @@ import LevelGameSetup from './scenes/LevelGameSetup';
 import GameScene from './scenes/GameScene';
 import LevelBlack from './scenes/LevelBlack';
 import LevelResults from './scenes/LevelResults';
-import LevelBuildYourCar from './scenes/LevelBuildYourCar';
+import LevelBuildYourCarTeacher from './scenes/LevelBuildYourCarTeacher';
 import LevelStudentTeam from './scenes/LevelStudentTeam';
 import StudentGuide from './scenes/StudentGuide';
 import TeacherGuide from './scenes/TeacherGuide';
@@ -29,7 +29,7 @@ const config = {
     },
 
     scene: [Start, LevelSelect, LevelGameSetup, LevelResults, LevelBlack, TeacherGuide,
-            StudentGuide, LevelBuildYourCar, LevelStudentTeam, EsperandoPartida, ArmarCarrito],
+            StudentGuide, LevelBuildYourCarTeacher, LevelStudentTeam, EsperandoPartida, ArmarCarrito],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline,
     },

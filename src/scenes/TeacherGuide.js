@@ -81,6 +81,7 @@ export default class TeacherGuide extends Phaser.Scene {
             const userText = this.textArea.value;
             this.registry.set('guiaText', userText);
             console.log("Texto guardado: ", userText); // Aquí puedes guardar el texto o hacer cualquier acción
+            this.scene.start("LevelSelect")
         });
 
 

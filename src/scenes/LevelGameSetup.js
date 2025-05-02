@@ -6,6 +6,7 @@ import lvlTitle from "../assets/game/ui/menu/LGS_title.png";
 import startBtn from "../assets/game/ui/menu/btn_start/btn_start.png"
 import startBtn_h from "../assets/game/ui/menu/btn_start/btn_start_h.png"
 import startBtn_a from "../assets/game/ui/menu/btn_start/btn_start_a.png"
+import { nombreEquipo1, nombreEquipo2, equipo1, equipo2 } from "./LevelStudentTeam";
 
 const COLOR_WHITE = 0xffffff;
 const COLOR_GRAY = 0xbbbbbb;
@@ -84,15 +85,15 @@ export default class LevelGameSetup extends Phaser.Scene {
                 });
             }, this);
 
-        let pintarPanelT1 = function (s) {
+        let pintarPanelT1 = function (s, arr) {
             let panelScroll = s.rexUI.add.sizer({
                 width: 100,
                 orientation: 'y',
                 space: { item: 0 }
             })
 
-            for (let x = 0; x < 50; x++) {
-                let desc = `${x + 1}.-  Estudiante`;
+            for (let x = 0; x < arr.length; x++) {
+                let desc = `${x + 1}.-  ${arr[x]}`;
                 let texto = s.rexUI.add.label({
                     background: s.rexUI.add.roundRectangle({
                         color: COLOR_WHITE,
@@ -113,7 +114,7 @@ export default class LevelGameSetup extends Phaser.Scene {
         }
 
         this.rexUI.add.roundRectangle({ width: 450, height: 50, color: COLOR_BLACK, strokeColor: COLOR_BLACK, strokeWidth: 2 }).setPosition(350, 215).setDepth(-4);
-        this.add.text(300, 193, "EQUIPO 1", {
+        this.add.text(300, 193, `${nombreEquipo1}`, {
             fontSize: 40,
             color: "#FFFFFF",
             fontFamily: "Handjet",
@@ -131,7 +132,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                 strokeWidth: 2
             }),
             panel: {
-                child: pintarPanelT1(this),
+                child: pintarPanelT1(this, equipo1),
             },
 
             slider: {
@@ -144,7 +145,7 @@ export default class LevelGameSetup extends Phaser.Scene {
             .layout().setDepth(-4);
 
         this.rexUI.add.roundRectangle({ width: 450, height: 50, color: COLOR_BLACK, strokeColor: COLOR_BLACK, strokeWidth: 2 }).setPosition(930, 215).setDepth(-4);
-        this.add.text(880, 193, "EQUIPO 2", {
+        this.add.text(880, 193, `${nombreEquipo2}`, {
             fontSize: 40,
             color: "#FFFFFF",
             fontFamily: "Handjet",
@@ -162,7 +163,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                 strokeWidth: 2
             }),
             panel: {
-                child: pintarPanelT1(this),
+                child: pintarPanelT1(this, equipo2),
             },
 
             slider: {
@@ -197,7 +198,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start('GameScene', { playerName: 'A01254623' });
+                                this.scene.start("LevelBuildYourCarTeacher");
                             }
                         });
                     }

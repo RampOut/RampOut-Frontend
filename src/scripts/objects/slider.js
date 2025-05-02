@@ -8,10 +8,10 @@ export default class Slider {
         this.value = constante / 2;  // valor inicial
 
         // Etiqueta
-        this.label = scene.add.text(x - 130, y - 30, name + ':', {
-            fontSize: '20px',
-            fontFamily: "Handjet-Regular",
-            
+        this.label = scene.add.text(x - 130, y - 50, name + ':', {
+            fontSize: 32,
+            fontFamily: "Handjet",
+             
             color: '#000'
         });
 

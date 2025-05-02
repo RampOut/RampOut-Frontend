@@ -7,9 +7,14 @@ import layout from "../assets/game/ui/menu/layout_Register.png";
 import input from "../assets/game/ui/menu/input.png";
 import submitBtn from "../assets/game/ui/menu/btn_iniciar_R.png";
 import BtnBackTeam from "../assets/game/ui/menu/btn_back_light.png"
+import BtnNextTeam from "../assets/game/ui/menu/btn_nextTeam.png"
 
-export let nombreEquipo = null;
-export let equipo = [];
+export let nombreEquipo1 = null;
+export let nombreEquipo2 = null;
+export let equipo1 = [];
+export let equipo2 = [];
+
+let contadorEquipos = 1;
 
 export default class LevelStudentTeam extends Phaser.Scene {
     constructor() {
@@ -22,9 +27,11 @@ export default class LevelStudentTeam extends Phaser.Scene {
         this.load.image('inputR', input);
         this.load.image('btn_submit', submitBtn);
         this.load.image('btn_back_team', BtnBackTeam);
+        this.load.image('btn_nextTeam', BtnNextTeam);
     }
 
-    create() {input
+    create() {
+
         this.renderer.pipelines.add('VHSShader', new VHSShaderPipeline(this.game));
 
         this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, "backgroundGreen").setOrigin(0).setDepth(-5);
@@ -36,7 +43,7 @@ export default class LevelStudentTeam extends Phaser.Scene {
 
         const layout = this.add.image(this.scale.width / 2, this.scale.height / 2, "layout").setOrigin(0).setPosition(300, 50).setScale(0.75).setDepth(-4);
 
-        const labelEquipo = this.add.text(490, 140, "NOMBRE DEL EQUIPO", {
+        const labelEquipo = this.add.text(490, 140, "PRIMER EQUIPO", {
             fontSize: 48,
             fontFamily: "Handjet",
             color: "#6C6C6C",
@@ -64,7 +71,7 @@ export default class LevelStudentTeam extends Phaser.Scene {
         this.inputNE.style.fontFamily = 'Handjet';
         this.inputNE.style.padding = '10px';
         this.inputNE.style.outline = 'none';
-        this.inputNE.placeholder = 'Inserte valor...';
+        this.inputNE.placeholder = 'Inserta el nombre de tu equipo...';
         this.inputNE.setAttribute('wrap', 'soft');
 
         document.body.appendChild(this.inputNE);
@@ -82,7 +89,7 @@ export default class LevelStudentTeam extends Phaser.Scene {
         this.inputM.style.fontFamily = 'Handjet';
         this.inputM.style.padding = '10px';
         this.inputM.style.outline = 'none';
-        this.inputM.placeholder = 'Inserte valor...';
+        this.inputM.placeholder = 'Inserte matrícula...';
         this.inputM.setAttribute('wrap', 'soft');
 
         document.body.appendChild(this.inputM);
@@ -94,18 +101,36 @@ export default class LevelStudentTeam extends Phaser.Scene {
         }).setOrigin(0).setPadding(10,0,10,0).setScale(0.6).setDepth(-4)
         .setInteractive({useHandCursor: true})
         .on("pointerdown",()=>{
-            equipo.push(this.inputM.value);
-            console.log(equipo);
-            this.inputM.value = "";
+            if (contadorEquipos == 1){
+                equipo1.push(this.inputM.value);
+                console.log(equipo1);
+                this.inputM.value = "";
+            } else {
+                equipo2.push(this.inputM.value);
+                console.log(equipo2);
+                this.inputM.value = "";
+            }
         }, this);
-
+        
         const btn_submit = this.add.image(this.scale.width / 2, this.scale.height / 2, "btn_submit").setOrigin(0).setPosition(420, 500).setScale(0.6).setDepth(-4)
         .setInteractive({useHandCursor: true})
         .on("pointerdown",()=>{
-            if (nombreEquipo != null && nombreEquipo != ""){
+            if (nombreEquipo2 != null && nombreEquipo2 != ""){
                 document.body.removeChild(this.inputNE);
                 document.body.removeChild(this.inputM);
-                this.scene.start("StudentGuide");
+                this.scene.start("TeacherGuide");
+            }
+        },this);
+
+        const btn_nextTeam = this.add.image(this.scale.width / 2, this.scale.height / 2, "btn_nextTeam").setOrigin(0).setPosition(420, 500).setScale(0.6).setDepth(-3)
+        .setInteractive({useHandCursor: true})
+        .on("pointerdown",()=>{
+            if (nombreEquipo1 != null && nombreEquipo1 != ""){
+                contadorEquipos += 1;
+                labelEquipo.setText("SEGUNDO EQUIPO");
+                this.inputNE.value = null;
+                this.inputM.value = null;
+                btn_nextTeam.destroy();
             }
         },this);
 
@@ -122,6 +147,10 @@ export default class LevelStudentTeam extends Phaser.Scene {
         this.bg.tilePositionX += 1.2;
         this.bg.tilePositionY += 0.2;
 
-        nombreEquipo = this.inputNE.value;
+        if (contadorEquipos == 1){
+            nombreEquipo1 = this.inputNE.value;
+        } else {
+            nombreEquipo2 = this.inputNE.value;
+        }
     }
 }
