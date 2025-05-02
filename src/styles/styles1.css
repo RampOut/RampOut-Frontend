@@ -43,14 +43,14 @@ a {
 }
 
 .background-login {
-    background-image: url(../assets/game/bg.png);
+    background-image: url(../assets/game/ui/menu/checkersPurple.png);
     background-size: cover;
     background-repeat: repeat; 
     background-position: center;
     height: 100vh;
     font-family: "Handjet", sans-serif;
     font-size: xx-large;
-    color: #424242;
+    color: #e7e2e2;
   }
 
   .background-login button {
