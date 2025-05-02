@@ -2,13 +2,15 @@ import 'phaser';
 import Start from './scenes/Start';
 import LevelSelect from './scenes/LevelSelect';
 import LevelGameSetup from './scenes/LevelGameSetup';
+import GameScene from './scenes/GameScene';
 import LevelBlack from './scenes/LevelBlack';
 import LevelResults from './scenes/LevelResults';
-import VHSShaderPipeline from './VHSShaderPipeline';
-import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import LevelBuildYourCar from './scenes/LevelBuildYourCar';
+import LevelStudentTeam from './scenes/LevelStudentTeam';
 import StudentGuide from './scenes/StudentGuide';
 import TeacherGuide from './scenes/TeacherGuide';
-import LevelBuildYourCar from './scenes/LevelBuildYourCar';
+import VHSShaderPipeline from './VHSShaderPipeline';
+import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 const config = {
     type: Phaser.AUTO,
@@ -18,12 +20,12 @@ const config = {
     physics: {
         default: "matter",
         matter: {
-            gravity: { y: 0.7 },
+            gravity: { y: 1 },
             debug: true
         }
     },
     scene: [Start, LevelSelect, LevelGameSetup, LevelResults, LevelBlack, TeacherGuide,
-            StudentGuide, LevelBuildYourCar],
+            StudentGuide, LevelBuildYourCar, LevelStudentTeam],
     pipeline: {
         CustomShaderVHS: VHSShaderPipeline,
     },
@@ -43,6 +45,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
 export default game;
 
 if (window.location.pathname !== "/game") {

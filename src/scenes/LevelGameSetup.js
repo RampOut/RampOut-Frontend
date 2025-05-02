@@ -51,7 +51,7 @@ export default class LevelGameSetup extends Phaser.Scene {
         const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         });
 
         const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2).setInteractive()
@@ -102,7 +102,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                     text: s.add.text(0, 0, desc, {
                         fontSize: 32,
                         color: `${COLOR_BLACK}`,
-                        fontFamily: "Handjet-Regular",
+                        fontFamily: "Handjet",
                     }),
                     space: { left: 10, right: 10, top: 5, bottom: 5 },
                     name: desc,
@@ -116,7 +116,7 @@ export default class LevelGameSetup extends Phaser.Scene {
         this.add.text(300, 193, "EQUIPO 1", {
             fontSize: 40,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-3);
 
         let scrollT1 = this.rexUI.add.scrollablePanel({
@@ -147,7 +147,7 @@ export default class LevelGameSetup extends Phaser.Scene {
         this.add.text(880, 193, "EQUIPO 2", {
             fontSize: 40,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-3);
 
         let scrollT2 = this.rexUI.add.scrollablePanel({
@@ -197,7 +197,7 @@ export default class LevelGameSetup extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("LevelBlack"); // Cambia a tu escena del juego
+                                this.scene.start('GameScene', { playerName: 'A01254623' });
                             }
                         });
                     }

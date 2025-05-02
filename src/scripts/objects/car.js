@@ -1,119 +1,109 @@
-export default class Car {
-
-
-    constructor(
-        scene,
-        x,
-        y,
-        {
-
-            width = 137.5,
-            height = 50,
-            wheelSize = 22, // tamaño de la rueda en cm
-            wheelOffsetX = 20,
-            wheelOffsetY = 40,
-            masaChasis = 1200, // kg
-            masaLlantas = 60, // densidad específica para las llantas
-            potenciaMotor = 180, // hp
-            rpm = 3000 // revoluciones por minuto
-        } = {}
-    ) {
-        this._scene = scene;
-    
-        const wheelBase = wheelOffsetX;
-        const wheelAOffset = -width * 0.5 + wheelBase;
-        const wheelBOffset = width * 0.5 - wheelBase;
-    
-        this.masaChasis = masaChasis;
-        this.potenciaMotor = potenciaMotor*10;
-        this.rpm = rpm;
-        const wheelRadius = wheelSize * 0.5;
-        const wheelArea = Math.PI * Math.pow(wheelRadius, 2);
-        this.densidadLlantas = masaLlantas / wheelArea;
-    
-        const area = width * height;
-        const densityChasis = masaChasis / area;
-        const friction = 1;
-    
-        this.gas = { left: false, right: false };
-        this.ACCELERATION = 0.002 * 6;
-        this.ACCELERATION_BACKWARDS = 0.001;
-        this.MAX_SPEED = 0.04 * 16;
-        this.MAX_SPEED_BACKWARDS = 0.04;
-    
-        const Matter = Phaser.Physics.Matter.Matter;
-        const group = scene.matter.world.nextGroup(true);
-    
-        // Chasis
-        const body = scene.matter.add.image(x, y, 'car_chasis');
-        body.setScale(0.35);
-        body.setRectangle(width, height, {
-            label: 'carBody',
-            collisionFilter: { group },
-            chamfer: { radius: height * 0.5 },
-            density: densityChasis // ajustamos para Matter.js
-        });
-    
-        // Rueda Trasera
-        const wheelA = scene.matter.add.image(x + wheelAOffset, y + wheelOffsetY, 'car_wheel');
-        wheelA.setScale(wheelSize / 400);
-        wheelA.setCircle(wheelSize, {
-            label: 'wheelRear',
-            collisionFilter: { group },
-            friction,
-            density: this.densidadLlantas
-        });
-    
-        // Rueda Delantera
-        const wheelB = scene.matter.add.image(x + wheelBOffset, y + wheelOffsetY, 'car_wheel');
-        wheelB.setScale(wheelSize / 400);
-        wheelB.setCircle(wheelSize, {
-            label: 'wheelFront',
-            collisionFilter: { group },
-            friction,
-            density: this.densidadLlantas
-        });
+export default class Car extends Phaser.Physics.Matter.Sprite {
+    constructor(scene, x, y, texture, config) {
+        // Crear un cuerpo rectangular para la física que coincida con la forma del sprite
+        const options = {
+            restitution: 0.2,  // Rebote
+            frictionAir: 0,
+            friction: 0.1,
+            density: 0.001     // Controlará la masa en relación al tamaño
+        };
         
         
-        // Ejes
-        const axelA = scene.matter.add.constraint(body.body, wheelA.body, 0, 0.2, {
-            pointA: { x: -wheelAOffset, y: wheelOffsetY }
-        });
+
+        // Llamar al constructor del sprite con estas opciones para crear un cuerpo físico completo
+        super(scene.matter.world, x, y, texture, 0, options);
+        scene.add.existing(this);
     
-        const axelB = scene.matter.add.constraint(body.body, wheelB.body, 0, 0.2, {
-            pointA: { x: -wheelBOffset, y: wheelOffsetY }
-        });
-    
-        this.bodies = [body.body, wheelA.body, wheelB.body];
+        // Escala del vehículo (default 1 si no se define)
+        this.escala = config.escala || 1;
+        this.setScale(this.escala);
+        
+        // Asegurar que el cuerpo físico se actualice con la nueva escala
+        this.setRectangle(
+            this.width * this.escala,  // Ancho del cuerpo físico
+            this.height * this.escala,  // Alto del cuerpo físico
+            { isStatic: false }
+        );
+        
+        // Parámetros de entrada
+        this.hp = config.hp || 150;
+        this.rpm = config.rpm || 5000;
+        this.diametroLlantasCM = config.diametroLlantasCM || 50.8; // 20 pulgadas en cm
+
+        // Pesos (en kg)
+        this.piloto = config.piloto || 70;
+        this.chasis = config.chasis || 200;
+        this.motor = config.motor || 150;
+        this.llantas = config.llantas || 40;
+
+        // Masa total del sistema
+        this.mSistema = this.piloto + this.chasis + this.motor + this.llantas;
+        
+        // Establecer la masa en el motor de física de Matter
+        this.setMass(this.mSistema);
+
+        // Parámetros físicos y cálculos
+        this.radioLlanta = (this.diametroLlantasCM / 100) / 2; // metros
+        this.mMuerta = 1; // kg
+
+        // Torque a partir de potencia (Nm)
+        this.torque = (this.hp * 745.7) / (2 * Math.PI * (this.rpm / 60));
+
+        // Parámetros del eje
+        this.rEje = 0.2; // radio del eje en metros
+        this.dEje = 0.2; // distancia del eje en metros
+
+        // Calcular omega usando la fórmula proporcionada
+        this.omega = Math.sqrt(this.torque / (4 * Math.pow(this.radioLlanta, 2) * this.mSistema));
+
+        // Fuerza del motor usando la fórmula exacta proporcionada
+        /*this.fMotor = (Math.pow(this.rEje, 2) * this.mMuerta * Math.pow(this.omega, 2)) / 
+                     (this.dEje * 4);*/
+        
+        // Fuerza GoKart
+        this.fGoKart = (3 * this.mSistema * Math.pow(this.omega, 2)) / (4 * this.dEje);
+        
+        // Fuerza neta del vehículo (restando la fricción)
+        this.fVehiculo = this.fGoKart - (this.mSistema * 9.81 * 0.2); // 0.2 como coeficiente de fricción
+        
+        // Aceleración
+        this.aceleracion = this.fVehiculo / this.mSistema;
+
+        this.prevVelocity = 0;
+        this.prevDistance = 0;
+        this.deltaT = 0;
+        this.tiempo = 0;
+
+        // Fijar el centro de masa al centro del sprite
+        //this.setCenterOfMass({ x: 0.5, y: 0.5 });
     }
 
-
-    update() {
-        const Matter = Phaser.Physics.Matter.Matter;
-        const carBody = this.bodies[0];
-        const wheelRear = this.bodies[1];
-        const wheelFront = this.bodies[2];
-      
-        const angularVelocityBase = (this.rpm / 60) * (2 * Math.PI); // rpm -> rad/seg
-        const motorForce = (this.potenciaMotor * 745.7) / (angularVelocityBase); // hp -> fuerza
-        const wheelTorque = motorForce * 0.1;
-        const accelerationFromTorque = wheelTorque / (this.masaChasis * 10);
+    update(time, delta) {
+        // Convertir delta de ms a segundos
+        const dt = delta / 1000;
+        this.deltaT = dt;
+        this.tiempo += dt;
         
-
-        // Aceleración automática si no se presiona nada
-        let autoSpeed = wheelRear.angularSpeed + accelerationFromTorque;
-        if (autoSpeed > this.MAX_SPEED) autoSpeed = this.MAX_SPEED;
-
-
-        // Asignar velocidad a las ruedas
-        /*if (this.wheelsDown?.rear && this.wheelsDown?.front) {
-            Matter.Body.setAngularVelocity(wheelRear, wheelRear.angularVelocity * 0.9);
-            Matter.Body.setAngularVelocity(wheelFront, wheelFront.angularVelocity * 0.9);
-        }*/
-        //else{
-        Matter.Body.setAngularVelocity(wheelRear, autoSpeed);
-        Matter.Body.setAngularVelocity(wheelFront, autoSpeed);
-        //}
-
+        // Verificar si está en el suelo
+        const velocity = this.body.velocity;
+        const onGround = Math.abs(velocity.y) < 0.5 && Math.abs(this.body.angle) < 0.5;
+        
+        if (onGround) {
+            // Calcular la nueva velocidad usando v(t) = A∆t + v(t-1)
+            const newVelocity = this.aceleracion * dt + this.prevVelocity;
+            
+            // Calcular la nueva distancia usando d(t) = v∆t + (A(∆t)²)/2 + d(t-1)
+            const distanceIncrement = this.prevVelocity * dt + 
+                                     (this.aceleracion * Math.pow(dt, 2)) / 2;
+            
+            // Aplicar la velocidad calculada
+            this.setVelocityX(newVelocity);
+            
+            // Actualizar los valores previos para el siguiente frame
+            this.prevVelocity = newVelocity;
+            this.prevDistance += distanceIncrement;
+            this.groundedAngle = this.body.angle;
+        }
+        
     }
 }

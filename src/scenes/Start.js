@@ -2,7 +2,7 @@ import "phaser";
 import VHSShaderPipeline from "../VHSShaderPipeline";
 
 // Importar imágenes y sprites
-import background from "../assets/game/ui/menu/checkersBG2.png";
+import background from "../assets/game/ui/menu/checkersBG1.png";
 import header from "../assets/game/ui/menu/Header.png";
 import logo from "../assets/game/ui/menu/RAMPOUT_logo.png";
 import footer from "../assets/game/ui/menu/footer.png";
@@ -17,7 +17,7 @@ import btn_config_h from "../assets/game/ui/menu/btn_config/btn_config_h.png";
 import btn_config_a from "../assets/game/ui/menu/btn_config/btn_config_a.png";
 import fontHJ from "../assets/game/fonts/Handjet-SemiBold.ttf";
 
-let tipoUsuario = "profesor";
+let tipoUsuario = "alumno";
 
 export default class Start extends Phaser.Scene {
     constructor() {
@@ -38,7 +38,7 @@ export default class Start extends Phaser.Scene {
         this.load.image('btn_config', btn_config);
         this.load.image('btn_config_hover', btn_config_h);
         this.load.image('btn_config_active', btn_config_a);
-        this.load.font("Handjet-Regular", fontHJ, "truetype");
+        this.load.font("Handjet", fontHJ, "truetype");
 
     }
 
@@ -58,7 +58,7 @@ export default class Start extends Phaser.Scene {
         const userText = this.add.text(950, 635, "SESIÓN ACTIVA", {
             fontSize: 64,
             color: "#00FFB7",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         });
 
         const btn_play = this.add.image(this.scale.width / 2, 300, 'btn_play').setScale(0.75).setDepth(-3)
@@ -89,7 +89,7 @@ export default class Start extends Phaser.Scene {
                                     this.scene.start("LevelSelect");
                                 }
                                 else if (tipoUsuario == "alumno"){
-                                    this.scene.start("StudentGuide");
+                                    this.scene.start("LevelStudentTeam");
                                 }
                             }
                         });
@@ -123,7 +123,7 @@ export default class Start extends Phaser.Scene {
                             duration: 800,
                             ease: 'Power2',
                             onComplete: () => {
-                                this.scene.start("Guia"); 
+                                this.scene.start("StudentGuide"); 
                             }
                         });
                     }

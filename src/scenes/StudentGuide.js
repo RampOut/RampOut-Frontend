@@ -1,7 +1,5 @@
 import Phaser from "phaser";
 
-
-import background from "../assets/game/ui/menu/checkersBG1.png";
 import backgroundGS from "../assets/game/ui/menu/checkersPurple.png";
 import header from "../assets/game/ui/menu/Header.png";
 import backBtn from "../assets/game/ui/menu/btn_back/btn_back.png";
@@ -12,6 +10,7 @@ import footer from "../assets/game/ui/menu/footer.png";
 import cuadroTxt from "../assets/game/ui/menu/cuadroTXT.png"
 import cancelar from "../assets/game/ui/menu/botonCancelar.png"
 import aceptar from "../assets/game/ui/menu/botonAceptar.png"
+import { nombreEquipo, equipo } from "./LevelStudentTeam";
 
 export default class StudentGuide extends Phaser.Scene {
     constructor() {
@@ -19,7 +18,6 @@ export default class StudentGuide extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', background);
         this.load.image('backgroundGS', backgroundGS);
         this.load.image('header', header);
         this.load.image('footer', footer);
@@ -33,6 +31,8 @@ export default class StudentGuide extends Phaser.Scene {
     }
 
     create() {
+        console.log(nombreEquipo);
+
         this.bg = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, 'backgroundGS').setOrigin(0).setDepth(-6);
 
         this.bg.setScrollFactor(0);
@@ -44,53 +44,21 @@ export default class StudentGuide extends Phaser.Scene {
         const guiaTitle = this.add.image(this.scale.width / 2, this.scale.height / 2, 'guiaTitle').setPosition(300, -80).setScale(1).setDepth(-2);
 
         //Se recupera el texto dado por el profe
-        const savedText = this.registry.get('guiaText') || "El profesor aún no ha dado indicaciones"; 
+        const savedText = this.registry.get('guiaText') || "El profesor aún no ha dado indicaciones."; 
 
         //Se muestra el texo en medio de la pantalla
-        this.add.text(280, 180, savedText, {
+        this.add.text(300, 180, savedText, {
             fontSize: 50,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
             wordWrap: { width: 700 }
         }).setDepth(-3);
 
-        const about = this.add.text(820, 40, "Pistas de tu profesor", {
+        const about = this.add.text(660, 40, "Pistas de tu profesor", {
             fontSize: 70,
             color: "#FFFFFF",
-            fontFamily: "Handjet-Regular",
+            fontFamily: "Handjet",
         }).setDepth(-1);
-
-
-        const btn_back = this.add.image(this.scale.width / 2, this.scale.height / 2, 'btn_back').setPosition(100, 75).setScale(1).setDepth(-2)
-        .setInteractive({useHandCursor: true})
-            .on('pointerover', function () {
-                btn_back.setTexture("btn_back_h");
-                btn_back.setScale(1.1)
-            }, this).on('pointerout', function () {
-                btn_back.setTexture("btn_back");
-                btn_back.setScale(1)
-            }, this).on('pointerdown', function () {
-                btn_back.setTexture("btn_back_a");
-                about.text = "";
-
-                this.tweens.add({
-                    targets: [guiaTitle, btn_back],
-                    y: -190, // Centro vertical de la pantalla
-                    duration: 400,
-                    ease: 'Power2',
-                    onComplete: () => {
-                        this.tweens.add({
-                            targets: header,
-                            y: 190, // Centro vertical de la pantalla
-                            duration: 800,
-                            ease: 'Power2',
-                            onComplete: () => {
-                                this.scene.start("Start"); // Cambia a tu escena del juego
-                            }
-                        });
-                    }
-                });
-            }, this)
 
 
         this.tweens.add({

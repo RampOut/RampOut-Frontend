@@ -14,11 +14,13 @@ const router = createBrowserRouter([
         path: "/game",
         element: <Game />,
         errorElement: <ErrorPage />
+        
     },
     {
         path: "/login",
         element: <Login />,
         errorElement: <ErrorPage />
+
     },
 ]);
 
