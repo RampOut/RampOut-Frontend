@@ -1,0 +1,144 @@
+/* Login_Profesor.css */
+/* Import Google Fonts for pixel-style typography */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Global reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main background with checkered pattern */
+.background-login {
+  min-height: 100vh;
+  background-color: #1f1147;
+  background-image: linear-gradient(45deg, #1f1147 25%, #2a1861 25%, #2a1861 50%, #1f1147 50%, #1f1147 75%, #2a1861 75%, #2a1861 100%);
+  background-size: 56.57px 56.57px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Form container with gradient background */
+.login-form-container {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  background: linear-gradient(to bottom, #e0e0e0, rgb(148, 177, 110));
+  border: 2px solid #6b5bae;
+}
+
+/* Pixel-art style title */
+.login-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Form input groups */
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.input-label {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 2px solid #6b5bae;
+  background-color: #f8f9fa;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #483d7c;
+  box-shadow: 0 0 0 2px rgba(107, 91, 174, 0.3);
+}
+
+/* Validity message styling */
+.validity-message {
+  display: block;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+.validity-message.valid {
+  color: green;
+}
+
+.validity-message.invalid {
+  color: #ff3860;
+}
+
+/* Eye icon for password toggle */
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 42px;
+  cursor: pointer;
+  color: #6b5bae;
+}
+
+/* Submit button with pixel art style */
+.submit-button {
+  background-color: #6b5bae;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+  margin-top: 1rem;
+  width: 150px;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.submit-button:hover {
+  background-color: #574a8c;
+}
+
+/* Error message styling */
+.error-message {
+  color: #ff3860;
+  background-color: rgba(255, 56, 96, 0.1);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Admin login link */
+.admin-link {
+  margin-top: 1.5rem;
+  color: #6b5bae;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.admin-link:hover {
+  color: #483d7c;
+}
